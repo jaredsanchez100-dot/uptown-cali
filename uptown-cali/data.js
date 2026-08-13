@@ -9,26 +9,26 @@
 const BRAND = {
   name: "Uptown Cali",
   // Shown above the hero headline. Keep it under ~10 words.
-  tagline: "Northern Cali Style ★ Est. 1.4.2014",
+  tagline: "Northern Cali Style ★ Est. MMXIV",
   // The big hero headline. Short and loud reads best.
   // The \n forces a line break.
   heroHeadline: "BUILT\nDIFFERENT",
   heroSub:
-    "Heavyweight tees, fleece and headwear out of Northern California. Bay Area born, Uptown raised.",
+    "Heavyweight tees out of Northern California. Bay Area born, Uptown raised. Discipline. Pressure. Results.",
   heroCta: "Shop the Drop",
 
   // About section
   storyHeading: "The Uptown Mentality",
   story: [
     "Uptown Cali represents the grind, the culture, and the legacy of Northern California — rooted in the streets and built different.",
-    "We don't follow trends, we set them. Every piece is cut heavy, printed clean, and made to outlive the season it dropped in.",
+    "Discipline. Pressure. Results. We don't follow trends, we set them. Every piece is cut heavy, printed clean, and made to outlive the season it dropped in.",
     // TODO — replace this with your real origin story: where it started,
     // who started it, why. Customers read this part.
     "Tell your story here — where the brand started, and what it means to rep your city.",
   ],
   // Optional little stat row under the story. Delete the array to hide it.
   stats: [
-    { num: "2014", label: "Est. 1.4" },
+    { num: "MMXIV", label: "Established" },
     { num: "280", label: "GSM Heavyweight" },
     { num: "NOR CAL", label: "Designed in" },
   ],
@@ -60,82 +60,171 @@ const CHECKOUT = {
 /* ---------- 3. PRODUCTS ----------
    Each product needs: id, name, price, and at least one size.
 
-   PHOTOS — leave `image` empty ("") and a clean styled placeholder is drawn
-   automatically, so the site looks finished before your shoot is done.
-   When photos are ready, drop the files in images/ and set:
-       image: "images/built-different-tee-front.jpg"
-   Add more angles with `gallery: ["images/a.jpg", "images/b.jpg"]`.
+   The six tees below are the concepts from your lookbook, with the real
+   photos wired in. `image` is what shows on the card; `gallery` adds the
+   extra angles as thumbnails on the product page.
 
    SIZES — for one-size items (hats, stickers, patches) use: sizes: ["One Size"]
-   and the size picker hides itself automatically. */
+   and the size picker hides itself automatically.
+
+   PRICES — the tees follow the $45–48 band we agreed. Check them against what
+   you're actually charging before you go live. */
 const PRODUCTS = [
   {
-    id: "tee-built-different",
-    name: "Built Different Tee",
+    id: "tee-heritage-script",
+    name: "Heritage Script Tee",
     category: "T-Shirts",
     price: 45,
-    image: "",
-    gallery: [],
-    // Placeholder look, ignored once you add a real image.
-    placeholder: { emoji: "★", tint: "linear-gradient(150deg,#2a0d0d,#0b0b0b 62%)" },
+    image: "images/tee-heritage-script-model-front.jpg",
+    gallery: [
+      "images/tee-heritage-script-front.jpg",
+      "images/tee-heritage-script-back.jpg",
+      "images/tee-heritage-script-model-back.jpg",
+    ],
     sizes: ["S", "M", "L", "XL", "2XL"],
-    colors: ["Vintage Black"],
+    colors: ["Black"],
     description:
-      "Oversized heavyweight tee with the arched Uptown Cali front hit and the full Built Different back graphic. Vintage wash finish — it arrives already broken in.",
+      "The signature red Uptown Cali script across the chest, with Northern Cali Style and the Est. MMXIV mark underneath. Clean script hit on the back over Discipline. Pressure. Results.",
     details: [
-      "Premium heavyweight cotton, vintage wash",
-      "Oversized fit — size down for a regular fit",
-      "Screen printed front, back and sleeve stripes",
-      "Woven hem label & UTC sleeve patch",
+      "280 GSM premium heavyweight cotton",
+      "Ribbed collar, twin needle stitching",
+      "Screen printed front and back",
+      "Relaxed fit — size down for a regular fit",
     ],
     badge: "Flagship",
     buyUrl: "", // stripe mode
-    variantIds: {}, // shopify mode, e.g. { "M / Vintage Black": "4321567890" }
+    variantIds: {}, // shopify mode, e.g. { "M / Black": "4321567890" }
   },
   {
-    id: "tee-new-drip",
-    name: "The New Drip Monogram Tee",
+    id: "tee-utc-core",
+    name: "UTC Core Tee",
+    category: "T-Shirts",
+    price: 45,
+    image: "images/tee-utc-core-model-front.jpg",
+    // Your lookbook's "model back" shot for this concept was a duplicate of the
+    // Nor Cal Standard one, so it's left out. Add a real back-on-body shot here
+    // when you have one: "images/tee-utc-core-model-back.jpg".
+    gallery: [
+      "images/tee-utc-core-front.jpg",
+      "images/tee-utc-core-back.jpg",
+    ],
+    sizes: ["S", "M", "L", "XL", "2XL"],
+    colors: ["Black"],
+    description:
+      "The UTC block mark front and centre, split by the red bars, over Uptown Cali and Northern Cali Brand. The core piece — the one that says it without saying much.",
+    details: [
+      "280 GSM premium heavyweight cotton",
+      "Ribbed collar, twin needle stitching",
+      "Screen printed front and back",
+      "Relaxed fit — size down for a regular fit",
+    ],
+    badge: "",
+    buyUrl: "",
+    variantIds: {},
+  },
+  {
+    id: "tee-norcal-standard",
+    name: "Nor Cal Standard Tee",
+    category: "T-Shirts",
+    price: 45,
+    image: "images/tee-norcal-standard-model-front.jpg",
+    gallery: [
+      "images/tee-norcal-standard-front.jpg",
+      "images/tee-norcal-standard-back.jpg",
+      "images/tee-norcal-standard-model-back.jpg",
+    ],
+    sizes: ["S", "M", "L", "XL", "2XL"],
+    colors: ["Black"],
+    description:
+      "Small Nor Cal chest hit up front, full Nor Cal Standard block across the back with the red rule and Discipline. Pressure. Results. Quiet from the front, loud from behind.",
+    details: [
+      "280 GSM premium heavyweight cotton",
+      "Ribbed collar, twin needle stitching",
+      "Small chest hit, large back print",
+      "Relaxed fit — size down for a regular fit",
+    ],
+    badge: "",
+    buyUrl: "",
+    variantIds: {},
+  },
+  {
+    id: "tee-bay-area-luxury",
+    name: "Bay Area Luxury Tee",
     category: "T-Shirts",
     price: 48,
-    image: "",
-    gallery: [],
-    placeholder: { emoji: "UTC", tint: "linear-gradient(150deg,#161616,#0b0b0b 70%)" },
+    image: "images/tee-bay-area-luxury-model-front.jpg",
+    gallery: [
+      "images/tee-bay-area-luxury-front.jpg",
+      "images/tee-bay-area-luxury-back.jpg",
+      "images/tee-bay-area-luxury-model-back.jpg",
+    ],
     sizes: ["S", "M", "L", "XL", "2XL"],
-    colors: ["Black / Red", "Black / Tonal"],
+    colors: ["Black"],
     description:
-      "Tonal UTC monogram, stars and Cali bears fading up from the hem, with the embroidered New Drip script on the chest and the UTC crest across the back.",
+      "Collegiate Nor Cal Standard arch front and back, finished with Northern California and the Bay Area Luxury bar. The heaviest graphic in the drop.",
     details: [
-      "280 GSM 100% premium cotton",
-      "Embroidered chest script, ribbed collar",
-      "Tonal monogram fade print from hem",
-      "Twin needle stitching throughout",
+      "280 GSM premium heavyweight cotton",
+      "Ribbed collar, twin needle stitching",
+      "Full-width collegiate back print",
+      "Relaxed fit — size down for a regular fit",
     ],
     badge: "New",
     buyUrl: "",
     variantIds: {},
   },
   {
-    id: "tee-script-luxe",
-    name: "Script Luxe Tee",
+    id: "tee-heritage-varsity",
+    name: "Heritage Script Varsity Tee",
     category: "T-Shirts",
     price: 48,
-    image: "",
-    gallery: [],
-    placeholder: { emoji: "✶", tint: "linear-gradient(150deg,#0f2a22,#0b0b0b 66%)" },
+    image: "images/tee-heritage-varsity-model-front.jpg",
+    gallery: [
+      "images/tee-heritage-varsity-front.jpg",
+      "images/tee-heritage-varsity-back.jpg",
+      "images/tee-heritage-varsity-model-back.jpg",
+    ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black"],
     description:
-      "Raised embroidered Uptown Cali script across the chest with a red Cali bear, over a tonal monogram body. Stacked UTC crest on the back. Built Different. Repped Forever.",
+      "The Uptown script with the red underline sweep, Northern Cali Style beneath. Back carries the full Northern Cali / Uptown Cali Style lockup over Nor Cal Brand.",
     details: [
-      "270 GSM heavyweight cotton",
-      "Raised embroidered script front",
-      "Tonal UTC monogram body print",
-      "Woven crest hem patch",
+      "280 GSM premium heavyweight cotton",
+      "Ribbed collar, twin needle stitching",
+      "Two-colour script print, front and back",
+      "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
     buyUrl: "",
     variantIds: {},
   },
+  {
+    id: "tee-collegiate-norcal",
+    name: "Collegiate Nor Cal Tee",
+    category: "T-Shirts",
+    price: 48,
+    image: "images/tee-collegiate-norcal-model-front.jpg",
+    gallery: [
+      "images/tee-collegiate-norcal-front.jpg",
+      "images/tee-collegiate-norcal-back.jpg",
+      "images/tee-collegiate-norcal-model-back.jpg",
+    ],
+    sizes: ["S", "M", "L", "XL", "2XL"],
+    colors: ["Black"],
+    description:
+      "UPTOWN over the UTC monogram over CALI, stacked collegiate. The back runs Nor Cal Brand with the Bay Area Born & Raised bar and the crest underneath.",
+    details: [
+      "280 GSM premium heavyweight cotton",
+      "Ribbed collar, twin needle stitching",
+      "Stacked collegiate front, full back print",
+      "Relaxed fit — size down for a regular fit",
+    ],
+    badge: "",
+    buyUrl: "",
+    variantIds: {},
+  },
+
+  /* ---- Everything below is still waiting on photos. Each one draws a styled
+     placeholder tile until you set `image`, same as the tees did before. ---- */
   {
     id: "hoodie-utc-heavyweight",
     name: "UTC Heavyweight Hoodie",
@@ -143,6 +232,7 @@ const PRODUCTS = [
     price: 85,
     image: "",
     gallery: [],
+    // Placeholder look, ignored once you add a real image.
     placeholder: { emoji: "★", tint: "linear-gradient(150deg,#1b3d34,#0b0b0b 68%)" },
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black", "Forest"],
@@ -154,7 +244,7 @@ const PRODUCTS = [
       "Embroidered chest crest",
       "Unisex, relaxed fit",
     ],
-    badge: "Best Seller",
+    badge: "",
     buyUrl: "",
     variantIds: {},
   },
@@ -238,13 +328,13 @@ const PRODUCTS = [
 ];
 
 /* ---------- 4. LOOKBOOK ----------
-   The vibe shots. Leave `image` empty for a styled placeholder tile.
+   The vibe shots, pulled from your lookbook. Clicking one opens it full size.
    Delete the whole array to remove the lookbook section from the site. */
 const LOOKBOOK = [
-  { image: "", caption: "Bay Area Born", tint: "linear-gradient(150deg,#2a0d0d,#0b0b0b 70%)" },
-  { image: "", caption: "Uptown Raised", tint: "linear-gradient(150deg,#1b3d34,#0b0b0b 70%)" },
-  { image: "", caption: "The New Drip", tint: "linear-gradient(150deg,#1a1a1a,#0b0b0b 70%)" },
-  { image: "", caption: "Rep Your City", tint: "linear-gradient(150deg,#241010,#111 72%)" },
-  { image: "", caption: "Nor Cal Nights", tint: "linear-gradient(150deg,#12261f,#0b0b0b 70%)" },
-  { image: "", caption: "Built Different", tint: "linear-gradient(150deg,#3a1414,#0b0b0b 70%)" },
+  { image: "images/look-rep-your-city.jpg", caption: "Rep Your City" },
+  { image: "images/look-bay-area.jpg", caption: "Bay Area Born" },
+  { image: "images/look-norcal-brand.jpg", caption: "Nor Cal Brand" },
+  { image: "images/look-uptown-raised.jpg", caption: "Uptown Raised" },
+  { image: "images/look-norcal-nights.jpg", caption: "Nor Cal Nights" },
+  { image: "images/look-built-different.jpg", caption: "Built Different" },
 ];

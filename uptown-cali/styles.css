@@ -166,22 +166,28 @@ h1, h2, h3 {
    HERO
    ============================================================ */
 .hero { position: relative; display: flex; align-items: center; min-height: 78vh; overflow: hidden; }
-/* A giant ghosted UTC monogram behind the headline, a low red wash, and the
-   flag stripes running along the bottom edge. Swap the whole thing for a
-   photo later: background: url(images/hero.jpg) center/cover. */
+/* The lookbook shot, darkened hard from the left so the headline stays
+   readable over it, with a red wash and the ghosted UTC monogram on top.
+   To change the photo, swap images/hero.jpg — nothing else needs editing.
+   The gradients are listed before the image, so they sit over it. */
 .hero__bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(70% 70% at 22% 30%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 64%),
-    radial-gradient(60% 60% at 88% 78%, color-mix(in srgb, var(--green) 40%, transparent), transparent 62%),
+    linear-gradient(100deg, var(--bg) 12%, color-mix(in srgb, var(--bg) 72%, transparent) 52%, color-mix(in srgb, var(--bg) 40%, transparent) 100%),
+    radial-gradient(70% 70% at 22% 30%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 64%),
+    url("images/hero.jpg") center 38% / cover no-repeat,
     linear-gradient(170deg, var(--bg-alt), var(--bg) 72%);
 }
-.hero__bg::before {
-  content: "UTC";
-  position: absolute; right: -2vw; top: 50%; transform: translateY(-50%);
-  font-family: var(--font-display); font-size: 42vw; line-height: 1;
-  color: color-mix(in srgb, var(--ink) 4%, transparent);
-  letter-spacing: -.02em; user-select: none;
+@media (max-width: 720px) {
+  /* On a phone the headline sits over the middle of the frame, so the
+     photo needs a flat scrim rather than a left-to-right one. */
+  .hero__bg {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--bg) 82%, transparent), color-mix(in srgb, var(--bg) 62%, transparent)),
+      radial-gradient(70% 55% at 30% 28%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 66%),
+      url("images/hero.jpg") center / cover no-repeat,
+      linear-gradient(170deg, var(--bg-alt), var(--bg) 72%);
+  }
 }
 /* Flag stripes pinned to the bottom of the hero. */
 .hero__bg::after {
@@ -207,6 +213,9 @@ h1, h2, h3 {
    SECTIONS
    ============================================================ */
 .section { max-width: var(--max); margin: 0 auto; padding: 92px 24px; }
+/* The nav is sticky and 70px tall, so anchor jumps have to stop short of it
+   or the section heading lands underneath it. */
+.section, #shop, #lookbook, #about, #contact { scroll-margin-top: 84px; }
 .section--alt {
   max-width: none; background: var(--bg-alt);
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
