@@ -3,116 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Official DJ Jas merch store — tees, hoodies, caps, vinyl and more. Wear the sound." />
-  <title>DJ Jas — Official Merch</title>
+  <!-- SEO: this is what shows up in Google and in link previews. -->
+  <title>Uptown Cali — Official Store</title>
+  <meta name="description" content="Uptown Cali — Northern California streetwear. Heavyweight tees, fleece, headwear and accessories. Bay Area born, Uptown raised. Built Different." />
+  <meta name="theme-color" content="#0b0b0b" />
+  <meta property="og:title" content="Uptown Cali — Official Store" />
+  <meta property="og:description" content="Northern California streetwear. Heavyweight tees, fleece and headwear. Built Different." />
+  <meta property="og:type" content="website" />
+  <!-- Display + script faces. These carry the brand; if you change them here,
+       update --font-display / --font-script at the top of styles.css to match. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Yesteryear&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Navbar -->
-  <header class="nav" id="top">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav">
     <div class="nav__inner">
-      <a href="#top" class="brand">DJ&nbsp;JAS</a>
-      <nav class="nav__links">
+      <a href="#/" class="brand" data-brand-name>BRAND</a>
+      <nav class="nav__links" aria-label="Main">
         <a href="#shop">Shop</a>
+        <a href="#lookbook" data-lookbook-link>Lookbook</a>
         <a href="#about">About</a>
-        <a href="#tour">Tour</a>
         <a href="#contact">Contact</a>
       </nav>
       <button class="cart-btn" id="cartBtn" aria-label="Open cart">
-        🛒 <span class="cart-count" id="cartCount">0</span>
+        <span aria-hidden="true">Cart</span>
+        <span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero__bg" aria-hidden="true"></div>
-    <div class="hero__content">
-      <p class="hero__kicker">Official Merch Store</p>
-      <h1 class="hero__title">WEAR THE<br />SOUND</h1>
-      <p class="hero__sub">Limited-run apparel and vinyl from DJ Jas. Built for the dancefloor, made to last.</p>
-      <a href="#shop" class="btn btn--primary">Shop the Drop</a>
-    </div>
-  </section>
-
-  <!-- Shop -->
-  <section class="section" id="shop">
-    <div class="section__head">
-      <h2 class="section__title">The Collection</h2>
-      <p class="section__lead">New season, new heat. Free shipping on orders over $75.</p>
-    </div>
-    <div class="grid" id="productGrid"><!-- products injected by JS --></div>
-  </section>
-
-  <!-- About -->
-  <section class="section section--alt" id="about">
-    <div class="about">
-      <div class="about__text">
-        <h2 class="section__title">About DJ Jas</h2>
-        <p>DJ Jas has been moving crowds from warehouse raves to festival mainstages for over a decade — blending house, techno, and bass into sets that don't quit.</p>
-        <p>This merch line is an extension of that energy: bold, loud, and built to be worn everywhere from the club to the cereal aisle.</p>
-        <div class="stats">
-          <div class="stat"><span class="stat__num">10+</span><span class="stat__label">Years spinning</span></div>
-          <div class="stat"><span class="stat__num">120</span><span class="stat__label">Shows a year</span></div>
-          <div class="stat"><span class="stat__num">∞</span><span class="stat__label">Good vibes</span></div>
+  <main id="main">
+    <!-- ============ STOREFRONT (hidden when viewing a product) ============ -->
+    <div id="storeView">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero__bg" aria-hidden="true"></div>
+        <div class="hero__content">
+          <p class="hero__kicker" data-tagline></p>
+          <h1 class="hero__title" data-hero-headline></h1>
+          <p class="hero__sub" data-hero-sub></p>
+          <a href="#shop" class="btn btn--primary" data-hero-cta></a>
         </div>
-      </div>
-      <div class="about__art" aria-hidden="true"></div>
-    </div>
-  </section>
+      </section>
 
-  <!-- Tour -->
-  <section class="section" id="tour">
-    <div class="section__head">
-      <h2 class="section__title">On Tour</h2>
-      <p class="section__lead">Catch a set, grab merch at the booth.</p>
-    </div>
-    <ul class="tour-list" id="tourList"><!-- dates injected by JS --></ul>
-  </section>
+      <!-- Shop -->
+      <section class="section" id="shop">
+        <div class="section__head">
+          <h2 class="section__title">Shop</h2>
+          <p class="section__lead" data-shipping-note></p>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
+        <div class="grid" id="productGrid"></div>
+      </section>
 
-  <!-- Newsletter / Contact -->
-  <section class="section section--alt" id="contact">
-    <div class="contact">
-      <h2 class="section__title">Stay in the Loop</h2>
-      <p class="section__lead">Drop your email for early access to new drops and tour presales.</p>
-      <form class="newsletter" id="newsletterForm">
-        <input type="email" id="email" placeholder="you@email.com" required aria-label="Email address" />
-        <button type="submit" class="btn btn--primary">Sign Up</button>
-      </form>
-      <p class="form-msg" id="formMsg" role="status"></p>
-      <div class="socials">
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="TikTok">TikTok</a>
-        <a href="#" aria-label="SoundCloud">SoundCloud</a>
-        <a href="#" aria-label="Spotify">Spotify</a>
-      </div>
+      <!-- Lookbook -->
+      <section class="section section--alt" id="lookbook">
+        <div class="section__head">
+          <h2 class="section__title">Lookbook</h2>
+        </div>
+        <div class="lookbook" id="lookbookGrid"></div>
+      </section>
+
+      <!-- About -->
+      <section class="section" id="about">
+        <div class="about">
+          <div class="about__text">
+            <h2 class="section__title" data-story-heading></h2>
+            <div data-story></div>
+            <div class="stats" id="stats"></div>
+          </div>
+          <div class="about__art" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- Contact / newsletter -->
+      <section class="section section--alt" id="contact">
+        <div class="contact">
+          <h2 class="section__title">Stay Posted</h2>
+          <p class="section__lead">Drop your email for first look at new releases.</p>
+          <form class="newsletter" id="newsletterForm">
+            <label class="sr-only" for="email">Email address</label>
+            <input type="email" id="email" placeholder="you@email.com" required />
+            <button type="submit" class="btn btn--primary">Sign Up</button>
+          </form>
+          <p class="form-msg" id="formMsg" role="status"></p>
+          <div class="socials" id="socials"></div>
+          <p class="contact__script">We don't follow trends,<br /><span>we set them.</span></p>
+        </div>
+      </section>
     </div>
-  </section>
+
+    <!-- ============ PRODUCT DETAIL (shown at #/product/<id>) ============ -->
+    <div id="productView" hidden></div>
+  </main>
 
   <footer class="footer">
-    <p>© <span id="year"></span> DJ Jas. All rights reserved.</p>
-    <p class="footer__fine">Merch is for demo purposes — no real orders are processed.</p>
+    <p class="footer__motto">Built Different. Repped Forever.</p>
+    <p>&copy; <span id="year"></span> <span data-brand-name></span>. All rights reserved. Northern California.</p>
+    <p class="footer__fine" id="footerNote"></p>
   </footer>
 
-  <!-- Cart drawer -->
-  <div class="drawer" id="cartDrawer" aria-hidden="true">
-    <div class="drawer__panel" role="dialog" aria-label="Shopping cart">
+  <!-- ============ CART DRAWER ============ -->
+  <div class="drawer" id="cartDrawer" hidden>
+    <div class="drawer__scrim" id="cartScrim"></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Shopping cart">
       <div class="drawer__head">
-        <h3>Your Cart</h3>
-        <button class="drawer__close" id="cartClose" aria-label="Close cart">✕</button>
+        <h2>Your Cart</h2>
+        <button class="icon-btn" id="cartClose" aria-label="Close cart">&#10005;</button>
       </div>
       <div class="drawer__body" id="cartItems"></div>
       <div class="drawer__foot">
-        <div class="drawer__total"><span>Total</span><span id="cartTotal">$0</span></div>
+        <div class="drawer__total"><span>Subtotal</span><span id="cartTotal"></span></div>
+        <p class="drawer__note" id="cartNote"></p>
         <button class="btn btn--primary btn--block" id="checkoutBtn">Checkout</button>
       </div>
     </div>
-    <div class="drawer__scrim" id="cartScrim"></div>
   </div>
 
+  <!-- ============ LIGHTBOX ============ -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="icon-btn lightbox__close" id="lightboxClose" aria-label="Close">&#10005;</button>
+    <div class="lightbox__inner" id="lightboxInner"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
