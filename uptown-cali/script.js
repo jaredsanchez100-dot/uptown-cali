@@ -20,6 +20,9 @@
      placeholder when there isn't — so the site never looks half-built
      while you're still waiting on the photoshoot. */
   function media(item, alt) {
+    // A product can carry its own descriptive alt text; the caller's value
+    // (usually the product name) is the fallback.
+    if (item && item.alt) alt = item.alt;
     if (item && item.image) {
       return '<img src="' + esc(item.image) + '" alt="' + esc(alt || "") + '" loading="lazy">';
     }

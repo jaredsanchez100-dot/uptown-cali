@@ -75,8 +75,9 @@ const PRODUCTS = [
     name: "Heritage Script Tee",
     category: "T-Shirts",
     price: 45,
-    image: "images/tee-heritage-script-model-front.jpg",
+    image: "images/tee-heritage-script-card.jpg",
     gallery: [
+      "images/tee-heritage-script-model-front.jpg",
       "images/tee-heritage-script-front.jpg",
       "images/tee-heritage-script-back.jpg",
       "images/tee-heritage-script-model-back.jpg",
@@ -100,11 +101,12 @@ const PRODUCTS = [
     name: "UTC Core Tee",
     category: "T-Shirts",
     price: 45,
-    image: "images/tee-utc-core-model-front.jpg",
+    image: "images/tee-utc-core-card.jpg",
     // Your lookbook's "model back" shot for this concept was a duplicate of the
     // Nor Cal Standard one, so it's left out. Add a real back-on-body shot here
     // when you have one: "images/tee-utc-core-model-back.jpg".
     gallery: [
+      "images/tee-utc-core-model-front.jpg",
       "images/tee-utc-core-front.jpg",
       "images/tee-utc-core-back.jpg",
     ],
@@ -127,8 +129,9 @@ const PRODUCTS = [
     name: "Nor Cal Standard Tee",
     category: "T-Shirts",
     price: 45,
-    image: "images/tee-norcal-standard-model-front.jpg",
+    image: "images/tee-norcal-standard-card.jpg",
     gallery: [
+      "images/tee-norcal-standard-model-front.jpg",
       "images/tee-norcal-standard-front.jpg",
       "images/tee-norcal-standard-back.jpg",
       "images/tee-norcal-standard-model-back.jpg",
@@ -223,17 +226,14 @@ const PRODUCTS = [
     variantIds: {},
   },
 
-  /* ---- Everything below is still waiting on photos. Each one draws a styled
-     placeholder tile until you set `image`, same as the tees did before. ---- */
   {
     id: "hoodie-utc-heavyweight",
     name: "UTC Heavyweight Hoodie",
     category: "Fleece",
     price: 85,
-    image: "",
+    image: "images/utc-heavyweight-hoodie.webp",
+    alt: "Male model wearing a black Uptown Cali UTC heavyweight hoodie in front of a dark storefront with red neon lighting.",
     gallery: [],
-    // Placeholder look, ignored once you add a real image.
-    placeholder: { emoji: "★", tint: "linear-gradient(150deg,#1b3d34,#0b0b0b 68%)" },
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black", "Forest"],
     description:
@@ -253,9 +253,9 @@ const PRODUCTS = [
     name: "Monogram Crewneck",
     category: "Fleece",
     price: 70,
-    image: "",
+    image: "images/monogram-crewneck.webp",
+    alt: "Male model wearing a black Uptown Cali monogram crewneck with tonal UTC pattern and red chest crest outside a moody storefront.",
     gallery: [],
-    placeholder: { emoji: "UTC", tint: "linear-gradient(150deg,#241010,#0b0b0b 70%)" },
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black", "Heather Grey"],
     description:
@@ -275,9 +275,9 @@ const PRODUCTS = [
     name: "UTC Crest Snapback",
     category: "Headwear",
     price: 38,
-    image: "",
+    image: "images/utc-crest-snapback.webp",
+    alt: "Close-up of a black Uptown Cali snapback with a raised red UTC crest, worn with matching black hoodie in a red neon storefront setting.",
     gallery: [],
-    placeholder: { emoji: "★", tint: "linear-gradient(150deg,#1a1a1a,#0b0b0b 70%)" },
     sizes: ["One Size"],
     colors: ["Black", "Black / Red"],
     description:
@@ -296,9 +296,9 @@ const PRODUCTS = [
     name: "Heritage Sticker Pack",
     category: "Accessories",
     price: 8,
-    image: "",
+    image: "images/heritage-sticker-pack.webp",
+    alt: "Flat lay of Uptown Cali heritage sticker pack with UTC monogram, Cali outline, bear icon, red stars, and branded black packaging.",
     gallery: [],
-    placeholder: { emoji: "✦", tint: "linear-gradient(150deg,#2a0d0d,#141414 72%)" },
     sizes: ["One Size"],
     colors: ["Pack of 5"],
     description:
@@ -313,9 +313,9 @@ const PRODUCTS = [
     name: "Cali Bear Patch",
     category: "Accessories",
     price: 12,
-    image: "",
+    image: "images/cali-bear-patch.webp",
+    alt: "Close-up of a premium embroidered Cali bear patch shaped like California with black, red, and white Uptown Cali branding.",
     gallery: [],
-    placeholder: { emoji: "✷", tint: "linear-gradient(150deg,#0f2a22,#141414 72%)" },
     sizes: ["One Size"],
     colors: ["Red / Black"],
     description:

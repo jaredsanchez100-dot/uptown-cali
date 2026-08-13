@@ -84,14 +84,15 @@ first `gallery` entry in `data.js` — a two-line change per product.
   back view that isn't this shirt's back. When you have a real one, save it as
   `images/tee-utc-core-model-back.jpg` and add it to that product's `gallery`.
 
-### Still waiting on photos
+### The fleece, headwear and accessory photos
 
-The hoodie, crewneck, snapback, sticker pack and patch all show styled
-placeholder tiles. To swap one in:
+The hoodie, crewneck, snapback, sticker pack and patch use the WebP images from
+your asset package (`images/*.webp`), with the alt text from its manifest. Each
+of those products has one hero shot and no gallery yet — add extra angles the
+same way as the tees:
 
 ```js
-image: "images/hoodie-front.jpg",
-gallery: ["images/hoodie-back.jpg"],
+gallery: ["images/hoodie-back.webp"],
 ```
 
 **Crop 4:5** for products (about 1200 × 1500 px) and **3:4** for lookbook tiles,
