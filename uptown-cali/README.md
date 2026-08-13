@@ -98,14 +98,25 @@ gallery: ["images/hoodie-back.jpg"],
 and keep each file under ~300KB. Squoosh.app or TinyPNG will shrink them
 without visible quality loss.
 
-### One quality note
+### About the resolution on concepts 4, 5 and 6
 
-Concepts 4, 5 and 6 (Bay Area Luxury, Heritage Script Varsity, Collegiate Nor
-Cal) came out of the PDF at 695 × 555 — noticeably smaller than the first three,
-which were 1122 × 1402. They look fine on the product cards, but they're a bit
-soft blown up on the product page. If you can re-export those three at full
-resolution, send them over and they'll drop straight in under the same
-filenames.
+Those three (Bay Area Luxury, Heritage Script Varsity, Collegiate Nor Cal) came
+out of the PDF at 695 × 555, about half the size of the first three. Rather than
+ship them soft, they've been run through **Real-ESRGAN**, an AI super-resolution
+model, and now match the others at 1000 × 1250.
+
+Worth knowing what that means: the model genuinely cleans up the jagged edges
+and compression artifacts on the printed graphics — "EST. MMXIV" and the neck
+label are legible now where they were mush. But it cannot recover detail the
+camera never captured, so any fine texture it shows is the model's plausible
+guess, not your actual fabric. To keep that in check the images were upscaled
+4x and then scaled back down to 1000 × 1250, which keeps the clean edges while
+pulling the invented micro-detail back out.
+
+The practical upshot: **the graphics are accurate, the fabric texture is
+approximate.** That's fine for a storefront. If you ever shoot these three
+properly, real photos will still beat this — drop them in under the same
+filenames and nothing else needs to change.
 
 ### The hero photo
 
