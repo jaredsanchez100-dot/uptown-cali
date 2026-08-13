@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Official DJ Jas merch store — tees, hoodies, caps, vinyl and more. Wear the sound." />
+  <title>DJ Jas — Official Merch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="nav" id="top">
+    <div class="nav__inner">
+      <a href="#top" class="brand">DJ&nbsp;JAS</a>
+      <nav class="nav__links">
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+        <a href="#tour">Tour</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="cart-btn" id="cartBtn" aria-label="Open cart">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__content">
+      <p class="hero__kicker">Official Merch Store</p>
+      <h1 class="hero__title">WEAR THE<br />SOUND</h1>
+      <p class="hero__sub">Limited-run apparel and vinyl from DJ Jas. Built for the dancefloor, made to last.</p>
+      <a href="#shop" class="btn btn--primary">Shop the Drop</a>
+    </div>
+  </section>
+
+  <!-- Shop -->
+  <section class="section" id="shop">
+    <div class="section__head">
+      <h2 class="section__title">The Collection</h2>
+      <p class="section__lead">New season, new heat. Free shipping on orders over $75.</p>
+    </div>
+    <div class="grid" id="productGrid"><!-- products injected by JS --></div>
+  </section>
+
+  <!-- About -->
+  <section class="section section--alt" id="about">
+    <div class="about">
+      <div class="about__text">
+        <h2 class="section__title">About DJ Jas</h2>
+        <p>DJ Jas has been moving crowds from warehouse raves to festival mainstages for over a decade — blending house, techno, and bass into sets that don't quit.</p>
+        <p>This merch line is an extension of that energy: bold, loud, and built to be worn everywhere from the club to the cereal aisle.</p>
+        <div class="stats">
+          <div class="stat"><span class="stat__num">10+</span><span class="stat__label">Years spinning</span></div>
+          <div class="stat"><span class="stat__num">120</span><span class="stat__label">Shows a year</span></div>
+          <div class="stat"><span class="stat__num">∞</span><span class="stat__label">Good vibes</span></div>
+        </div>
+      </div>
+      <div class="about__art" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- Tour -->
+  <section class="section" id="tour">
+    <div class="section__head">
+      <h2 class="section__title">On Tour</h2>
+      <p class="section__lead">Catch a set, grab merch at the booth.</p>
+    </div>
+    <ul class="tour-list" id="tourList"><!-- dates injected by JS --></ul>
+  </section>
+
+  <!-- Newsletter / Contact -->
+  <section class="section section--alt" id="contact">
+    <div class="contact">
+      <h2 class="section__title">Stay in the Loop</h2>
+      <p class="section__lead">Drop your email for early access to new drops and tour presales.</p>
+      <form class="newsletter" id="newsletterForm">
+        <input type="email" id="email" placeholder="you@email.com" required aria-label="Email address" />
+        <button type="submit" class="btn btn--primary">Sign Up</button>
+      </form>
+      <p class="form-msg" id="formMsg" role="status"></p>
+      <div class="socials">
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="TikTok">TikTok</a>
+        <a href="#" aria-label="SoundCloud">SoundCloud</a>
+        <a href="#" aria-label="Spotify">Spotify</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> DJ Jas. All rights reserved.</p>
+    <p class="footer__fine">Merch is for demo purposes — no real orders are processed.</p>
+  </footer>
+
+  <!-- Cart drawer -->
+  <div class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer__panel" role="dialog" aria-label="Shopping cart">
+      <div class="drawer__head">
+        <h3>Your Cart</h3>
+        <button class="drawer__close" id="cartClose" aria-label="Close cart">✕</button>
+      </div>
+      <div class="drawer__body" id="cartItems"></div>
+      <div class="drawer__foot">
+        <div class="drawer__total"><span>Total</span><span id="cartTotal">$0</span></div>
+        <button class="btn btn--primary btn--block" id="checkoutBtn">Checkout</button>
+      </div>
+    </div>
+    <div class="drawer__scrim" id="cartScrim"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

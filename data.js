@@ -45,14 +45,36 @@ const BRAND = {
 };
 
 /* ---------- 2. CHECKOUT ----------
-   mode: "demo"    — cart works, checkout shows a friendly placeholder.
-                     Use this before you're ready to take money.
-   mode: "stripe"  — each variant carries a Stripe Payment Link (`buyUrl`).
-   mode: "shopify" — each variant carries a Shopify `variantId`; the cart
-                     hands off to a Shopify cart permalink with everything in it.
-   See README.md for how to switch this on. */
+
+   >>> GOING LIVE WITH STRIPE — READ THIS <<<
+
+   Everything is wired for Stripe already. The ONE thing missing is your
+   Payment Links, which only you can create because they live in your Stripe
+   account. Here's the whole job:
+
+     1. Stripe Dashboard -> Product catalogue -> + Add product
+     2. Name it and set the price (match the prices below).
+     3. On the product, click "Create payment link".
+     4. Copy the link — it looks like https://buy.stripe.com/aEU00i2Ck9Xy4qkcMM
+     5. Paste it into that product's `buyUrl` field further down this file.
+     6. Come back up here and change mode from "demo" to "stripe".
+
+   That last step is deliberately last. Until the links exist, "stripe" mode
+   gives shoppers a checkout that can't complete, which is worse than an honest
+   demo banner. Flip it once the buyUrl fields are filled in.
+
+   ONE LINK PER PRODUCT, NOT PER SIZE. A Payment Link can't tell which size was
+   picked, so when the shopper hits Pay the site appends their size and colour
+   to the URL as Stripe's `client_reference_id` — it shows up on the payment in
+   your dashboard, so you know what to ship. Belt and braces: in the Payment
+   Link settings also switch on a required custom field called "Size". Then the
+   buyer states it too, and the two should agree.
+
+   mode: "demo"    — cart works, checkout says no payment is taken.
+   mode: "stripe"  — each product pays through its own Payment Link (`buyUrl`).
+   mode: "shopify" — cart hands off to a Shopify cart permalink. See README. */
 const CHECKOUT = {
-  mode: "demo",
+  mode: "demo", // <-- change to "stripe" once the buyUrl fields below are filled
   shopifyDomain: "", // e.g. "uptown-cali.myshopify.com" — only for shopify mode
   currency: "$",
 };
@@ -93,7 +115,7 @@ const PRODUCTS = [
       "Relaxed fit — size down for a regular fit",
     ],
     badge: "Flagship",
-    buyUrl: "", // stripe mode
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {}, // shopify mode, e.g. { "M / Black": "4321567890" }
   },
   {
@@ -121,7 +143,7 @@ const PRODUCTS = [
       "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -147,7 +169,7 @@ const PRODUCTS = [
       "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -172,7 +194,7 @@ const PRODUCTS = [
       "Relaxed fit — size down for a regular fit",
     ],
     badge: "New",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -197,7 +219,7 @@ const PRODUCTS = [
       "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -222,7 +244,7 @@ const PRODUCTS = [
       "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
 
@@ -245,7 +267,7 @@ const PRODUCTS = [
       "Unisex, relaxed fit",
     ],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -267,7 +289,7 @@ const PRODUCTS = [
       "Ribbed collar, cuffs and hem",
     ],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -288,7 +310,7 @@ const PRODUCTS = [
       "Adjustable snapback closure",
     ],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -305,7 +327,7 @@ const PRODUCTS = [
       "Five weatherproof die-cut stickers — UTC crest, Cali bear, heritage star, flag stripes and the Built Different script. For the laptop, the whip, the toolbox.",
     details: ["5 die-cut vinyl stickers", "Weatherproof, UV resistant", "2–4 in across"],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
   {
@@ -322,7 +344,7 @@ const PRODUCTS = [
       "Woven Cali bear patch with a merrowed border and iron-on backing. Put it on the denim jacket, the tote, the hat — wherever it needs to go.",
     details: ["Woven patch, merrowed border", "Iron-on backing", "3 in wide"],
     badge: "",
-    buyUrl: "",
+    buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
   },
 ];
