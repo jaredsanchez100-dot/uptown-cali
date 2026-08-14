@@ -267,18 +267,20 @@
     document.title = BRAND.name + " — Official Store";
   }
 
-  /* Two independent filter axes. The department row (Women / Swim /
-     NorCal Lights) answers "who and what world is this for"; the type row
-     answers "what kind of garment". They combine with AND. */
+  /* Nested filtering: three main departments (Men's / Women's /
+     Accessories), and the subcategory row appears only once a department
+     is picked — showing just that department's garment types. */
+  var DEPTS = [
+    { key: "All", label: "All" },
+    { key: "Men", label: "Men's" },
+    { key: "Women", label: "Women's" },
+    { key: "Accessories", label: "Accessories" },
+  ];
   var activeDept = "All";
-  var activeType = "All";
+  var activeType = "All"; // subcategory within the active department
 
   function deptMatch(p, dept) {
-    if (dept === "All") return true;
-    if (dept === "Women") return p.department === "Women";
-    if (dept === "Swim") return p.category === "Swim" || (p.tags || []).indexOf("Swim") !== -1;
-    if (dept === "NorCal Lights") return p.collection === "NorCal Lights";
-    return true;
+    return dept === "All" || p.department === dept;
   }
 
   function typeMatch(p, type) {
@@ -287,20 +289,9 @@
 
   function renderFilters() {
     var box = $("#filters");
-    var depts = ["All"];
-    PRODUCTS.forEach(function (p) {
-      if (p.department === "Women" && depts.indexOf("Women") === -1) depts.push("Women");
-      if (p.category === "Swim" && depts.indexOf("Swim") === -1) depts.push("Swim");
-      if (p.collection === "NorCal Lights" && depts.indexOf("NorCal Lights") === -1) depts.push("NorCal Lights");
-    });
-
-    // Garment types. Swim lives in the department row, so it would be
-    // redundant here.
-    var types = ["All"];
-    PRODUCTS.forEach(function (p) {
-      if (p.category && p.category !== "Swim" && types.indexOf(p.category) === -1) types.push(p.category);
-      (p.tags || []).forEach(function (t) { if (t !== "Swim" && types.indexOf(t) === -1) types.push(t); });
-    });
+    var have = {};
+    PRODUCTS.forEach(function (p) { if (p.department) have[p.department] = true; });
+    var mains = DEPTS.filter(function (d) { return d.key === "All" || have[d.key]; });
 
     var chip = function (c, attr, active, label) {
       return '<button class="filter" ' + attr + '="' + esc(c) + '" aria-pressed="' +
@@ -308,16 +299,26 @@
     };
 
     var rows = "";
-    // With only one department there's no choice to offer — keep the old
-    // single-row behavior.
-    if (depts.length > 1) {
-      rows += '<div class="filters__row" role="group" aria-label="Shop by department or collection">' +
-        depts.map(function (c) { return chip(c, "data-dept", c === activeDept); }).join("") + "</div>";
+    if (mains.length > 2) {
+      rows += '<div class="filters__row" role="group" aria-label="Shop by department">' +
+        mains.map(function (d) { return chip(d.key, "data-dept", d.key === activeDept, d.label); }).join("") + "</div>";
     }
-    if (types.length > 2) {
-      rows += '<div class="filters__row" role="group" aria-label="Filter by product type">' +
-        types.map(function (c) { return chip(c, "data-cat", c === activeType); }).join("") + "</div>";
+
+    // Subcategories nest inside the chosen department.
+    if (activeDept !== "All") {
+      var subs = ["All"];
+      PRODUCTS.forEach(function (p) {
+        if (p.department !== activeDept) return;
+        if (p.category && subs.indexOf(p.category) === -1) subs.push(p.category);
+        (p.tags || []).forEach(function (t) { if (subs.indexOf(t) === -1) subs.push(t); });
+      });
+      if (subs.length > 2) {
+        rows += '<div class="filters__row filters__row--sub" role="group" aria-label="Filter ' +
+          esc(activeDept) + ' by type">' +
+          subs.map(function (c) { return chip(c, "data-cat", c === activeType); }).join("") + "</div>";
+      }
     }
+
     if (!rows) { box.hidden = true; return; }
     box.hidden = false;
     box.innerHTML = rows;
@@ -581,11 +582,11 @@
     el.setAttribute("content", text || defaultMetaDescription);
   }
 
-  /* Deep links (#/shop/women, #/shop/swim) pre-apply a department filter
-     so the nav can point straight at a filtered shop. */
-  function openShopFiltered(dept) {
+  /* Deep links (#/shop/women, #/shop/swim) pre-apply filters so the nav
+     can point straight at a filtered shop. Swim nests under Women's. */
+  function openShopFiltered(dept, sub) {
     activeDept = dept;
-    activeType = "All";
+    activeType = sub || "All";
     closeProduct();
     renderFilters();
     renderGrid();
@@ -599,7 +600,8 @@
     if (/^#\/collections\/norcal-lights\/?$/.test(window.location.hash)) { openCollection(); return; }
     setMetaDescription(null);
     if (/^#\/shop\/women\/?$/.test(window.location.hash)) { openShopFiltered("Women"); return; }
-    if (/^#\/shop\/swim\/?$/.test(window.location.hash)) { openShopFiltered("Swim"); return; }
+    if (/^#\/shop\/swim\/?$/.test(window.location.hash)) { openShopFiltered("Women", "Swim"); return; }
+    if (/^#\/shop\/men\/?$/.test(window.location.hash)) { openShopFiltered("Men"); return; }
     closeProduct();
     // Plain #section anchors (e.g. #lookbook from the collection page) need
     // a manual scroll: the section may have been hidden when the browser
@@ -618,9 +620,10 @@
     var t = e.target.closest("button, a");
     if (!t) return;
 
-    // Filters: department row and type row combine.
+    // Filters: picking a department resets its nested subcategory.
     if (t.dataset.dept) {
       activeDept = t.dataset.dept;
+      activeType = "All";
       renderFilters();
       renderGrid();
       return;
@@ -702,6 +705,20 @@
     });
   }
   bindSignup("#newsletterForm", "#formMsg");
+
+  /* The product-page magnifier zooms toward the cursor: the point under
+     the pointer stays under the pointer, so hovering the chest print
+     inspects the chest print, not the middle of the image. */
+  document.addEventListener("mousemove", function (e) {
+    var main = e.target.closest(".pdp__main");
+    if (!main) return;
+    var img = main.querySelector("img");
+    if (!img) return;
+    var r = main.getBoundingClientRect();
+    img.style.transformOrigin =
+      Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100)) + "% " +
+      Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100)) + "%";
+  });
 
   window.addEventListener("hashchange", route);
 

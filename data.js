@@ -94,6 +94,7 @@ const CHECKOUT = {
 const PRODUCTS = [
   {
     id: "tee-heritage-script",
+    department: "Men",
     name: "Heritage Script Tee",
     category: "T-Shirts",
     price: 45,
@@ -120,6 +121,7 @@ const PRODUCTS = [
   },
   {
     id: "tee-utc-core",
+    department: "Men",
     name: "UTC Core Tee",
     category: "T-Shirts",
     price: 45,
@@ -148,6 +150,7 @@ const PRODUCTS = [
   },
   {
     id: "tee-norcal-standard",
+    department: "Men",
     name: "Nor Cal Standard Tee",
     category: "T-Shirts",
     price: 45,
@@ -174,6 +177,7 @@ const PRODUCTS = [
   },
   {
     id: "tee-bay-area-luxury",
+    department: "Men",
     name: "Bay Area Luxury Tee",
     category: "T-Shirts",
     price: 48,
@@ -199,6 +203,7 @@ const PRODUCTS = [
   },
   {
     id: "tee-heritage-varsity",
+    department: "Men",
     name: "Heritage Script Varsity Tee",
     category: "T-Shirts",
     price: 48,
@@ -224,6 +229,7 @@ const PRODUCTS = [
   },
   {
     id: "tee-collegiate-norcal",
+    department: "Men",
     name: "Collegiate Nor Cal Tee",
     category: "T-Shirts",
     price: 48,
@@ -250,6 +256,7 @@ const PRODUCTS = [
 
   {
     id: "hoodie-utc-heavyweight",
+    department: "Men",
     name: "UTC Heavyweight Hoodie",
     category: "Fleece",
     price: 85,
@@ -272,6 +279,7 @@ const PRODUCTS = [
   },
   {
     id: "crew-monogram",
+    department: "Men",
     name: "Monogram Crewneck",
     category: "Fleece",
     price: 70,
@@ -294,6 +302,7 @@ const PRODUCTS = [
   },
   {
     id: "cap-utc-crest",
+    department: "Men",
     name: "UTC Crest Snapback",
     category: "Headwear",
     price: 38,
@@ -315,8 +324,9 @@ const PRODUCTS = [
   },
   {
     id: "sticker-heritage-pack",
+    department: "Accessories",
     name: "Heritage Sticker Pack",
-    category: "Accessories",
+    category: "Stickers",
     price: 8,
     image: "images/heritage-sticker-pack.webp",
     alt: "Flat lay of Uptown Cali heritage sticker pack with UTC monogram, Cali outline, bear icon, red stars, and branded black packaging.",
@@ -332,8 +342,9 @@ const PRODUCTS = [
   },
   {
     id: "patch-cali-bear",
+    department: "Accessories",
     name: "Cali Bear Patch",
-    category: "Accessories",
+    category: "Patches",
     price: 12,
     image: "images/cali-bear-patch.webp",
     alt: "Close-up of a premium embroidered Cali bear patch shaped like California with black, red, and white Uptown Cali branding.",

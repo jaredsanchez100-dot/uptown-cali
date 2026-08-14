@@ -672,3 +672,25 @@ h1, h2, h3 {
   .coll { padding: 24px 16px 70px; }
   .coll__hero-media { gap: 10px; }
 }
+
+/* ============================================================
+   HOVER ZOOM
+   Cards get a gentle scale on hover; the product page gets a real
+   magnifier — the zoom follows the cursor so you can inspect any
+   corner of the garment. Both only on devices that can hover, and
+   the decorative card zoom stands down for reduced-motion users.
+   ============================================================ */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card__media img { transition: transform .35s ease; }
+  .card__media:hover img,
+  .card__media:focus-visible img { transform: scale(1.07); }
+}
+@media (hover: hover) {
+  .pdp__main { cursor: zoom-in; }
+  .pdp__main img { transition: transform .2s ease; }
+  .pdp__main:hover img { transform: scale(1.9); }
+}
+
+/* The nested subcategory row sits visually inside its department. */
+.filters__row--sub { border-top: 1px solid var(--line); padding-top: 12px; }
+.filters__row--sub .filter { font-size: 13px; padding: 7px 16px; }
