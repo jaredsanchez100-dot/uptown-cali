@@ -389,8 +389,13 @@
   var sel = { size: null, color: null, shot: 0 };
 
   function renderProduct(p) {
-    var shots = [p].concat((p.gallery || []).map(function (src) {
-      return { image: src, placeholder: p.placeholder, fit: p.fit };
+    /* A gallery entry is either a plain path or { image, alt } — the object
+       form lets a specific shot carry its own description (e.g. "back view")
+       instead of inheriting the product name. */
+    var shots = [p].concat((p.gallery || []).map(function (g) {
+      var src = typeof g === "string" ? g : g.image;
+      return { image: src, alt: (typeof g === "object" && g.alt) || null,
+               placeholder: p.placeholder, fit: p.fit };
     }));
     var needsSize = p.sizes && p.sizes.length && !(p.sizes.length === 1 && p.sizes[0] === "One Size");
 

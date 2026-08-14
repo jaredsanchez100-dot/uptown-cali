@@ -98,12 +98,15 @@ const PRODUCTS = [
     name: "Heritage Script Tee",
     category: "T-Shirts",
     price: 45,
-    image: "images/tee-heritage-script-card.jpg",
+    // Dark storefront model shots, matching the Bay Area Luxury treatment.
+    // The former light-concrete versions are kept in images/ but unreferenced.
+    image: "images/tee-heritage-script-model-front-dark.jpg",
+    alt: "Model wearing the Uptown Cali Heritage Script Tee — front view",
     gallery: [
-      "images/tee-heritage-script-model-front.jpg",
       "images/tee-heritage-script-front.jpg",
       "images/tee-heritage-script-back.jpg",
-      "images/tee-heritage-script-model-back.jpg",
+      { image: "images/tee-heritage-script-model-back-dark.jpg",
+        alt: "Model wearing the Uptown Cali Heritage Script Tee — back view" },
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black"],
@@ -125,12 +128,11 @@ const PRODUCTS = [
     name: "UTC Core Tee",
     category: "T-Shirts",
     price: 45,
-    image: "images/tee-utc-core-card.jpg",
-    // Your lookbook's "model back" shot for this concept was a duplicate of the
-    // Nor Cal Standard one, so it's left out. Add a real back-on-body shot here
-    // when you have one: "images/tee-utc-core-model-back.jpg".
+    image: "images/tee-utc-core-model-front-dark.jpg",
+    alt: "Model wearing the Uptown Cali UTC Core Tee — front view",
+    // Still no back-on-body shot for this one — the replacement package
+    // supplied a front only, matching the gap noted earlier.
     gallery: [
-      "images/tee-utc-core-model-front.jpg",
       "images/tee-utc-core-front.jpg",
       "images/tee-utc-core-back.jpg",
     ],
@@ -154,12 +156,13 @@ const PRODUCTS = [
     name: "Nor Cal Standard Tee",
     category: "T-Shirts",
     price: 45,
-    image: "images/tee-norcal-standard-card.jpg",
+    image: "images/tee-norcal-standard-model-front-dark.jpg",
+    alt: "Model wearing the Uptown Cali Nor Cal Standard Tee — front view",
     gallery: [
-      "images/tee-norcal-standard-model-front.jpg",
       "images/tee-norcal-standard-front.jpg",
       "images/tee-norcal-standard-back.jpg",
-      "images/tee-norcal-standard-model-back.jpg",
+      { image: "images/tee-norcal-standard-model-back-dark.jpg",
+        alt: "Model wearing the Uptown Cali Nor Cal Standard Tee — back view" },
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black"],
