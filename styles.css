@@ -516,10 +516,11 @@ h1, h2, h3 {
   .pdp__grid { grid-template-columns: 1fr; gap: 34px; }
   .about { grid-template-columns: 1fr; gap: 34px; }
 }
-/* Seven destinations don't fit on one line below ~830px, so the links drop
+/* Eight destinations don't fit on one line below ~900px, so the links drop
    to a second row that scrolls sideways — every destination stays reachable
-   instead of disappearing. */
-@media (max-width: 830px) {
+   instead of disappearing. Measured, not guessed: at 860px the one-line nav
+   pushed the page 35px wide. */
+@media (max-width: 900px) {
   .nav__inner { flex-wrap: wrap; gap: 0 12px; padding: 8px 16px; height: auto; min-height: 70px; }
   .nav__links {
     order: 3; flex-basis: 100%; margin-left: 0;

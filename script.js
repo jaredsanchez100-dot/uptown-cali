@@ -602,6 +602,7 @@
     if (/^#\/shop\/women\/?$/.test(window.location.hash)) { openShopFiltered("Women"); return; }
     if (/^#\/shop\/swim\/?$/.test(window.location.hash)) { openShopFiltered("Women", "Swim"); return; }
     if (/^#\/shop\/men\/?$/.test(window.location.hash)) { openShopFiltered("Men"); return; }
+    if (/^#\/shop\/accessories\/?$/.test(window.location.hash)) { openShopFiltered("Accessories"); return; }
     closeProduct();
     // Plain #section anchors (e.g. #lookbook from the collection page) need
     // a manual scroll: the section may have been hidden when the browser
