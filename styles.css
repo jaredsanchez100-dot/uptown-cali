@@ -194,13 +194,20 @@ h1, h2, h3 {
     var(--green) 7px 10px
   );
 }
-.hero__content { position: relative; max-width: var(--max); margin: 0 auto; padding: 96px 24px; width: 100%; }
+/* .hero__inner holds the copy and the women's capsule card side by side;
+   the old single-column padding moved up onto it. */
+.hero__inner {
+  position: relative; max-width: var(--max); margin: 0 auto; width: 100%;
+  padding: 84px 24px; display: grid; grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 44px; align-items: center;
+}
+.hero__content { position: relative; }
 .hero__kicker {
   text-transform: uppercase; letter-spacing: .22em; font-size: 12px;
   font-weight: 700; color: var(--accent); margin-bottom: 18px;
 }
 .hero__title {
-  font-size: clamp(44px, 10.5vw, 124px); white-space: pre-line; margin-bottom: 20px;
+  font-size: clamp(44px, 7.6vw, 104px); white-space: pre-line; margin-bottom: 20px;
   text-shadow: 3px 3px 0 var(--accent), 6px 6px 0 rgba(0,0,0,.55);
 }
 .hero__sub { max-width: 470px; color: var(--muted); font-size: 18px; margin-bottom: 32px; }
@@ -336,7 +343,14 @@ h1, h2, h3 {
 /* ============================================================
    LOOKBOOK
    ============================================================ */
-.lookbook { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+/* The lookbook renders as labeled groups (men / women / swim); each group
+   carries its own grid. */
+.lookbook__group {
+  font-family: var(--font-display); font-size: 17px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted); margin: 34px 0 14px;
+}
+.lookbook__group:first-child { margin-top: 0; }
+.lookbook__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
 .look {
   position: relative; aspect-ratio: 3 / 4; border-radius: var(--radius);
   overflow: hidden; border: 1px solid var(--line); cursor: pointer; padding: 0;
@@ -502,13 +516,159 @@ h1, h2, h3 {
   .pdp__grid { grid-template-columns: 1fr; gap: 34px; }
   .about { grid-template-columns: 1fr; gap: 34px; }
 }
+/* Seven destinations don't fit on one line below ~830px, so the links drop
+   to a second row that scrolls sideways — every destination stays reachable
+   instead of disappearing. */
+@media (max-width: 830px) {
+  .nav__inner { flex-wrap: wrap; gap: 0 12px; padding: 8px 16px; height: auto; min-height: 70px; }
+  .nav__links {
+    order: 3; flex-basis: 100%; margin-left: 0;
+    overflow-x: auto; flex-wrap: nowrap; white-space: nowrap;
+    gap: 18px; font-size: 14px; padding: 8px 2px 6px;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .nav__links::-webkit-scrollbar { display: none; }
+  /* The two-row nav is taller, so anchor jumps need more clearance. */
+  .section, #shop, #lookbook, #about, #contact { scroll-margin-top: 132px; }
+}
+
 @media (max-width: 620px) {
-  .nav__links { display: none; }
   /* Keep "Uptown Cali" on one line next to the monogram on a phone. */
   .brand { font-size: 16px; gap: 9px; white-space: nowrap; }
   .brand::before { width: 32px; height: 32px; font-size: 9px; }
-  .nav__inner { gap: 12px; padding: 0 16px; }
   .section { padding: 64px 20px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
   .newsletter { flex-direction: column; border-radius: var(--radius); }
+}
+
+/* ============================================================
+   NORCAL LIGHTS — women's capsule additions.
+   Everything below extends the existing system; nothing above
+   this block was weakened to make room for it.
+   ============================================================ */
+
+/* Concept boards keep their full frame: contain on a dark ground
+   instead of a crop that would slice off flats and labels. */
+.card__media img.img--contain,
+.pdp__main img.img--contain,
+.look img.img--contain { object-fit: contain; background: #101010; }
+
+/* Hero CTAs sit side by side, and wrap on a small phone. */
+.hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* The women's capsule card in the hero. */
+.hero__women {
+  position: relative; display: block; border-radius: var(--radius);
+  overflow: hidden; border: 1px solid var(--line);
+  aspect-ratio: 4 / 5; background: #101010;
+}
+.hero__women img { width: 100%; height: 100%; object-fit: cover; object-position: left center; display: block; }
+.hero__women-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .82));
+  display: flex; flex-direction: column; gap: 2px;
+}
+.hero__women-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--accent);
+}
+.hero__women-name {
+  font-family: var(--font-display); font-size: 22px; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--ink);
+}
+.hero__women:hover img { transform: scale(1.03); }
+.hero__women img { transition: transform .3s ease; }
+
+/* Filters split into two labeled rows: departments, then garment types. */
+.filters { flex-direction: column; align-items: center; gap: 12px; }
+.filters__row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.grid-empty { color: var(--muted); text-align: center; padding: 40px 0; grid-column: 1 / -1; }
+
+/* Informational size chips on concept products — visibly not buttons. */
+.chip--static {
+  cursor: default; opacity: .75; border-style: dashed;
+}
+.opt__note { color: var(--muted); font-size: 13px; margin-top: 10px; max-width: 420px; }
+
+/* ---------- NorCal Lights collection page ---------- */
+.coll { max-width: var(--max); margin: 0 auto; padding: 40px 24px 90px; }
+
+.coll__hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 44px; align-items: center; padding: 40px 0 64px;
+}
+.coll__eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+}
+.coll__title {
+  font-family: var(--font-display); font-size: clamp(44px, 7vw, 82px);
+  line-height: .95; letter-spacing: .01em; text-transform: uppercase;
+  margin-bottom: 18px; text-wrap: balance;
+}
+.coll__sub { color: var(--muted); font-size: 17px; max-width: 460px; margin-bottom: 28px; }
+.coll__ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.coll__hero-media { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.coll__hero-media img {
+  width: 100%; border-radius: var(--radius); border: 1px solid var(--line);
+  background: #101010; display: block;
+}
+/* The swim board hangs lower — an editorial offset, not a bug. */
+.coll__hero-media img:last-child { margin-top: 34px; }
+
+.coll__statement { text-align: center; padding: 26px 0 56px; }
+.coll__statement h2 {
+  font-family: var(--font-display); font-size: clamp(24px, 3.4vw, 38px);
+  text-transform: uppercase; letter-spacing: .03em; margin-bottom: 12px;
+}
+.coll__statement p { color: var(--muted); max-width: 560px; margin: 0 auto; }
+
+.coll__section { padding: 34px 0 26px; }
+.coll__section .section__title { margin-bottom: 6px; }
+.coll__note { color: var(--muted); font-size: 14px; text-align: center; max-width: 560px; margin: 0 auto 30px; }
+
+.coll__editorial {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 44px; align-items: center; padding: 56px 0;
+}
+.coll__editorial img {
+  width: 100%; border-radius: var(--radius); border: 1px solid var(--line);
+  background: #101010; display: block; max-height: 560px;
+}
+.coll__editorial-copy h2 {
+  font-family: var(--font-display); font-size: clamp(22px, 3vw, 34px);
+  text-transform: uppercase; letter-spacing: .03em; margin-bottom: 12px;
+}
+.coll__editorial-copy p { color: var(--muted); margin-bottom: 22px; max-width: 420px; }
+
+.coll__signup { text-align: center; padding: 40px 0 10px; border-top: 1px solid var(--line); }
+.coll__signup h2 {
+  font-family: var(--font-display); font-size: clamp(22px, 3vw, 32px);
+  text-transform: uppercase; letter-spacing: .03em; margin-bottom: 10px;
+}
+.coll__signup p { color: var(--muted); margin-bottom: 22px; }
+.coll__signup .newsletter { max-width: 470px; margin: 0 auto; }
+
+/* Nav gets tight before the phone layout kicks in — trim, don't wrap. */
+@media (max-width: 1080px) {
+  .nav__links { gap: 16px; font-size: 14px; }
+}
+
+@media (max-width: 860px) {
+  .hero__inner { grid-template-columns: 1fr; gap: 30px; padding: 56px 24px 64px; }
+  /* The card rides below the copy but stays above the fold: capped height,
+     landscape-ish crop that keeps the model visible. */
+  .hero__women { aspect-ratio: auto; height: min(300px, 38vh); }
+  .coll__hero { grid-template-columns: 1fr; gap: 30px; padding-top: 10px; }
+  .coll__hero-media img:last-child { margin-top: 0; }
+  .coll__editorial { grid-template-columns: 1fr; gap: 26px; }
+}
+
+@media (max-width: 620px) {
+  .filters__row { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
+    max-width: 100%; padding-bottom: 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .filters__row::-webkit-scrollbar { display: none; }
+  .coll { padding: 24px 16px 70px; }
+  .coll__hero-media { gap: 10px; }
 }

@@ -42,6 +42,9 @@
       <a href="#/" class="brand" data-brand-name>BRAND</a>
       <nav class="nav__links" aria-label="Main">
         <a href="#shop">Shop</a>
+        <a href="#/shop/women">Women</a>
+        <a href="#/shop/swim">Swim</a>
+        <a href="#/collections/norcal-lights">NorCal&nbsp;Lights</a>
         <a href="#lookbook" data-lookbook-link>Lookbook</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
@@ -56,14 +59,29 @@
   <main id="main">
     <!-- ============ STOREFRONT (hidden when viewing a product) ============ -->
     <div id="storeView">
-      <!-- Hero -->
+      <!-- Hero. The background stays the men's neon shot; the card on the
+           right brings the women's capsule above the fold without touching
+           the BUILT DIFFERENT identity. -->
       <section class="hero">
         <div class="hero__bg" aria-hidden="true"></div>
-        <div class="hero__content">
-          <p class="hero__kicker" data-tagline></p>
-          <h1 class="hero__title" data-hero-headline></h1>
-          <p class="hero__sub" data-hero-sub></p>
-          <a href="#shop" class="btn btn--primary" data-hero-cta></a>
+        <div class="hero__inner">
+          <div class="hero__content">
+            <p class="hero__kicker" data-tagline></p>
+            <h1 class="hero__title" data-hero-headline></h1>
+            <p class="hero__sub" data-hero-sub></p>
+            <div class="hero__ctas">
+              <a href="#shop" class="btn btn--primary" data-hero-cta></a>
+              <a href="#/collections/norcal-lights" class="btn btn--ghost">Shop Women</a>
+            </div>
+          </div>
+          <a class="hero__women" href="#/collections/norcal-lights">
+            <img src="images/norcal-lights/01-norcal-lights-womens-baby-tee.jpg"
+                 alt="Adult woman wearing a fitted black Uptown Cali baby tee beside front and back product views." />
+            <span class="hero__women-cap">
+              <span class="hero__women-tag">New — Uptown Cali Women</span>
+              <span class="hero__women-name">NorCal Lights</span>
+            </span>
+          </a>
         </div>
       </section>
 

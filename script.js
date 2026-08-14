@@ -7,6 +7,9 @@
 
   var $ = function (sel) { return document.querySelector(sel); };
   var money = function (n) { return CHECKOUT.currency + n.toFixed(2).replace(/\.00$/, ""); };
+  /* Sets and swim capsules price as "From $X" — the number is the entry
+     price, not the only price. Display-only; the cart still uses p.price. */
+  var priceLabel = function (p) { return (p.priceFrom ? "From " : "") + money(p.price); };
 
   /* Data from data.js is author-controlled, but escaping keeps a stray
      apostrophe or "&" in a product name from breaking the markup. */
@@ -24,7 +27,11 @@
     // (usually the product name) is the fallback.
     if (item && item.alt) alt = item.alt;
     if (item && item.image) {
-      return '<img src="' + esc(item.image) + '" alt="' + esc(alt || "") + '" loading="lazy">';
+      // fit:"contain" shows the whole image on a dark ground instead of
+      // cropping — used for the NorCal Lights concept boards, whose edge
+      // labels and flat views would otherwise be cut off.
+      var cls = item.fit === "contain" ? ' class="img--contain"' : "";
+      return '<img' + cls + ' src="' + esc(item.image) + '" alt="' + esc(alt || "") + '" loading="lazy">';
     }
     var ph = (item && item.placeholder) || {};
     var tint = ph.tint || item && item.tint || "linear-gradient(135deg,var(--accent),var(--bg-alt))";
@@ -58,8 +65,12 @@
     try {
       var raw = localStorage.getItem(STORE_KEY);
       cart = raw ? JSON.parse(raw) : [];
-      // Drop lines whose product no longer exists in data.js.
-      cart = cart.filter(function (l) { return byId(l.id); });
+      // Drop lines whose product no longer exists in data.js — and any
+      // concept piece that isn't purchasable, however it got in here.
+      cart = cart.filter(function (l) {
+        var p = byId(l.id);
+        return p && !p.comingSoon;
+      });
     } catch (e) { cart = []; }
   }
   function saveCart() {
@@ -82,6 +93,13 @@
   }
 
   function addToCart(id, size, color) {
+    // Concept pieces can't be bought. The button is disabled too — this is
+    // the backstop in case any path reaches here anyway.
+    var product = byId(id);
+    if (product && product.comingSoon) {
+      toast("This piece is a concept — coming soon.");
+      return;
+    }
     var key = lineKey(id, size, color);
     var found = null;
     for (var i = 0; i < cart.length; i++) if (cart[i].key === key) found = cart[i];
@@ -249,39 +267,87 @@
     document.title = BRAND.name + " — Official Store";
   }
 
-  var activeFilter = "All";
+  /* Two independent filter axes. The department row (Women / Swim /
+     NorCal Lights) answers "who and what world is this for"; the type row
+     answers "what kind of garment". They combine with AND. */
+  var activeDept = "All";
+  var activeType = "All";
+
+  function deptMatch(p, dept) {
+    if (dept === "All") return true;
+    if (dept === "Women") return p.department === "Women";
+    if (dept === "Swim") return p.category === "Swim" || (p.tags || []).indexOf("Swim") !== -1;
+    if (dept === "NorCal Lights") return p.collection === "NorCal Lights";
+    return true;
+  }
+
+  function typeMatch(p, type) {
+    return type === "All" || p.category === type || (p.tags || []).indexOf(type) !== -1;
+  }
 
   function renderFilters() {
-    var cats = ["All"];
-    PRODUCTS.forEach(function (p) { if (p.category && cats.indexOf(p.category) === -1) cats.push(p.category); });
     var box = $("#filters");
-    // One category isn't a choice — hide the row rather than show a lone button.
-    if (cats.length <= 2) { box.hidden = true; return; }
-    box.innerHTML = cats.map(function (c) {
-      return '<button class="filter" data-cat="' + esc(c) + '" aria-pressed="' +
-        (c === activeFilter) + '">' + esc(c) + "</button>";
-    }).join("");
+    var depts = ["All"];
+    PRODUCTS.forEach(function (p) {
+      if (p.department === "Women" && depts.indexOf("Women") === -1) depts.push("Women");
+      if (p.category === "Swim" && depts.indexOf("Swim") === -1) depts.push("Swim");
+      if (p.collection === "NorCal Lights" && depts.indexOf("NorCal Lights") === -1) depts.push("NorCal Lights");
+    });
+
+    // Garment types. Swim lives in the department row, so it would be
+    // redundant here.
+    var types = ["All"];
+    PRODUCTS.forEach(function (p) {
+      if (p.category && p.category !== "Swim" && types.indexOf(p.category) === -1) types.push(p.category);
+      (p.tags || []).forEach(function (t) { if (t !== "Swim" && types.indexOf(t) === -1) types.push(t); });
+    });
+
+    var chip = function (c, attr, active, label) {
+      return '<button class="filter" ' + attr + '="' + esc(c) + '" aria-pressed="' +
+        active + '">' + esc(label || c) + "</button>";
+    };
+
+    var rows = "";
+    // With only one department there's no choice to offer — keep the old
+    // single-row behavior.
+    if (depts.length > 1) {
+      rows += '<div class="filters__row" role="group" aria-label="Shop by department or collection">' +
+        depts.map(function (c) { return chip(c, "data-dept", c === activeDept); }).join("") + "</div>";
+    }
+    if (types.length > 2) {
+      rows += '<div class="filters__row" role="group" aria-label="Filter by product type">' +
+        types.map(function (c) { return chip(c, "data-cat", c === activeType); }).join("") + "</div>";
+    }
+    if (!rows) { box.hidden = true; return; }
+    box.hidden = false;
+    box.innerHTML = rows;
+  }
+
+  function cardHTML(p) {
+    return '' +
+      '<article class="card">' +
+        '<a class="card__media" href="#/product/' + esc(p.id) + '">' +
+          media(p, p.name) +
+          (p.badge ? '<span class="card__badge">' + esc(p.badge) + "</span>" : "") +
+        "</a>" +
+        '<div class="card__body">' +
+          (p.category ? '<span class="card__cat">' + esc(p.category) + "</span>" : "") +
+          '<span class="card__name">' + esc(p.name) + "</span>" +
+          '<div class="card__row">' +
+            '<span class="card__price">' + priceLabel(p) + "</span>" +
+            '<a class="card__link" href="#/product/' + esc(p.id) + '">View</a>' +
+          "</div>" +
+        "</div>" +
+      "</article>";
   }
 
   function renderGrid() {
-    var list = PRODUCTS.filter(function (p) { return activeFilter === "All" || p.category === activeFilter; });
-    $("#productGrid").innerHTML = list.map(function (p) {
-      return '' +
-        '<article class="card">' +
-          '<a class="card__media" href="#/product/' + esc(p.id) + '">' +
-            media(p, p.name) +
-            (p.badge ? '<span class="card__badge">' + esc(p.badge) + "</span>" : "") +
-          "</a>" +
-          '<div class="card__body">' +
-            (p.category ? '<span class="card__cat">' + esc(p.category) + "</span>" : "") +
-            '<span class="card__name">' + esc(p.name) + "</span>" +
-            '<div class="card__row">' +
-              '<span class="card__price">' + money(p.price) + "</span>" +
-              '<a class="card__link" href="#/product/' + esc(p.id) + '">View</a>' +
-            "</div>" +
-          "</div>" +
-        "</article>";
-    }).join("");
+    var list = PRODUCTS.filter(function (p) {
+      return deptMatch(p, activeDept) && typeMatch(p, activeType);
+    });
+    $("#productGrid").innerHTML = list.length
+      ? list.map(cardHTML).join("")
+      : '<p class="grid-empty">Nothing matches that combination — try clearing one of the filters.</p>';
   }
 
   function renderLookbook() {
@@ -293,9 +359,25 @@
       if (link) link.hidden = true;
       return;
     }
-    grid.innerHTML = LOOKBOOK.map(function (l, i) {
-      return '<button class="look" data-look="' + i + '">' + media(l, l.caption) +
-        (l.caption ? '<span class="look__cap">' + esc(l.caption) + "</span>" : "") + "</button>";
+    // Group entries under labeled headings (men / women / swim), keeping
+    // the order groups first appear in. Ungrouped entries join the first
+    // group, so an older data.js still renders as one plain grid.
+    var groups = [];
+    var byGroup = {};
+    LOOKBOOK.forEach(function (l, i) {
+      var g = l.group || (groups.length ? groups[0] : "");
+      if (!byGroup[g]) { byGroup[g] = []; groups.push(g); }
+      byGroup[g].push(i);
+    });
+
+    grid.innerHTML = groups.map(function (g) {
+      var tiles = byGroup[g].map(function (i) {
+        var l = LOOKBOOK[i];
+        return '<button class="look" data-look="' + i + '">' + media(l, l.caption) +
+          (l.caption ? '<span class="look__cap">' + esc(l.caption) + "</span>" : "") + "</button>";
+      }).join("");
+      var head = g ? '<h3 class="lookbook__group">' + esc(g) + "</h3>" : "";
+      return head + '<div class="lookbook__grid">' + tiles + "</div>";
     }).join("");
   }
 
@@ -307,19 +389,33 @@
 
   function renderProduct(p) {
     var shots = [p].concat((p.gallery || []).map(function (src) {
-      return { image: src, placeholder: p.placeholder };
+      return { image: src, placeholder: p.placeholder, fit: p.fit };
     }));
     var needsSize = p.sizes && p.sizes.length && !(p.sizes.length === 1 && p.sizes[0] === "One Size");
 
-    var sizeBlock = needsSize ? '' +
-      '<div class="opt">' +
-        '<span class="opt__label">Size</span>' +
-        '<div class="opt__row">' + p.sizes.map(function (s) {
-          return '<button class="chip" data-size="' + esc(s) + '" aria-pressed="' + (sel.size === s) + '">' + esc(s) + "</button>";
-        }).join("") + "</div>" +
-      "</div>" : "";
+    /* A concept piece shows its planned sizes as information, not as a
+       choice — nothing here is selectable because nothing is buyable. */
+    var sizeBlock = "";
+    if (p.comingSoon && p.sizes && p.sizes.length) {
+      sizeBlock = '' +
+        '<div class="opt">' +
+          '<span class="opt__label">Planned sizes</span>' +
+          '<div class="opt__row">' + p.sizes.map(function (s) {
+            return '<span class="chip chip--static">' + esc(s) + "</span>";
+          }).join("") + "</div>" +
+          (p.sizeNote ? '<p class="opt__note">' + esc(p.sizeNote) + "</p>" : "") +
+        "</div>";
+    } else if (needsSize) {
+      sizeBlock = '' +
+        '<div class="opt">' +
+          '<span class="opt__label">Size</span>' +
+          '<div class="opt__row">' + p.sizes.map(function (s) {
+            return '<button class="chip" data-size="' + esc(s) + '" aria-pressed="' + (sel.size === s) + '">' + esc(s) + "</button>";
+          }).join("") + "</div>" +
+        "</div>";
+    }
 
-    var colorBlock = (p.colors && p.colors.length > 1) ? '' +
+    var colorBlock = (!p.comingSoon && p.colors && p.colors.length > 1) ? '' +
       '<div class="opt">' +
         '<span class="opt__label">Color</span>' +
         '<div class="opt__row">' + p.colors.map(function (c) {
@@ -332,22 +428,33 @@
         '" aria-label="View image ' + (i + 1) + '">' + media(s, p.name) + "</button>";
     }).join("") + "</div>" : "";
 
+    var buyControl = p.comingSoon
+      ? '<button class="btn btn--primary btn--block" disabled aria-disabled="true">Coming Soon</button>' +
+        '<p class="hint">Concept piece — not yet in production. Join the list below the shop for first access.</p>'
+      : '<button class="btn btn--primary btn--block" id="addBtn">Add to Cart</button>' +
+        '<p class="hint" id="pdpHint"></p>';
+
+    var backLink = p.collection === "NorCal Lights"
+      ? '<a class="pdp__back" href="#/collections/norcal-lights">&larr; NorCal Lights</a> ' +
+        '<a class="pdp__back" href="#shop">Shop</a>'
+      : '<a class="pdp__back" href="#shop">&larr; Back to shop</a>';
+
     $("#productView").innerHTML = '' +
       '<div class="pdp">' +
-        '<a class="pdp__back" href="#shop">&larr; Back to shop</a>' +
+        backLink +
         '<div class="pdp__grid">' +
           '<div class="pdp__media">' +
             '<div class="pdp__main">' + media(shots[sel.shot] || p, p.name) + "</div>" +
             thumbs +
           "</div>" +
           "<div>" +
-            (p.category ? '<div class="pdp__cat">' + esc(p.category) + "</div>" : "") +
+            (p.category ? '<div class="pdp__cat">' + esc(p.category) +
+              (p.collection ? " · " + esc(p.collection) : "") + "</div>" : "") +
             '<h1 class="pdp__title">' + esc(p.name) + "</h1>" +
-            '<div class="pdp__price">' + money(p.price) + "</div>" +
+            '<div class="pdp__price">' + priceLabel(p) + "</div>" +
             (p.description ? '<p class="pdp__desc">' + esc(p.description) + "</p>" : "") +
             sizeBlock + colorBlock +
-            '<button class="btn btn--primary btn--block" id="addBtn">Add to Cart</button>' +
-            '<p class="hint" id="pdpHint"></p>' +
+            buyControl +
             ((p.details && p.details.length) ? '<div class="pdp__details"><h3>Details</h3><ul>' +
               p.details.map(function (d) { return "<li>" + esc(d) + "</li>"; }).join("") + "</ul></div>" : "") +
           "</div>" +
@@ -377,10 +484,131 @@
     document.title = BRAND.name + " — Official Store";
   }
 
+  /* ============================================================
+     NORCAL LIGHTS — the women's collection page, hash-routed like
+     everything else (#/collections/norcal-lights).
+     ============================================================ */
+  function collectionProducts() {
+    return PRODUCTS.filter(function (p) { return p.collection === "NorCal Lights"; });
+  }
+
+  function renderCollection() {
+    var all = collectionProducts();
+    var apparel = all.filter(function (p) { return p.category !== "Swim"; });
+    var swim = all.filter(function (p) { return p.category === "Swim"; });
+
+    $("#productView").innerHTML = '' +
+      '<div class="coll">' +
+
+        // Hero: editorial split — copy left, two boards right.
+        '<section class="coll__hero">' +
+          '<div class="coll__hero-copy">' +
+            '<p class="coll__eyebrow">Uptown Cali Women</p>' +
+            '<h1 class="coll__title">NorCal Lights</h1>' +
+            '<p class="coll__sub">Northern California heritage, recut for her. Women’s streetwear and swim built for the coast, the city and everything after dark.</p>' +
+            '<div class="coll__ctas">' +
+              '<a class="btn btn--primary" href="#nl-apparel">Explore the Collection</a>' +
+              '<a class="btn btn--ghost" href="#/shop/swim">Shop Swim</a>' +
+            "</div>" +
+          "</div>" +
+          '<div class="coll__hero-media" aria-hidden="false">' +
+            '<img src="images/norcal-lights/01-norcal-lights-womens-baby-tee.jpg" alt="Adult woman wearing a fitted black Uptown Cali baby tee beside front and back product views." loading="eager">' +
+            '<img src="images/norcal-lights/08-midnight-chrome-bandeau-swim-set.jpg" alt="Product board showing front and back views of a red-and-black Uptown Cali bandeau swim set and hardware details." loading="lazy">' +
+          "</div>" +
+        "</section>" +
+
+        // Collection statement.
+        '<section class="coll__statement">' +
+          '<h2>Built Different. Cut for Her.</h2>' +
+          '<p>Women-specific fits, heavyweight construction and the same Northern California identity that defines Uptown Cali.</p>' +
+        "</section>" +
+
+        // Apparel grid (concepts 1-6).
+        '<section class="coll__section" id="nl-apparel">' +
+          '<h2 class="section__title">The Capsule</h2>' +
+          '<p class="coll__note">Concept previews — every piece is shown from its design board and marked Coming Soon until production is confirmed.</p>' +
+          '<div class="grid">' + apparel.map(cardHTML).join("") + "</div>" +
+        "</section>" +
+
+        // Swim feature (concepts 7-10).
+        '<section class="coll__section coll__section--alt" id="nl-swim">' +
+          '<h2 class="section__title">Coast to After Dark</h2>' +
+          '<p class="coll__note">Swim tops and bottoms are planned to be sized separately, so mixing sizes for the right fit is the intent — final options are confirmed at launch.</p>' +
+          '<div class="grid">' + swim.map(cardHTML).join("") + "</div>" +
+        "</section>" +
+
+        // One restrained editorial band; the full set lives in the lookbook.
+        '<section class="coll__editorial">' +
+          '<img class="img--contain" src="images/norcal-lights/04-norcal-lights-velour-track-set.jpg" alt="Front and back views of an adult woman wearing a black Uptown Cali velour track set with red piping." loading="lazy">' +
+          '<div class="coll__editorial-copy">' +
+            '<h2>Nor Cal Nights, Her Way</h2>' +
+            '<p>The full set of concept boards — apparel and swim — lives in the lookbook alongside the men’s line.</p>' +
+            '<a class="btn btn--ghost" href="#lookbook" id="collLookbookLink">See the Lookbook</a>' +
+          "</div>" +
+        "</section>" +
+
+        // Early access — same signup logic as the storefront form.
+        '<section class="coll__signup">' +
+          '<h2>Be First When the Lights Come On.</h2>' +
+          '<p>Drop your email for first access when the women’s capsule releases.</p>' +
+          '<form class="newsletter" id="collSignupForm">' +
+            '<label class="sr-only" for="collEmail">Email address</label>' +
+            '<input type="email" id="collEmail" placeholder="you@email.com" required />' +
+            '<button type="submit" class="btn btn--primary">Sign Up</button>' +
+          "</form>" +
+          '<p class="form-msg" id="collFormMsg" role="status"></p>' +
+        "</section>" +
+
+      "</div>";
+
+    bindSignup("#collSignupForm", "#collFormMsg");
+  }
+
+  function openCollection() {
+    $("#storeView").hidden = true;
+    $("#productView").hidden = false;
+    renderCollection();
+    window.scrollTo(0, 0);
+    document.title = "NorCal Lights — Uptown Cali Women";
+    setMetaDescription("Explore NorCal Lights by Uptown Cali: Northern California women's streetwear, swim concepts and cover-ups in the brand's signature black, red and cream.");
+  }
+
+  var defaultMetaDescription = null;
+  function setMetaDescription(text) {
+    var el = document.querySelector('meta[name="description"]');
+    if (!el) return;
+    if (defaultMetaDescription === null) defaultMetaDescription = el.getAttribute("content");
+    el.setAttribute("content", text || defaultMetaDescription);
+  }
+
+  /* Deep links (#/shop/women, #/shop/swim) pre-apply a department filter
+     so the nav can point straight at a filtered shop. */
+  function openShopFiltered(dept) {
+    activeDept = dept;
+    activeType = "All";
+    closeProduct();
+    renderFilters();
+    renderGrid();
+    var shop = $("#shop");
+    if (shop) shop.scrollIntoView({ behavior: "auto", block: "start" });
+  }
+
   function route() {
     var m = window.location.hash.match(/^#\/product\/(.+)$/);
-    if (m) openProduct(decodeURIComponent(m[1]));
-    else closeProduct();
+    if (m) { setMetaDescription(null); openProduct(decodeURIComponent(m[1])); return; }
+    if (/^#\/collections\/norcal-lights\/?$/.test(window.location.hash)) { openCollection(); return; }
+    setMetaDescription(null);
+    if (/^#\/shop\/women\/?$/.test(window.location.hash)) { openShopFiltered("Women"); return; }
+    if (/^#\/shop\/swim\/?$/.test(window.location.hash)) { openShopFiltered("Swim"); return; }
+    closeProduct();
+    // Plain #section anchors (e.g. #lookbook from the collection page) need
+    // a manual scroll: the section may have been hidden when the browser
+    // tried to jump to it.
+    var anchor = window.location.hash.match(/^#([a-z]+)$/);
+    if (anchor) {
+      var el = document.getElementById(anchor[1]);
+      if (el) el.scrollIntoView({ behavior: "auto", block: "start" });
+    }
   }
 
   /* ============================================================
@@ -390,9 +618,15 @@
     var t = e.target.closest("button, a");
     if (!t) return;
 
-    // Category filter
+    // Filters: department row and type row combine.
+    if (t.dataset.dept) {
+      activeDept = t.dataset.dept;
+      renderFilters();
+      renderGrid();
+      return;
+    }
     if (t.dataset.cat) {
-      activeFilter = t.dataset.cat;
+      activeType = t.dataset.cat;
       renderFilters();
       renderGrid();
       return;
@@ -453,14 +687,21 @@
     else if (!$("#cartDrawer").hidden) closeDrawer();
   });
 
-  $("#newsletterForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    /* No backend here — this just confirms to the visitor. To actually
-       collect addresses, point the form at Mailchimp/Formspree/Buttondown
-       (see references/deploy.md in the skill). */
-    $("#formMsg").textContent = "Thanks — you're on the list.";
-    e.target.reset();
-  });
+  /* One signup behavior, bound wherever a signup form renders (the
+     storefront section and the NorCal Lights early-access section).
+     No backend here — this just confirms to the visitor. To actually
+     collect addresses, point the form at Mailchimp/Formspree/Buttondown
+     (see references/deploy.md in the skill). */
+  function bindSignup(formSel, msgSel) {
+    var form = $(formSel);
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      $(msgSel).textContent = "Thanks — you're on the list.";
+      e.target.reset();
+    });
+  }
+  bindSignup("#newsletterForm", "#formMsg");
 
   window.addEventListener("hashchange", route);
 
