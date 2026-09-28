@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- SEO: this is what shows in Google and in link previews. Keep the
+       address and hours in the description — that's what searchers want. -->
+  <title>Buenos Días Cafecito — Mexican Breakfast &amp; Lunch in Downtown Hollister, CA</title>
+  <meta name="description" content="Modern Mexican breakfast and lunch at 512 San Benito St in downtown Hollister. Chilaquiles, marinated arrachera and eggs, huevos rancheros, pancakes, French toast and café de olla. Open every day 7 AM – 2 PM. Order online for pickup." />
+  <meta name="theme-color" content="#C8532B" />
+  <link rel="canonical" href="https://buenosdiascafecito.com/" />
+  <meta property="og:type" content="restaurant.restaurant" />
+  <meta property="og:site_name" content="Buenos Días Cafecito" />
+  <meta property="og:title" content="Buenos Días Cafecito — Downtown Hollister" />
+  <meta property="og:description" content="Modern Mexican breakfast &amp; lunch. Chilaquiles, arrachera &amp; eggs, café de olla. Open every day 7 AM – 2 PM at 512 San Benito St. Order online for pickup." />
+  <meta property="og:url" content="https://buenosdiascafecito.com/" />
+  <meta property="og:image" content="https://buenosdiascafecito.com/images/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="es_MX" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Buenos Días Cafecito — Downtown Hollister" />
+  <meta name="twitter:description" content="Modern Mexican breakfast &amp; lunch. Open every day 7 AM – 2 PM at 512 San Benito St, Hollister. Order online for pickup." />
+  <meta name="twitter:image" content="https://buenosdiascafecito.com/images/og-image.jpg" />
+  <meta name="geo.region" content="US-CA" />
+  <meta name="geo.placename" content="Hollister, California" />
+  <meta name="geo.position" content="36.85127;-121.40225" />
+  <meta name="ICBM" content="36.85127, -121.40225" />
+
+  <link rel="icon" type="image/svg+xml" href="images/icon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,600..900,100;1,9..144,600..900,100&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Search-engine data: tells Google this is a restaurant, where it is,
+       when it's open, and where to order. The full menu is added by
+       script.js from data.js so it never drifts from what's on the page. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "@id": "https://buenosdiascafecito.com/#restaurant",
+    "name": "Buenos Dias Cafecito",
+    "alternateName": "Buenos Días Cafecito",
+    "description": "Modern Mexican breakfast and lunch in downtown Hollister, California. Chilaquiles, huevos rancheros, marinated arrachera and eggs, pancakes, French toast and café de olla, served 7 AM to 2 PM every day.",
+    "url": "https://buenosdiascafecito.com/",
+    "image": "https://buenosdiascafecito.com/images/og-image.jpg",
+    "telephone": "+1-831-313-0810",
+    "servesCuisine": ["Mexican", "Breakfast", "Brunch", "American"],
+    "priceRange": "$$",
+    "currenciesAccepted": "USD",
+    "paymentAccepted": "Cash, Credit Card, Apple Pay",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "512 San Benito St",
+      "addressLocality": "Hollister",
+      "addressRegion": "CA",
+      "postalCode": "95023",
+      "addressCountry": "US"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 36.85127, "longitude": -121.40225 },
+    "hasMap": "https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023",
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "07:00",
+      "closes": "14:00"
+    }],
+    "hasMenu": "https://buenosdiascafecito.com/#menu",
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Outdoor seating", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Wheelchair accessible", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Takeout", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Delivery", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Catering", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Dogs allowed outside", "value": true }
+    ],
+    "potentialAction": {
+      "@type": "OrderAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://direct.chownow.com/order/38288/locations/58321",
+        "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+      },
+      "deliveryMethod": ["http://purl.org/goodrelations/v1#DeliveryModePickUp"]
+    },
+    "sameAs": [
+      "https://www.instagram.com/buenosdiascafecito/",
+      "https://www.facebook.com/BuenosDiasCafecito/",
+      "https://www.yelp.com/biz/buenos-dias-cafecito-hollister",
+      "https://www.tripadvisor.com/Restaurant_Review-g32498-d26326536-Reviews-Buenos_Dias_Cafeito-Hollister_California.html",
+      "https://business.sanbenitocountychamber.com/list/member/buenos-dias-cafecito-4557"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="#main" class="skip-link" data-i18n="skip">Skip to content</a>
+
+  <!-- Reusable drawings. Referenced with <use href="#..."> below. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Logo mark: sun rising behind a cup -->
+      <symbol id="mark" viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="32" fill="#C8532B"/>
+        <g fill="none" stroke="#F2A93B" stroke-width="3" stroke-linecap="round">
+          <path d="M32 9v5M16.4 15.4l3.5 3.5M47.6 15.4l-3.5 3.5M10 31h5M54 31h-5"/>
+        </g>
+        <circle cx="32" cy="31" r="10" fill="#F2A93B"/>
+        <path d="M17 34h26v7a10 10 0 0 1-10 10H27a10 10 0 0 1-10-10z" fill="#FBF3E4"/>
+        <path d="M43 37h3.5a4.5 4.5 0 0 1 0 9H43" fill="none" stroke="#FBF3E4" stroke-width="3"/>
+        <rect x="14" y="53" width="36" height="3" rx="1.5" fill="#FBF3E4"/>
+      </symbol>
+      <!-- Dish drawings: warm, simple line art on a plate -->
+      <symbol id="art-chilaquiles" viewBox="0 0 160 120">
+        <ellipse cx="80" cy="70" rx="66" ry="30" fill="#FBF3E4"/>
+        <ellipse cx="80" cy="70" rx="56" ry="23" fill="none" stroke="#E8D9BE" stroke-width="2"/>
+        <g fill="#F2A93B" stroke="#C8532B" stroke-width="2" stroke-linejoin="round">
+          <path d="M44 74l14-22 12 20z"/><path d="M66 78l18-24 10 22z"/><path d="M90 74l16-20 10 18z"/><path d="M56 60l12-16 8 14z"/><path d="M98 58l12-16 8 14z"/>
+        </g>
+        <path d="M50 70q30 14 60 0" fill="none" stroke="#B3261E" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+        <ellipse cx="80" cy="52" rx="20" ry="13" fill="#FFFFFF" stroke="#E8D9BE" stroke-width="2"/>
+        <circle cx="80" cy="52" r="7" fill="#F2A93B"/>
+        <g fill="#2E6B4A"><ellipse cx="118" cy="66" rx="9" ry="5"/><ellipse cx="42" cy="64" rx="8" ry="4.5"/></g>
+        <g fill="#B76E79"><path d="M104 46q6-3 12 0-6 4-12 0z"/><path d="M56 46q6-3 12 0-6 4-12 0z"/></g>
+      </symbol>
+      <symbol id="art-arrachera" viewBox="0 0 160 120">
+        <ellipse cx="80" cy="70" rx="66" ry="30" fill="#FBF3E4"/>
+        <ellipse cx="80" cy="70" rx="56" ry="23" fill="none" stroke="#E8D9BE" stroke-width="2"/>
+        <path d="M38 62c6-16 30-22 54-18s34 16 26 30-40 16-58 10-28-10-22-22z" fill="#9E3A1B"/>
+        <path d="M46 62c4-10 24-16 44-13s28 12 22 22-32 12-46 8-24-7-20-17z" fill="#B24B26"/>
+        <g stroke="#6E2410" stroke-width="3" stroke-linecap="round" opacity=".9"><path d="M52 58l52 18M60 52l50 18M70 48l44 16"/></g>
+        <ellipse cx="118" cy="52" rx="16" ry="11" fill="#FFFFFF" stroke="#E8D9BE" stroke-width="2"/>
+        <circle cx="118" cy="52" r="6" fill="#F2A93B"/>
+        <g fill="#2E6B4A"><circle cx="44" cy="80" r="3"/><circle cx="60" cy="86" r="3"/><circle cx="100" cy="88" r="3"/></g>
+        <g fill="#B3261E"><circle cx="52" cy="84" r="2.5"/><circle cx="90" cy="90" r="2.5"/><circle cx="72" cy="84" r="2.5"/></g>
+      </symbol>
+      <symbol id="art-frenchToast" viewBox="0 0 160 120">
+        <ellipse cx="80" cy="82" rx="62" ry="24" fill="#FBF3E4"/>
+        <ellipse cx="80" cy="82" rx="52" ry="18" fill="none" stroke="#E8D9BE" stroke-width="2"/>
+        <g stroke="#9E3A1B" stroke-width="2" stroke-linejoin="round">
+          <path d="M40 70l18-10h50l12 10-18 10H52z" fill="#E9B36A"/>
+          <path d="M40 58l18-10h50l12 10-18 10H52z" fill="#EFC07A"/>
+          <path d="M40 46l18-10h50l12 10-18 10H52z" fill="#F3CB8A"/>
+        </g>
+        <path d="M58 36q16 8 32 0t28 6" fill="none" stroke="#7A3A12" stroke-width="4" stroke-linecap="round"/>
+        <g fill="#B3261E"><circle cx="66" cy="34" r="5"/><circle cx="100" cy="34" r="5"/></g>
+        <g fill="#3B4A8C"><circle cx="82" cy="30" r="3.5"/><circle cx="116" cy="40" r="3.5"/></g>
+        <g fill="#FFFFFF" opacity=".95"><circle cx="72" cy="42" r="1.6"/><circle cx="90" cy="40" r="1.6"/><circle cx="108" cy="46" r="1.6"/><circle cx="60" cy="50" r="1.6"/><circle cx="84" cy="52" r="1.6"/></g>
+      </symbol>
+      <symbol id="art-cafeDeOlla" viewBox="0 0 160 120">
+        <ellipse cx="80" cy="96" rx="44" ry="10" fill="#E8D9BE" opacity=".7"/>
+        <path d="M46 44h64l-6 44a10 10 0 0 1-10 8H62a10 10 0 0 1-10-8z" fill="#B85C38"/>
+        <path d="M46 44h64l-2 14H48z" fill="#9E3A1B"/>
+        <path d="M110 52h8a10 10 0 0 1 0 20h-9" fill="none" stroke="#B85C38" stroke-width="7" stroke-linecap="round"/>
+        <ellipse cx="78" cy="44" rx="32" ry="7" fill="#5A2E13"/>
+        <path d="M56 78q24 6 48 0" fill="none" stroke="#F2A93B" stroke-width="3" stroke-linecap="round"/>
+        <g fill="none" stroke="#C8532B" stroke-width="3" stroke-linecap="round" opacity=".8">
+          <path d="M66 32c-4-6 4-8 0-14M80 30c-4-6 4-8 0-14M94 32c-4-6 4-8 0-14"/>
+        </g>
+        <path d="M104 26l18-14" stroke="#8B4A1F" stroke-width="5" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="art-patio" viewBox="0 0 160 120">
+        <rect x="0" y="0" width="160" height="120" fill="#F7E7C6"/>
+        <rect x="0" y="0" width="160" height="34" fill="#C8532B"/>
+        <g fill="#FBF3E4"><path d="M0 34h20l-10 12zM40 34h20l-10 12zM80 34h20l-10 12zM120 34h20l-10 12z"/></g>
+        <g fill="#F2A93B"><path d="M20 34h20l-10 12zM60 34h20l-10 12zM100 34h20l-10 12zM140 34h20l-10 12z"/></g>
+        <ellipse cx="80" cy="82" rx="30" ry="9" fill="#9E3A1B"/>
+        <rect x="77" y="82" width="6" height="26" fill="#6E2410"/>
+        <g fill="#FBF3E4" stroke="#9E3A1B" stroke-width="2"><ellipse cx="66" cy="78" rx="9" ry="4"/><ellipse cx="96" cy="80" rx="9" ry="4"/></g>
+        <g fill="#2E6B4A"><rect x="8" y="60" width="18" height="50" rx="4"/><rect x="134" y="60" width="18" height="50" rx="4"/></g>
+      </symbol>
+      <symbol id="art-team" viewBox="0 0 160 120">
+        <rect x="0" y="0" width="160" height="120" fill="#F7E7C6"/>
+        <g fill="#C8532B"><circle cx="46" cy="52" r="14"/><circle cx="80" cy="46" r="14"/><circle cx="114" cy="52" r="14"/></g>
+        <g fill="#9E3A1B"><path d="M22 110c0-24 12-38 24-38s24 14 24 38z"/><path d="M56 110c0-26 12-42 24-42s24 16 24 42z"/><path d="M90 110c0-24 12-38 24-38s24 14 24 38z"/></g>
+        <path d="M0 110h160" stroke="#E8D9BE" stroke-width="4"/>
+      </symbol>
+      <symbol id="art-hero" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+        <rect width="600" height="400" fill="#F7E7C6"/>
+        <g opacity=".55">
+          <circle cx="470" cy="120" r="150" fill="#F2A93B"/>
+        </g>
+        <g fill="none" stroke="#C8532B" stroke-width="3" opacity=".45">
+          <path d="M60 330q60-40 120 0t120 0 120 0 120 0"/>
+          <path d="M60 350q60-40 120 0t120 0 120 0 120 0"/>
+        </g>
+        <path d="M150 190h150l-8 70a20 20 0 0 1-20 14h-94a20 20 0 0 1-20-14z" fill="#B85C38"/>
+        <ellipse cx="225" cy="190" rx="75" ry="16" fill="#5A2E13"/>
+        <path d="M300 205h20a24 24 0 0 1 0 48h-22" fill="none" stroke="#B85C38" stroke-width="14" stroke-linecap="round"/>
+        <g fill="none" stroke="#C8532B" stroke-width="6" stroke-linecap="round" opacity=".7">
+          <path d="M190 160c-10-16 10-20 0-36M225 156c-10-16 10-20 0-36M260 160c-10-16 10-20 0-36"/>
+        </g>
+        <ellipse cx="430" cy="290" rx="120" ry="40" fill="#FBF3E4"/>
+        <g fill="#F2A93B" stroke="#C8532B" stroke-width="3" stroke-linejoin="round">
+          <path d="M360 296l26-40 22 36z"/><path d="M400 302l30-44 20 40z"/><path d="M446 296l28-38 20 34z"/>
+        </g>
+        <path d="M370 290q60 26 120 0" fill="none" stroke="#B3261E" stroke-width="9" stroke-linecap="round" opacity=".85"/>
+        <ellipse cx="430" cy="262" rx="34" ry="20" fill="#FFFFFF"/>
+        <circle cx="430" cy="262" r="12" fill="#F2A93B"/>
+        <g fill="#2E6B4A"><ellipse cx="500" cy="286" rx="16" ry="8"/></g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Holiday / closure notice. Only shows when SITE.notice has text. -->
+  <div class="notice" id="notice" hidden></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="top">
+    <div class="nav__inner">
+      <a href="#top" class="brand" aria-label="Buenos Días Cafecito — home">
+        <svg class="brand__mark" aria-hidden="true"><use href="#mark"/></svg>
+        <span class="brand__text">
+          <span class="brand__name">Buenos Días</span>
+          <span class="brand__sub">Cafecito</span>
+        </span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Main">
+        <a href="#menu" data-i18n="nav.menu">Menu</a>
+        <a href="#order" data-i18n="nav.order">Order</a>
+        <a href="#catering" data-i18n="nav.catering">Catering</a>
+        <a href="#visit" data-i18n="nav.visit">Visit</a>
+        <a href="#about" data-i18n="nav.about">About</a>
+      </nav>
+      <div class="nav__actions">
+        <button class="lang" id="langToggle" type="button" aria-label="Cambiar a español"><span data-i18n="lang.switch">ES</span></button>
+        <a class="btn btn--ghost btn--sm nav__call" href="tel:+18313130810"><span data-i18n="nav.call">Call</span></a>
+        <a class="btn btn--primary btn--sm nav__order" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="nav.orderOnline">Order online</span></a>
+        <button class="nav__toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero__rays" aria-hidden="true"></div>
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="kicker" data-i18n="hero.kicker">Downtown Hollister · Since 2022</p>
+          <h1 class="hero__title" data-i18n="hero.title">Buenos días, Hollister.</h1>
+          <p class="hero__sub" data-i18n="hero.sub">Chilaquiles, café de olla and a proper diner breakfast, made from scratch on San Benito Street. Your all-American breakfast with a sense of our culture.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary btn--lg" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="hero.order">Order online</span></a>
+            <a class="btn btn--ghost btn--lg" href="#menu"><span data-i18n="hero.menu">See the menu</span></a>
+          </div>
+          <div class="hero__meta">
+            <span class="status" id="status" aria-live="polite"><span class="status__dot"></span><span class="status__text">Open every day 7 AM – 2 PM</span></span>
+            <a class="hero__addr" href="https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023" target="_blank" rel="noopener" data-link="googleMaps"><span data-i18n="hero.address">512 San Benito St · Hollister, CA</span></a>
+          </div>
+        </div>
+        <figure class="hero__art photo photo--hero" data-photo="hero">
+          <svg class="photo__art" aria-hidden="true"><use href="#art-hero"/></svg>
+        </figure>
+      </div>
+      <div class="picado" aria-hidden="true"></div>
+    </section>
+
+    <!-- ============ SOCIAL PROOF ============ -->
+    <section class="proof" aria-labelledby="proofTitle">
+      <h2 id="proofTitle" class="sr-only" data-i18n="proof.title">Rated by the people who eat here</h2>
+      <ul class="proof__list" id="ratings"></ul>
+    </section>
+
+    <!-- ============ SIGNATURES ============ -->
+    <section class="section" id="favorites" aria-labelledby="sigTitle">
+      <div class="container">
+        <header class="section__head">
+          <p class="kicker" data-i18n="sig.kicker">House favorites</p>
+          <h2 id="sigTitle" class="section__title" data-i18n="sig.title">What people drive in for</h2>
+          <p class="section__sub" data-i18n="sig.sub">Three partners, one kitchen, everything from scratch. Start here if it's your first visit.</p>
+        </header>
+        <div class="sig-grid" id="signatures"></div>
+        <p class="section__foot"><a class="link-arrow" href="#menu" data-i18n="sig.fullMenu">See the full menu</a></p>
+      </div>
+    </section>
+
+    <!-- ============ MENU ============ -->
+    <section class="section section--tint" id="menu" aria-labelledby="menuTitle">
+      <div class="container">
+        <div class="print-only print-head">
+          <svg class="print-head__mark" aria-hidden="true"><use href="#mark"/></svg>
+          <div>
+            <div class="print-head__name">Buenos Días Cafecito</div>
+            <div class="print-head__line">512 San Benito St, Hollister, CA 95023 · (831) 313-0810</div>
+            <div class="print-head__line"><span data-i18n="print.hours">Open every day 7 AM – 2 PM</span> · <span data-i18n="print.order">Order ahead:</span> buenosdiascafecito.com</div>
+          </div>
+        </div>
+        <header class="section__head section__head--row">
+          <div>
+            <p class="kicker" data-i18n="menu.kicker">The menu</p>
+            <h2 id="menuTitle" class="section__title" data-i18n="menu.title">Breakfast all day, lunch too</h2>
+            <p class="section__sub" data-i18n="menu.sub">Served 7 AM to 2 PM, every day. These are our in-house prices — order direct and skip the delivery-app markup.</p>
+          </div>
+          <button class="btn btn--ghost btn--sm no-print" id="printMenu" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>
+            <span data-i18n="menu.print">Print menu</span>
+          </button>
+        </header>
+        <nav class="chips no-print" id="menuChips" aria-label="Menu sections"></nav>
+        <div class="menu" id="menuSections"></div>
+        <p class="menu__updated" id="menuUpdated"></p>
+      </div>
+    </section>
+
+    <!-- ============ ORDER ============ -->
+    <section class="section" id="order" aria-labelledby="orderTitle">
+      <div class="container">
+        <header class="section__head">
+          <p class="kicker" data-i18n="order.kicker">Order</p>
+          <h2 id="orderTitle" class="section__title" data-i18n="order.title">Three ways to get it</h2>
+        </header>
+        <div class="ways">
+          <article class="way way--featured">
+            <div class="way__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <h3 class="way__title" data-i18n="order.pickup.title">Order ahead, pick up</h3>
+            <p class="way__body" data-i18n="order.pickup.body">Order straight from us through our own online ordering. Same in-house prices, no third-party markup, ready when you walk in.</p>
+            <a class="btn btn--primary" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="order.pickup.cta">Start an order</span></a>
+            <p class="way__note" data-i18n="order.pickup.note">Commission-free for the cafe, cheaper for you.</p>
+          </article>
+          <article class="way">
+            <div class="way__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h-4l-3 7h8l2-4h2"/><path d="M12 17.5H9"/></svg>
+            </div>
+            <h3 class="way__title" data-i18n="order.delivery.title">Delivery</h3>
+            <p class="way__body" data-i18n="order.delivery.body">Not leaving the house? We're on DoorDash. Prices there include the app's markup, so if you can swing by, order direct.</p>
+            <a class="btn btn--ghost" href="https://www.doordash.com/store/buenos-dias-cafecito-san-benito-st-hollister-35978755/" target="_blank" rel="noopener" data-link="doordash"><span data-i18n="order.delivery.cta">Open DoorDash</span></a>
+          </article>
+          <article class="way">
+            <div class="way__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18"/><path d="M5 11l1 9h12l1-9"/><path d="M12 3v8"/><path d="M8 3h8"/></svg>
+            </div>
+            <h3 class="way__title" data-i18n="order.dinein.title">Dine in</h3>
+            <p class="way__body" data-i18n="order.dinein.body">Patio seating on San Benito Street, dogs welcome outside, wheelchair accessible, and we take Apple Pay. Bringing a big group? Call ahead and we'll set you up.</p>
+            <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&destination=512+San+Benito+St%2C+Hollister%2C+CA+95023" target="_blank" rel="noopener" data-link="googleDirections"><span data-i18n="order.dinein.cta">Get directions</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CATERING ============ -->
+    <section class="section section--dark" id="catering" aria-labelledby="cateringTitle">
+      <div class="container catering">
+        <div class="catering__copy">
+          <p class="kicker kicker--light" data-i18n="catering.kicker">Catering &amp; large orders</p>
+          <h2 id="cateringTitle" class="section__title" data-i18n="catering.title">Feed the whole crew</h2>
+          <p class="section__sub" data-i18n="catering.sub">Office breakfasts, crew meals, quinceañera brunches, church groups, rally weekend. Tell us the date and the headcount and we'll call you back with a quote.</p>
+          <h3 class="catering__ideasTitle" data-i18n="catering.ideas.title">Good for</h3>
+          <ul class="catering__ideas">
+            <li data-i18n="catering.ideas.1">Morning meetings and job-site breakfasts</li>
+            <li data-i18n="catering.ideas.2">Birthday and quinceañera brunches</li>
+            <li data-i18n="catering.ideas.3">Team breakfast burritos by the dozen</li>
+            <li data-i18n="catering.ideas.4">Rally and festival weekend crews</li>
+          </ul>
+          <figure class="photo photo--wide catering__photo" data-photo="patio">
+            <svg class="photo__art" aria-hidden="true"><use href="#art-patio"/></svg>
+          </figure>
+        </div>
+        <form class="form" id="cateringForm" novalidate>
+          <div class="form__row">
+            <label class="field"><span data-i18n="form.name">Your name</span><input type="text" name="name" autocomplete="name" required /></label>
+            <label class="field"><span data-i18n="form.phone">Phone</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required /></label>
+          </div>
+          <div class="form__row">
+            <label class="field"><span data-i18n="form.date">Date needed</span><input type="date" name="date" /></label>
+            <label class="field"><span data-i18n="form.headcount">How many people</span><input type="number" name="headcount" min="1" inputmode="numeric" /></label>
+          </div>
+          <label class="field"><span data-i18n="form.notes">What are you thinking? Dishes, pickup or delivery, what time.</span><textarea name="notes" rows="4"></textarea></label>
+          <div class="form__actions">
+            <button class="btn btn--primary" type="submit"><span data-i18n="form.submit">Send request</span></button>
+            <span class="form__or"><span data-i18n="form.orCall">or call</span> <a href="tel:+18313130810">(831) 313-0810</a></span>
+          </div>
+          <div class="form__result" id="formResult" hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ VISIT ============ -->
+    <section class="section" id="visit" aria-labelledby="visitTitle">
+      <div class="container">
+        <header class="section__head">
+          <p class="kicker" data-i18n="visit.kicker">Visit</p>
+          <h2 id="visitTitle" class="section__title" data-i18n="visit.title">Right on San Benito Street</h2>
+        </header>
+        <div class="visit">
+          <div class="visit__info">
+            <div class="visit__block">
+              <h3 class="visit__label" data-i18n="visit.hours">Hours</h3>
+              <table class="hours" id="hoursTable"></table>
+            </div>
+            <div class="visit__block">
+              <h3 class="visit__label" data-i18n="visit.address">Address</h3>
+              <address class="visit__addr">
+                <a href="https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023" target="_blank" rel="noopener" data-link="googleMaps">512 San Benito St<br />Hollister, CA 95023</a><br />
+                <a href="tel:+18313130810">(831) 313-0810</a>
+              </address>
+              <p class="visit__parking" data-i18n="visit.parking">Street parking on San Benito Street and the side streets. In the heart of downtown, a few doors from the Wednesday farmers' market.</p>
+              <div class="visit__btns">
+                <a class="btn btn--ghost btn--sm" href="https://www.google.com/maps/dir/?api=1&destination=512+San+Benito+St%2C+Hollister%2C+CA+95023" target="_blank" rel="noopener" data-link="googleDirections"><span data-i18n="visit.google">Google Maps</span></a>
+                <a class="btn btn--ghost btn--sm" href="https://maps.apple.com/place?place-id=IF4263FA52F06225F" target="_blank" rel="noopener" data-link="appleMaps"><span data-i18n="visit.apple">Apple Maps</span></a>
+                <a class="btn btn--ghost btn--sm" href="buenos-dias-cafecito.vcf" download><span data-i18n="visit.save">Save our number</span></a>
+              </div>
+            </div>
+            <div class="visit__block visit__pinnacles">
+              <h3 class="visit__label" data-i18n="visit.pinnaclesTitle">Heading to Pinnacles?</h3>
+              <p data-i18n="visit.pinnacles">We're the last real breakfast before the park. The east entrance is about 32 miles down Highway 25, so fuel up here and be at the trailhead by nine.</p>
+            </div>
+          </div>
+          <div class="visit__map">
+            <iframe id="map" title="Map showing Buenos Días Cafecito at 512 San Benito Street, Hollister" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen src="https://maps.google.com/maps?q=Buenos%20Dias%20Cafecito%2C%20512%20San%20Benito%20St%2C%20Hollister%2C%20CA%2095023&z=16&output=embed"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EVENTS ============ -->
+    <section class="section section--tint" id="events" aria-labelledby="eventsTitle">
+      <div class="container">
+        <header class="section__head">
+          <p class="kicker" data-i18n="events.kicker">Downtown calendar</p>
+          <h2 id="eventsTitle" class="section__title" data-i18n="events.title">We're on the route</h2>
+          <p class="section__sub" data-i18n="events.sub">San Benito Street is the stage for Hollister's biggest days. Our doors open at 7, so get in before the crowds do.</p>
+        </header>
+        <ul class="events" id="events"></ul>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about" aria-labelledby="aboutTitle">
+      <div class="container about">
+        <div class="about__copy">
+          <p class="kicker" data-i18n="about.kicker">Our story</p>
+          <h2 id="aboutTitle" class="section__title" data-i18n="about.title">Three partners, one idea: Hollister needed breakfast</h2>
+          <div id="storyParagraphs"></div>
+          <div class="owners" id="owners"></div>
+          <p class="about__source"><a href="https://benitolink.com/eat-drink-savor-homestyle-breakfast-at-buenos-dias-cafecito/" target="_blank" rel="noopener" data-link="story"><span data-i18n="about.source">From the owners' 2024 interview with BenitoLink</span></a></p>
+        </div>
+        <div class="about__side">
+          <figure class="photo about__photo" data-photo="team">
+            <svg class="photo__art" aria-hidden="true"><use href="#art-team"/></svg>
+          </figure>
+          <div id="storyQuotes"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REVIEWS ============ -->
+    <section class="section section--dark section--reviews" id="reviews" aria-labelledby="reviewsTitle">
+      <div class="container">
+        <p class="kicker kicker--light" data-i18n="reviews.kicker">What Hollister says</p>
+        <h2 id="reviewsTitle" class="sr-only">Reviews</h2>
+        <ul class="reviews" id="reviewsList"></ul>
+        <div class="reviews__cta">
+          <p data-i18n="reviews.cta">Had a good breakfast? A review helps a small, local business more than you'd think.</p>
+          <div class="reviews__btns">
+            <a class="btn btn--light btn--sm" href="https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023" target="_blank" rel="noopener" data-link="googleMaps"><span data-i18n="reviews.google">Review us on Google</span></a>
+            <a class="btn btn--light btn--sm" href="https://www.yelp.com/biz/buenos-dias-cafecito-hollister" target="_blank" rel="noopener" data-link="yelp"><span data-i18n="reviews.yelp">Review us on Yelp</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="picado picado--top" aria-hidden="true"></div>
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <svg class="brand__mark brand__mark--lg" aria-hidden="true"><use href="#mark"/></svg>
+        <div>
+          <div class="footer__name">Buenos Días Cafecito</div>
+          <div class="footer__tag" data-i18n="footer.tagline">Modern Mexican breakfast &amp; lunch.</div>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h3 data-i18n="footer.hours">Hours</h3>
+        <p id="footerHours">Every day 7:00 AM – 2:00 PM</p>
+      </div>
+      <div class="footer__col">
+        <h3 data-i18n="footer.find">Find us</h3>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023" target="_blank" rel="noopener" data-link="googleMaps">512 San Benito St<br />Hollister, CA 95023</a></p>
+        <p><a href="tel:+18313130810">(831) 313-0810</a></p>
+      </div>
+      <div class="footer__col">
+        <h3 data-i18n="footer.follow">Follow along</h3>
+        <ul class="footer__social">
+          <li><a href="https://www.instagram.com/buenosdiascafecito/" target="_blank" rel="noopener" data-link="instagram">Instagram</a></li>
+          <li><a href="https://www.facebook.com/BuenosDiasCafecito/" target="_blank" rel="noopener" data-link="facebook">Facebook</a></li>
+          <li><a href="https://www.yelp.com/biz/buenos-dias-cafecito-hollister" target="_blank" rel="noopener" data-link="yelp">Yelp</a></li>
+          <li><a href="https://www.tripadvisor.com/Restaurant_Review-g32498-d26326536-Reviews-Buenos_Dias_Cafeito-Hollister_California.html" target="_blank" rel="noopener" data-link="tripadvisor">Tripadvisor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <p><a href="https://business.sanbenitocountychamber.com/list/member/buenos-dias-cafecito-4557" target="_blank" rel="noopener" data-link="chamber"><span data-i18n="footer.chamber">Member, San Benito County Chamber of Commerce</span></a></p>
+      <p id="footerRights">© 2026 Buenos Dias Cafecito LLC · 512 San Benito St, Hollister, CA 95023</p>
+    </div>
+  </footer>
+
+  <!-- Always-visible order bar on phones. This is where the money is. -->
+  <div class="mobile-cta no-print" aria-label="Quick actions">
+    <a class="btn btn--primary" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="mobile.order">Order online</span></a>
+    <a class="btn btn--ghost" href="tel:+18313130810"><span data-i18n="mobile.call">Call</span></a>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

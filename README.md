@@ -295,3 +295,15 @@ Right now it just says "thanks" — it doesn't store addresses anywhere. To
 actually collect them, point the form at a free service like Formspree,
 Buttondown or Mailchimp: they each give you a form action URL to paste into
 `index.html`.
+
+---
+
+## Other sites in this repo
+
+The store lives at the root. Two more static sites live in their own folders
+and deploy alongside it (the Pages workflow ships the whole repo):
+
+- **`dj-jas/`** — DJ Jas merch storefront.
+- **`buenos-dias-cafecito/`** — bilingual restaurant site for Buenos Días
+  Cafecito in downtown Hollister, with online ordering, a printable menu and a
+  catering form. Its own README explains what to edit and why each part exists.
