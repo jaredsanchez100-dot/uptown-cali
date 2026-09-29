@@ -1,34 +1,34 @@
-# Photos
+# Photos and logo
 
-The site ships with drawings in every photo slot so it never looks broken.
-Real photos will beat them. Drop files in this folder, then write the path
-into `photos` in `../data.js`:
+Everything the site shows lives here. Paths are set in `../data.js` under
+`photos` (the big slots) and per menu item (`photo:` on an item).
 
-```js
-photos: {
-  hero: "images/hero.jpg",
-  chilaquiles: "images/chilaquiles.jpg",
-  ...
-}
-```
+## What's here
 
-## Shot list (seven photos, one morning)
+| File | Used where | Notes |
+|------|-----------|-------|
+| `logo.svg` | Header, print menu | The cafe's real logo, traced to vector |
+| `logo-reverse.svg` | Footer | Navy swapped for cream, for dark backgrounds |
+| `flower.svg` | Above the hero headline | The flower ornament on its own |
+| `icon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-512.png` | Browser tab, home screen | The flower head on a white circle |
+| `og-image.jpg` | Link previews (texts, DMs, posts) | 1200 × 630, logo + the hero photo |
+| `hero.jpg` | Hero | 1200 × 1500, patio table with the café de olla mug |
+| `chilaquiles.jpg`, `arrachera.jpg`, `pancakes.jpg`, `cafe-de-olla.jpg` | The four front-page cards | 1000 × 1000 squares |
+| `table.jpg` | Catering section | 1200 × 900 |
+| `menu-*.jpg` | Thumbnails next to menu items | 480 × 480 squares |
 
-| Slot | What to shoot | Crop |
+Who owns which photo, and what was done to them, is in `../README.md`
+under *Photos and the logo*.
+
+## Still wanted (one morning with a phone)
+
+| Slot in `data.js` | What to shoot | Crop |
 |------|---------------|------|
-| `hero` | The counter or the patio with people in it, morning light, coffee on the table | 3:2, about 1800 × 1200 |
-| `chilaquiles` | Plated, from a 45° angle, with the egg and avocado visible | 4:3, about 1200 × 900 |
-| `arrachera` | Same angle, steak in focus, potatoes and toast in frame | 4:3 |
-| `frenchToast` | The stack, powdered sugar and berries, pour the syrup mid-shot if you can | 4:3 |
-| `cafeDeOlla` | The mug, steam if the light catches it, cinnamon stick in frame | 4:3 |
-| `patio` | The San Benito Street patio, a dog under a table doesn't hurt | 16:9, about 1600 × 900 |
-| `team` | David, Ricardo and Trino together, in the kitchen or out front | 4:3 |
+| `team` | David, Ricardo and Trino together, in the kitchen or out front | 4:3, about 1200 × 900 |
+| `photos.hero` (optional upgrade) | The patio from the sidewalk with people at the tables, morning light | 4:5, about 1200 × 1500 |
+| a French toast card | Three cinnamon-swirl slices, powdered sugar, berries, syrup mid-pour | 1:1, about 1000 × 1000 |
+| replacements for the Yelp shots | Chilaquiles top-down, the arrachera plate, the café de olla mug, a full table | 1:1 / 4:3 |
 
-Shoot near the front window in the morning, phone camera is fine, no flash.
-Keep each file under about 300KB (Squoosh.app or TinyPNG will shrink them
-with no visible loss); a fast page sells more breakfast than a slow one.
-
-## Already here
-
-- `icon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-512.png` — the sun-and-cup mark, used for the browser tab and home-screen icon.
-- `og-image.jpg` — the 1200 × 630 picture that shows when the link is shared in a text, a DM or a post.
+Shoot near the front window or on the patio in the morning, no flash. Keep
+each file under about 300KB (Squoosh.app or TinyPNG shrink them with no
+visible loss); a fast page sells more breakfast than a slow one.

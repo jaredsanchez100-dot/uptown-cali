@@ -123,7 +123,8 @@
       if (!src) return;
       const img = document.createElement("img");
       img.src = src; img.loading = key === "hero" ? "eager" : "lazy"; img.decoding = "async";
-      img.alt = SITE.displayName + " — " + key.replace(/([A-Z])/g, " $1").toLowerCase();
+      const alt = SITE.photoAlt && SITE.photoAlt[key];
+      img.alt = alt ? L(alt) : SITE.displayName;
       fig.appendChild(img);
     });
   }
@@ -177,7 +178,11 @@
       const items = c.items.map(it => {
         const desc = it.desc && L(it.desc) ? '<p class="menu-item__desc">' + esc(L(it.desc)) + "</p>" : "";
         const tags = (it.tags || []).length ? '<div class="menu-item__tags">' + it.tags.map(tag => '<span class="tag tag--' + esc(tag) + '">' + esc(t("tag." + tag)) + "</span>").join("") + "</div>" : "";
-        return '<li class="menu-item"><div class="menu-item__row"><span class="menu-item__name">' + esc(L(it.name)) + '</span><span class="menu-item__leader" aria-hidden="true"></span><span class="menu-item__price">' + esc(money(it.price)) + "</span></div>" + desc + tags + "</li>";
+        const row = '<div class="menu-item__row"><span class="menu-item__name">' + esc(L(it.name)) + '</span><span class="menu-item__leader" aria-hidden="true"></span><span class="menu-item__price">' + esc(money(it.price)) + "</span></div>";
+        if (it.photo) {
+          return '<li class="menu-item menu-item--photo"><div class="menu-item__text">' + row + desc + tags + '</div><img class="menu-item__photo" src="' + esc(it.photo) + '" alt="' + esc(L(it.name)) + '" loading="lazy" decoding="async" width="84" height="84" /></li>';
+        }
+        return '<li class="menu-item">' + row + desc + tags + "</li>";
       }).join("");
       return '<section class="' + cls + '" id="menu-' + esc(c.id) + '"><h3 class="menu-cat__title">' + esc(L(c.name)) + "</h3>" + note + '<ul class="menu-items">' + items + "</ul></section>";
     }).join("");

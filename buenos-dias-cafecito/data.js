@@ -63,13 +63,23 @@ const SITE = {
   // images/ and write its path here, e.g. "images/chilaquiles.jpg".
   // Shot list and sizes are in images/README.md.
   photos: {
-    hero: "",          // wide, 3:2 — the counter, the patio, a full table
-    chilaquiles: "",   // 4:3 plated, natural light
-    arrachera: "",     // 4:3
-    frenchToast: "",   // 4:3
-    cafeDeOlla: "",    // 4:3, steam if you can get it
-    patio: "",         // 4:3 — the San Benito Street patio
-    team: "",          // 4:3 — David, Ricardo and Trino
+    hero: "images/hero.jpg",                 // the patio table: skillet, café de olla, arrachera
+    chilaquiles: "images/chilaquiles.jpg",   // square
+    arrachera: "images/arrachera.jpg",       // square
+    pancakes: "images/pancakes.jpg",         // square
+    cafeDeOlla: "images/cafe-de-olla.jpg",   // square
+    table: "images/table.jpg",               // 4:3 — a full table, used in the catering section
+    team: "",                                // 4:3 — David, Ricardo and Trino (still needed)
+  },
+  // Alt text for the photos above, for screen readers and image search.
+  photoAlt: {
+    hero: { en: "Breakfast on the patio at Buenos Días Cafecito: a skillet with eggs and toast, a clay mug of café de olla, and arrachera with potatoes", es: "Desayuno en el patio de Buenos Días Cafecito: un skillet con huevos y pan tostado, un jarro de café de olla y arrachera con papas" },
+    chilaquiles: { en: "Chilaquiles rojos with a fried egg, avocado, pickled red onions, beans and potatoes on a clay plate", es: "Chilaquiles rojos con huevo estrellado, aguacate, cebolla morada encurtida, frijoles y papas en plato de barro" },
+    arrachera: { en: "Marinated arrachera over chilaquiles with queso fresco, crema and pickled onions", es: "Arrachera marinada sobre chilaquiles con queso fresco, crema y cebolla encurtida" },
+    pancakes: { en: "A stack of pancakes dusted with powdered sugar", es: "Una torre de hot cakes con azúcar glass" },
+    cafeDeOlla: { en: "Café de olla in a hand-painted clay mug on the patio table", es: "Café de olla en un jarro de barro pintado a mano sobre la mesa del patio" },
+    table: { en: "A table on the patio with pancakes, chilaquiles and café de olla", es: "Una mesa en el patio con hot cakes, chilaquiles y café de olla" },
+    team: { en: "The Buenos Días Cafecito team", es: "El equipo de Buenos Días Cafecito" },
   },
 
   menuUpdated: { en: "September 2026", es: "septiembre de 2026" },
@@ -88,6 +98,7 @@ const MENU = [
     items: [
       {
         name: { en: "Chilaquiles", es: "Chilaquiles" },
+        photo: "images/menu-chilaquiles.jpg",
         price: 18.99,
         tags: ["popular"],
         desc: {
@@ -97,6 +108,7 @@ const MENU = [
       },
       {
         name: { en: "Marinated Arrachera & Eggs", es: "Arrachera Marinada con Huevos" },
+        photo: "images/menu-arrachera.jpg",
         price: 26.99,
         tags: ["sellsOut"],
         desc: {
@@ -115,6 +127,7 @@ const MENU = [
       },
       {
         name: { en: "Skillet", es: "Skillet" },
+        photo: "images/menu-skillet.jpg",
         price: 18.99,
         tags: ["popular"],
         desc: {
@@ -143,6 +156,7 @@ const MENU = [
       { name: { en: "Ham Steak & Eggs", es: "Jamón con Huevos" }, price: 17.99, tags: [], desc: { en: "", es: "" } },
       {
         name: { en: "Buenos Dias Chicken Fried Steak & Eggs", es: "Bistec Empanizado Buenos Dias con Huevos" },
+        photo: "images/menu-chicken-fried-steak.jpg",
         price: 18.99,
         tags: ["popular"],
         desc: { en: "Hand-breaded steak smothered in gravy.", es: "Bistec empanizado a mano, bañado en gravy." },
@@ -172,7 +186,7 @@ const MENU = [
         tags: ["popular"],
         desc: { en: "Three thick slices of cinnamon-swirl bread.", es: "Tres rebanadas gruesas de pan con remolino de canela." },
       },
-      { name: { en: "Pancakes (3)", es: "Hot Cakes (3)" }, price: 10.99, tags: [], desc: { en: "", es: "" } },
+      { name: { en: "Pancakes (3)", es: "Hot Cakes (3)" }, price: 10.99, tags: [], desc: { en: "", es: "" }, photo: "images/menu-pancakes.jpg" },
       { name: { en: "Blueberry Pancakes", es: "Hot Cakes de Mora Azul" }, price: 12.99, tags: [], desc: { en: "", es: "" } },
       { name: { en: "Chocolate Chip Blueberry Pancakes", es: "Hot Cakes de Mora Azul con Chispas de Chocolate" }, price: 12.99, tags: [], desc: { en: "", es: "" } },
       { name: { en: "Pancakes & Eggs", es: "Hot Cakes con Huevos" }, price: 19.99, tags: [], desc: { en: "Griddle plate with eggs.", es: "Plato de la plancha con huevos." } },
@@ -279,7 +293,7 @@ const MENU = [
     compact: true,
     note: { en: "Ask your server about micheladas and mimosas.", es: "Pregunta a tu mesero por micheladas y mimosas." },
     items: [
-      { name: { en: "Café de Olla", es: "Café de Olla" }, price: 4.99, tags: ["popular"] },
+      { name: { en: "Café de Olla", es: "Café de Olla" }, price: 4.99, tags: ["popular"], photo: "images/menu-cafe-de-olla.jpg" },
       { name: { en: "Chocolate Abuelita", es: "Chocolate Abuelita" }, price: 4.99, tags: ["weekend"] },
       { name: { en: "Coffee", es: "Café" }, price: 3.99 },
       { name: { en: "Hot Tea", es: "Té caliente" }, price: 3.99 },
@@ -316,18 +330,18 @@ const SIGNATURES = [
     price: 26.99,
     badge: { en: "Sells out", es: "Se agota" },
     blurb: {
-      en: "Hand-cut skirt steak, marinated in-house. It runs out most days, so come early or order ahead.",
-      es: "Arrachera cortada a mano, marinada en casa. Se termina casi todos los días: llega temprano u ordena antes.",
+      en: "Hand-cut skirt steak, marinated in-house. Get it with eggs, or piled on the chilaquiles. It runs out most days, so come early or order ahead.",
+      es: "Arrachera cortada a mano, marinada en casa. Pídela con huevos o encima de los chilaquiles. Se termina casi todos los días: llega temprano u ordena antes.",
     },
   },
   {
-    photo: "frenchToast",
+    photo: "pancakes",
     art: "frenchToast",
-    name: { en: "French Toast", es: "Pan Francés" },
-    price: 11.99,
+    name: { en: "Pancakes", es: "Hot Cakes" },
+    price: 10.99,
     blurb: {
-      en: "Three thick slices of cinnamon-swirl bread, dusted with powdered sugar. Add eggs and make it a plate.",
-      es: "Tres rebanadas gruesas de pan con remolino de canela y azúcar glass. Agrégale huevos y hazlo plato.",
+      en: "Three to a stack, dusted with powdered sugar and cinnamon. Add blueberries or chocolate chips, or make it a plate with eggs.",
+      es: "Tres por orden, con azúcar glass y canela. Agrégales mora azul o chispas de chocolate, o hazlos plato con huevos.",
     },
   },
   {
@@ -460,7 +474,6 @@ const I18N = {
     "status.hoursDaily": "Every day {open} – {close}",
 
     "hero.kicker": "Downtown Hollister · Since 2022",
-    "hero.title": "Buenos días, Hollister.",
     "hero.sub": "Chilaquiles, café de olla and a proper diner breakfast, made from scratch on San Benito Street. Your all-American breakfast with a sense of our culture.",
     "hero.order": "Order online",
     "hero.menu": "See the menu",
@@ -589,7 +602,6 @@ const I18N = {
     "status.hoursDaily": "Todos los días {open} – {close}",
 
     "hero.kicker": "Centro de Hollister · Desde 2022",
-    "hero.title": "Buenos días, Hollister.",
     "hero.sub": "Chilaquiles, café de olla y un desayuno de diner como debe ser, hecho desde cero en San Benito Street. Tu desayuno americano de siempre, con el sentido de nuestra cultura.",
     "hero.order": "Ordena en línea",
     "hero.menu": "Ver el menú",

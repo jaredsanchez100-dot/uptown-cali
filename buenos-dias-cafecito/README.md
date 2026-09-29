@@ -85,8 +85,9 @@ when a price changes.
 5. **Catering emails.** Sign up for a free form endpoint (Formspree, Basin,
    Netlify Forms), paste the URL into `cateringEndpoint` in `data.js`. Until
    then the form hands customers a ready-made text message, which works fine.
-6. **Photos.** The biggest visual upgrade available. Seven photos, shot list
-   in `images/README.md`, then fill in `photos` in `data.js`.
+6. **Photos.** Six of the seven slots are filled with real photos (see
+   *Photos and the logo* below). Still wanted: the patio, the three owners, and
+   the French toast. Shot list in `images/README.md`.
 
 ---
 
@@ -110,6 +111,50 @@ The site was built from public listings, the ChowNow menu and the owners'
 
 ---
 
+## Photos and the logo
+
+**The logo** is the cafe's real one. It was pulled from the large "Now open
+for pick up" graphic on the cafe's Facebook page, cleaned up with an
+upscaler and traced to vector, so it's crisp at any size:
+
+- `images/logo.svg` — full logo on light backgrounds (header, print menu)
+- `images/logo-reverse.svg` — same artwork with the navy swapped for cream, for the footer
+- `images/flower.svg` — just the flower ornament (above the hero headline)
+- `images/icon.svg` + the PNG icons — the flower head, for the browser tab and home screen
+
+If the owners have the original vector file (AI, EPS or SVG), drop it in as
+`images/logo.svg` and everything picks it up. The site's colors (navy, pink,
+gold) are sampled from the logo and live at the top of `styles.css`.
+
+**The photos** came from two places, and the difference matters for launch:
+
+| File | What | Source | Who owns it |
+|------|------|--------|-------------|
+| `pancakes.jpg`, `menu-pancakes.jpg` | Pancakes with powdered sugar | Cafe's Facebook page | The cafe |
+| `menu-skillet.jpg` | Skillet with eggs and potatoes | Cafe's Facebook page | The cafe |
+| `menu-chicken-fried-steak.jpg` | Chicken fried steak and gravy | Cafe's Facebook page | The cafe |
+| `hero.jpg`, `cafe-de-olla.jpg`, `menu-cafe-de-olla.jpg` | Patio table: skillet, café de olla mug, arrachera plate | Yelp, via Apple Maps | A Yelp reviewer |
+| `chilaquiles.jpg` | Chilaquiles rojos, top down | Yelp, via Apple Maps | A Yelp reviewer |
+| `menu-chilaquiles.jpg` | Chilaquiles with a fried egg | Yelp, via Apple Maps | A Yelp reviewer |
+| `arrachera.jpg`, `menu-arrachera.jpg` | Arrachera over chilaquiles | Yelp, via Apple Maps | A Yelp reviewer |
+| `table.jpg` | Pancakes, chilaquiles and a mug on the patio | Yelp, via Apple Maps | A Yelp reviewer |
+
+The Facebook photos are the cafe's own, so they're fine to use. The Yelp
+photos belong to whoever took them. They're great for showing the owners what
+the site looks like, but before the site goes public either get a quick OK
+from the reviewers through Yelp, or shoot replacements (a phone and one
+morning of good light is all it takes, see `images/README.md`). Swapping a
+photo is a one-line change in `data.js`.
+
+**What was done to them.** Nothing that changes the food. The four Facebook
+photos were only 414 px wide, so they were upscaled 4x with Real-ESRGAN, and
+the hero photo 2x, so they stay sharp on phone screens. Every photo then got a
+gentle white balance (indoor shots ran orange), a levels stretch, a soft
+contrast curve, about 8% more saturation and a light sharpen, then a crop to
+its slot. The originals are not in the repo.
+
+---
+
 ## Editing the site (all in `data.js`)
 
 | What | Where |
@@ -123,7 +168,8 @@ The site was built from public listings, the ChowNow menu and the owners'
 | Ratings strip and review quotes | `RATINGS`, `REVIEWS` |
 | Downtown events | `EVENTS` |
 | The story and quotes | `STORY` |
-| Photos | `SITE.photos` — a path per slot, empty string shows the drawing |
+| Photos | `SITE.photos` — a path per slot, empty string shows the drawing; `SITE.photoAlt` is the alt text |
+| Photo next to a menu item | add `photo: "images/menu-something.jpg"` to the item (square, 480 px) |
 | Every other word, both languages | `I18N` |
 | "Menu and prices as of…" | `SITE.menuUpdated` |
 
@@ -146,4 +192,4 @@ python3 -m http.server 8000
 | `script.js` | Language toggle, menu rendering, open/closed status, catering form |
 | `data.js` | **Everything you'd edit** |
 | `buenos-dias-cafecito.vcf` | The "Save our number" contact card |
-| `images/` | Icons, link-preview image, and where the photos go |
+| `images/` | Logo files, icons, link-preview image, and the photos |
