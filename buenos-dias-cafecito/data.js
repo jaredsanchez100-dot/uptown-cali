@@ -16,8 +16,29 @@ const SITE = {
   // the canonical URL, link previews and the search-engine data.
   url: "https://buenosdiascafecito.com/",
 
-  phone: "(831) 313-0810",
-  phoneHref: "+18313130810",
+  // THE PHONE NUMBER. Every tel: link, every printed number, the print menu,
+  // the contact card and the search-engine data read these two lines.
+  phone: "(831) 313-0810",      // how it should read on the page
+  phoneHref: "+18313130810",    // digits only, with +1, for the tap-to-call links
+  // The number the cafe stopped using. Leave empty if there isn't one. When
+  // set, a "new number" bar shows at the top so regulars update their contacts.
+  oldPhone: "",
+
+  // HOW PEOPLE ORDER. Phone first: no platform fee, no commission, pay at
+  // the counter. `text` turns on the "text your order" builder (the number
+  // above must be able to receive texts). `online` is an optional online
+  // ordering link (DoorDash's own ordering, Toast, ChowNow); leave it empty
+  // and no "order online" buttons appear. `delivery` is the DoorDash
+  // marketplace page, shown as a secondary option with the markup explained.
+  ordering: {
+    phone: true,
+    text: true,
+    online: "",
+    delivery: "https://www.doordash.com/store/buenos-dias-cafecito-san-benito-st-hollister-35978755/",
+  },
+  // Show item numbers on the menu (and the printed menu). Phone orders go
+  // faster and come out right when people can say "a number 4".
+  menuNumbers: true,
 
   address: {
     street: "512 San Benito St",
@@ -40,9 +61,6 @@ const SITE = {
   notice: { en: "", es: "" },
 
   links: {
-    // ChowNow is the cafe's own online ordering — no marketplace commission.
-    order: "https://direct.chownow.com/order/38288/locations/58321",
-    doordash: "https://www.doordash.com/store/buenos-dias-cafecito-san-benito-st-hollister-35978755/",
     instagram: "https://www.instagram.com/buenosdiascafecito/",
     facebook: "https://www.facebook.com/BuenosDiasCafecito/",
     yelp: "https://www.yelp.com/biz/buenos-dias-cafecito-hollister",
@@ -465,7 +483,9 @@ const I18N = {
     "nav.about": "About",
     "nav.call": "Call",
     "nav.orderOnline": "Order online",
+    "nav.callOrder": "Call to order",
     "nav.toggle": "Menu",
+    "notice.newNumber": "We have a new phone number: {phone}. The old number, {old}, no longer reaches us.",
 
     "status.openNow": "Open now · closes at {close}",
     "status.opensToday": "Opens today at {open}",
@@ -474,8 +494,11 @@ const I18N = {
     "status.hoursDaily": "Every day {open} – {close}",
 
     "hero.kicker": "Downtown Hollister · Since 2022",
-    "hero.sub": "Chilaquiles, café de olla and a proper diner breakfast, made from scratch on San Benito Street. Your all-American breakfast with a sense of our culture.",
+    "hero.sub": "Chilaquiles, café de olla and a proper diner breakfast, made from scratch on San Benito Street. Call ahead and it's ready when you walk in.",
     "hero.order": "Order online",
+    "hero.callOrder": "Call to order",
+    "hero.textOrder": "Text your order",
+    "hero.callLine": "Call ahead:",
     "hero.menu": "See the menu",
     "hero.address": "512 San Benito St · Hollister, CA",
 
@@ -488,7 +511,9 @@ const I18N = {
 
     "menu.kicker": "The menu",
     "menu.title": "Breakfast all day, lunch too",
-    "menu.sub": "Served 7 AM to 2 PM, every day. These are our in-house prices — order direct and skip the delivery-app markup.",
+    "menu.sub": "Served 7 AM to 2 PM, every day. These are our in-house prices, no app markup. Call ahead with the item numbers and we'll have it ready.",
+    "menu.add": "Add",
+    "menu.added": "Added",
     "menu.print": "Print menu",
     "menu.updated": "Menu and prices as of {date}. Subject to change. Tax not included.",
     "menu.jump": "Jump to",
@@ -500,14 +525,44 @@ const I18N = {
     "price.ask": "Ask",
 
     "order.kicker": "Order",
-    "order.title": "Three ways to get it",
-    "order.pickup.title": "Order ahead, pick up",
-    "order.pickup.body": "Order straight from us through our own online ordering. Same in-house prices, no third-party markup, ready when you walk in.",
-    "order.pickup.cta": "Start an order",
-    "order.pickup.note": "Commission-free for the cafe, cheaper for you.",
+    "order.title": "Call ahead, it's ready when you walk in",
+    "order.call.title": "Call ahead",
+    "order.call.body": "Tell us what you want and when you'll be here. Pay at the counter when you pick up. No app, no fees, no markup.",
+    "order.call.cta": "Call",
+    "order.call.note": "Tip: say the item numbers from the menu and it goes twice as fast.",
+    "order.text.title": "Text your order",
+    "order.text.body": "Tap Add next to anything on the menu, then send it as a text. We'll text back to confirm and tell you when it's ready.",
+    "order.text.cta": "Start a text order",
+    "order.online.title": "Order online",
+    "order.online.body": "Order ahead from our own ordering page. Same in-house prices.",
+    "order.online.cta": "Order online",
     "order.delivery.title": "Delivery",
-    "order.delivery.body": "Not leaving the house? We're on DoorDash. Prices there include the app's markup, so if you can swing by, order direct.",
+    "order.delivery.body": "Not leaving the house? We're on DoorDash. Prices there include the app's fees, so if you can swing by, call ahead instead.",
     "order.delivery.cta": "Open DoorDash",
+    "text.kicker": "Text your order",
+    "text.title": "Your text order",
+    "text.empty": "Nothing yet. Tap Add next to a dish on the menu, or type what you'd like below.",
+    "text.name": "Your name",
+    "text.time": "Pickup time",
+    "text.timeHint": "e.g. 7:45",
+    "text.notes": "Anything else? Eggs over easy, no onions, extra salsa…",
+    "text.total": "Estimated total before tax",
+    "text.send": "Text it to {phone}",
+    "text.call": "Call instead",
+    "text.copy": "Copy order",
+    "text.copied": "Copied!",
+    "text.clear": "Clear",
+    "text.howTitle": "How it works",
+    "text.how": "Your phone opens a text with the order already written. Send it, we text back to confirm, you pay when you pick up.",
+    "text.msgIntro": "Pickup order",
+    "text.msgFor": "for",
+    "text.msgAt": "at",
+    "text.msgNotes": "Notes",
+    "text.msgTotal": "Est. total before tax",
+    "text.remove": "Remove",
+    "pill.items": "{n} items",
+    "pill.item": "1 item",
+    "pill.review": "Review text order",
     "order.dinein.title": "Dine in",
     "order.dinein.body": "Patio seating on San Benito Street, dogs welcome outside, wheelchair accessible, and we take Apple Pay. Bringing a big group? Call ahead and we'll set you up.",
     "order.dinein.cta": "Get directions",
@@ -544,6 +599,7 @@ const I18N = {
     "visit.google": "Google Maps",
     "visit.apple": "Apple Maps",
     "visit.save": "Save our number",
+    "visit.phone": "Phone",
     "visit.mapTitle": "Map showing Buenos Días Cafecito at 512 San Benito Street, Hollister",
     "visit.pinnaclesTitle": "Heading to Pinnacles?",
     "visit.pinnacles": "We're the last real breakfast before the park. The east entrance is about 32 miles down Highway 25, so fuel up here and be at the trailhead by nine.",
@@ -574,11 +630,13 @@ const I18N = {
     "footer.tagline": "Modern Mexican breakfast & lunch.",
 
     "mobile.order": "Order online",
-    "mobile.call": "Call",
+    "mobile.call": "Call to order",
+    "mobile.text": "Text order",
+    "mobile.menu": "Menu",
 
     "print.title": "Menu",
     "print.hours": "Open every day 7 AM – 2 PM",
-    "print.order": "Order ahead:",
+    "print.order": "Call ahead:",
   },
 
   es: {
@@ -593,7 +651,9 @@ const I18N = {
     "nav.about": "Nosotros",
     "nav.call": "Llamar",
     "nav.orderOnline": "Ordena en línea",
+    "nav.callOrder": "Llama para ordenar",
     "nav.toggle": "Menú",
+    "notice.newNumber": "Tenemos número nuevo: {phone}. El número anterior, {old}, ya no nos comunica.",
 
     "status.openNow": "Abierto ahora · cierra a las {close}",
     "status.opensToday": "Abre hoy a las {open}",
@@ -602,8 +662,11 @@ const I18N = {
     "status.hoursDaily": "Todos los días {open} – {close}",
 
     "hero.kicker": "Centro de Hollister · Desde 2022",
-    "hero.sub": "Chilaquiles, café de olla y un desayuno de diner como debe ser, hecho desde cero en San Benito Street. Tu desayuno americano de siempre, con el sentido de nuestra cultura.",
+    "hero.sub": "Chilaquiles, café de olla y un desayuno de diner como debe ser, hecho desde cero en San Benito Street. Llama antes y está listo cuando llegues.",
     "hero.order": "Ordena en línea",
+    "hero.callOrder": "Llama para ordenar",
+    "hero.textOrder": "Ordena por texto",
+    "hero.callLine": "Llama antes:",
     "hero.menu": "Ver el menú",
     "hero.address": "512 San Benito St · Hollister, CA",
 
@@ -616,7 +679,9 @@ const I18N = {
 
     "menu.kicker": "El menú",
     "menu.title": "Desayuno todo el día, y almuerzo también",
-    "menu.sub": "Se sirve de 7 AM a 2 PM, todos los días. Estos son los precios de la casa: ordena directo y evita el sobreprecio de las apps de entrega.",
+    "menu.sub": "Se sirve de 7 AM a 2 PM, todos los días. Estos son los precios de la casa, sin sobreprecio de apps. Llama antes con los números de los platillos y lo tenemos listo.",
+    "menu.add": "Agregar",
+    "menu.added": "Agregado",
     "menu.print": "Imprimir menú",
     "menu.updated": "Menú y precios a {date}. Sujetos a cambio. No incluyen impuestos.",
     "menu.jump": "Ir a",
@@ -628,14 +693,44 @@ const I18N = {
     "price.ask": "Pregunta",
 
     "order.kicker": "Ordenar",
-    "order.title": "Tres maneras de disfrutarlo",
-    "order.pickup.title": "Ordena antes y recoge",
-    "order.pickup.body": "Ordena directo con nosotros por nuestro sistema en línea. Mismos precios de la casa, sin sobreprecio de terceros, listo cuando llegues.",
-    "order.pickup.cta": "Empezar pedido",
-    "order.pickup.note": "Sin comisión para el café, más barato para ti.",
+    "order.title": "Llama antes y está listo cuando llegues",
+    "order.call.title": "Llama antes",
+    "order.call.body": "Dinos qué quieres y a qué hora llegas. Pagas en el mostrador al recoger. Sin app, sin comisiones, sin sobreprecio.",
+    "order.call.cta": "Llamar",
+    "order.call.note": "Tip: di los números de los platillos del menú y va el doble de rápido.",
+    "order.text.title": "Ordena por texto",
+    "order.text.body": "Toca Agregar junto a lo que quieras del menú y envíalo como mensaje de texto. Te contestamos para confirmar y decirte cuándo está listo.",
+    "order.text.cta": "Empezar pedido por texto",
+    "order.online.title": "Ordena en línea",
+    "order.online.body": "Ordena antes desde nuestra propia página de pedidos. Mismos precios de la casa.",
+    "order.online.cta": "Ordena en línea",
     "order.delivery.title": "A domicilio",
-    "order.delivery.body": "¿No sales de casa? Estamos en DoorDash. Los precios ahí incluyen el sobreprecio de la app, así que si puedes pasar, ordena directo.",
+    "order.delivery.body": "¿No sales de casa? Estamos en DoorDash. Los precios ahí incluyen las comisiones de la app, así que si puedes pasar, mejor llama antes.",
     "order.delivery.cta": "Abrir DoorDash",
+    "text.kicker": "Ordena por texto",
+    "text.title": "Tu pedido por texto",
+    "text.empty": "Aún nada. Toca Agregar junto a un platillo del menú, o escribe lo que quieras abajo.",
+    "text.name": "Tu nombre",
+    "text.time": "Hora para recoger",
+    "text.timeHint": "p. ej. 7:45",
+    "text.notes": "¿Algo más? Huevos estrellados, sin cebolla, salsa extra…",
+    "text.total": "Total estimado antes de impuestos",
+    "text.send": "Enviar texto al {phone}",
+    "text.call": "Mejor llamar",
+    "text.copy": "Copiar pedido",
+    "text.copied": "¡Copiado!",
+    "text.clear": "Borrar",
+    "text.howTitle": "Cómo funciona",
+    "text.how": "Tu teléfono abre un mensaje con el pedido ya escrito. Lo envías, te confirmamos por texto y pagas al recoger.",
+    "text.msgIntro": "Pedido para recoger",
+    "text.msgFor": "para",
+    "text.msgAt": "a las",
+    "text.msgNotes": "Notas",
+    "text.msgTotal": "Total est. antes de impuestos",
+    "text.remove": "Quitar",
+    "pill.items": "{n} platillos",
+    "pill.item": "1 platillo",
+    "pill.review": "Revisar pedido por texto",
     "order.dinein.title": "Come aquí",
     "order.dinein.body": "Patio sobre San Benito Street, perros bienvenidos afuera, acceso para silla de ruedas y aceptamos Apple Pay. ¿Vienen en grupo grande? Llámanos antes y te acomodamos.",
     "order.dinein.cta": "Cómo llegar",
@@ -672,6 +767,7 @@ const I18N = {
     "visit.google": "Google Maps",
     "visit.apple": "Apple Maps",
     "visit.save": "Guardar nuestro número",
+    "visit.phone": "Teléfono",
     "visit.mapTitle": "Mapa de Buenos Días Cafecito en 512 San Benito Street, Hollister",
     "visit.pinnaclesTitle": "¿Vas a Pinnacles?",
     "visit.pinnacles": "Somos el último desayuno de verdad antes del parque. La entrada este está a unas 32 millas por la carretera 25: desayuna aquí y llega al sendero a las nueve.",
@@ -702,10 +798,12 @@ const I18N = {
     "footer.tagline": "Desayuno y almuerzo mexicano moderno.",
 
     "mobile.order": "Ordena en línea",
-    "mobile.call": "Llamar",
+    "mobile.call": "Llama para ordenar",
+    "mobile.text": "Pedido por texto",
+    "mobile.menu": "Menú",
 
     "print.title": "Menú",
     "print.hours": "Abierto todos los días 7 AM – 2 PM",
-    "print.order": "Ordena antes:",
+    "print.order": "Llama antes:",
   },
 };

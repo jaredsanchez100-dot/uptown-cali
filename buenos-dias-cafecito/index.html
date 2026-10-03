@@ -37,67 +37,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Search-engine data: tells Google this is a restaurant, where it is,
-       when it's open, and where to order. The full menu is added by
-       script.js from data.js so it never drifts from what's on the page. -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Restaurant",
-    "@id": "https://buenosdiascafecito.com/#restaurant",
-    "name": "Buenos Dias Cafecito",
-    "alternateName": "Buenos Días Cafecito",
-    "description": "Modern Mexican breakfast and lunch in downtown Hollister, California. Chilaquiles, huevos rancheros, marinated arrachera and eggs, pancakes, French toast and café de olla, served 7 AM to 2 PM every day.",
-    "url": "https://buenosdiascafecito.com/",
-    "image": "https://buenosdiascafecito.com/images/og-image.jpg",
-    "telephone": "+1-831-313-0810",
-    "servesCuisine": ["Mexican", "Breakfast", "Brunch", "American"],
-    "priceRange": "$$",
-    "currenciesAccepted": "USD",
-    "paymentAccepted": "Cash, Credit Card, Apple Pay",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "512 San Benito St",
-      "addressLocality": "Hollister",
-      "addressRegion": "CA",
-      "postalCode": "95023",
-      "addressCountry": "US"
-    },
-    "geo": { "@type": "GeoCoordinates", "latitude": 36.85127, "longitude": -121.40225 },
-    "hasMap": "https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023",
-    "openingHoursSpecification": [{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "07:00",
-      "closes": "14:00"
-    }],
-    "hasMenu": "https://buenosdiascafecito.com/#menu",
-    "amenityFeature": [
-      { "@type": "LocationFeatureSpecification", "name": "Outdoor seating", "value": true },
-      { "@type": "LocationFeatureSpecification", "name": "Wheelchair accessible", "value": true },
-      { "@type": "LocationFeatureSpecification", "name": "Takeout", "value": true },
-      { "@type": "LocationFeatureSpecification", "name": "Delivery", "value": true },
-      { "@type": "LocationFeatureSpecification", "name": "Catering", "value": true },
-      { "@type": "LocationFeatureSpecification", "name": "Dogs allowed outside", "value": true }
-    ],
-    "potentialAction": {
-      "@type": "OrderAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://direct.chownow.com/order/38288/locations/58321",
-        "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
-      },
-      "deliveryMethod": ["http://purl.org/goodrelations/v1#DeliveryModePickUp"]
-    },
-    "sameAs": [
-      "https://www.instagram.com/buenosdiascafecito/",
-      "https://www.facebook.com/BuenosDiasCafecito/",
-      "https://www.yelp.com/biz/buenos-dias-cafecito-hollister",
-      "https://www.tripadvisor.com/Restaurant_Review-g32498-d26326536-Reviews-Buenos_Dias_Cafeito-Hollister_California.html",
-      "https://business.sanbenitocountychamber.com/list/member/buenos-dias-cafecito-4557"
-    ]
-  }
-  </script>
+  <!-- Search-engine data (restaurant details and the full menu) is built from data.js by script.js, so the phone number and hours have one source. -->
 </head>
 <body>
   <a href="#main" class="skip-link" data-i18n="skip">Skip to content</a>
@@ -215,8 +155,8 @@
       </nav>
       <div class="nav__actions">
         <button class="lang" id="langToggle" type="button" aria-label="Cambiar a español"><span data-i18n="lang.switch">ES</span></button>
-        <a class="btn btn--ghost btn--sm nav__call" href="tel:+18313130810"><span data-i18n="nav.call">Call</span></a>
-        <a class="btn btn--primary btn--sm nav__order" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="nav.orderOnline">Order online</span></a>
+        <a class="btn btn--primary btn--sm nav__call" href="tel:+18313130810"><span data-i18n="nav.callOrder">Call to order</span></a>
+        <a class="btn btn--ghost btn--sm nav__order" href="#" target="_blank" rel="noopener" data-order-online hidden><span data-i18n="nav.orderOnline">Order online</span></a>
         <button class="nav__toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -236,9 +176,11 @@
           <h1 class="hero__title">Buenos días, <em>Hollister.</em></h1>
           <p class="hero__sub" data-i18n="hero.sub">Chilaquiles, café de olla and a proper diner breakfast, made from scratch on San Benito Street. Your all-American breakfast with a sense of our culture.</p>
           <div class="hero__ctas">
-            <a class="btn btn--primary btn--lg" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="hero.order">Order online</span></a>
+            <a class="btn btn--primary btn--lg" href="tel:+18313130810"><span data-i18n="hero.callOrder">Call to order</span></a>
             <a class="btn btn--ghost btn--lg" href="#menu"><span data-i18n="hero.menu">See the menu</span></a>
+            <a class="btn btn--ghost btn--lg" href="#" target="_blank" rel="noopener" data-order-online hidden><span data-i18n="hero.order">Order online</span></a>
           </div>
+          <p class="hero__phone"><span data-i18n="hero.callLine">Call ahead:</span> <a href="tel:+18313130810" data-phone>(831) 313-0810</a></p>
           <div class="hero__meta">
             <span class="status" id="status" aria-live="polite"><span class="status__dot"></span><span class="status__text">Open every day 7 AM – 2 PM</span></span>
             <a class="hero__addr" href="https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023" target="_blank" rel="noopener" data-link="googleMaps"><span data-i18n="hero.address">512 San Benito St · Hollister, CA</span></a>
@@ -276,8 +218,8 @@
         <div class="print-only print-head">
           <img class="print-head__logo" src="images/logo.svg" alt="Buenos Días Cafecito" />
           <div>
-            <div class="print-head__line">512 San Benito St, Hollister, CA 95023 · (831) 313-0810</div>
-            <div class="print-head__line"><span data-i18n="print.hours">Open every day 7 AM – 2 PM</span> · <span data-i18n="print.order">Order ahead:</span> buenosdiascafecito.com</div>
+            <div class="print-head__line">512 San Benito St, Hollister, CA 95023 · buenosdiascafecito.com</div>
+            <div class="print-head__line"><span data-i18n="print.hours">Open every day 7 AM – 2 PM</span> · <span data-i18n="print.order">Call ahead:</span> <strong data-phone>(831) 313-0810</strong></div>
           </div>
         </div>
         <header class="section__head section__head--row">
@@ -305,24 +247,40 @@
           <h2 id="orderTitle" class="section__title" data-i18n="order.title">Three ways to get it</h2>
         </header>
         <div class="ways">
-          <article class="way way--featured">
+          <article class="way way--featured" data-way="phone">
+            <div class="way__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <h3 class="way__title" data-i18n="order.call.title">Call ahead</h3>
+            <p class="way__body" data-i18n="order.call.body">Tell us what you want and when you'll be here. Pay at the counter when you pick up. No app, no fees, no markup.</p>
+            <a class="btn btn--primary" href="tel:+18313130810"><span data-i18n="order.call.cta">Call</span> <span data-phone>(831) 313-0810</span></a>
+            <p class="way__note" data-i18n="order.call.note">Tip: say the item numbers from the menu and it goes twice as fast.</p>
+          </article>
+          <article class="way" data-way="text">
+            <div class="way__icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3 class="way__title" data-i18n="order.text.title">Text your order</h3>
+            <p class="way__body" data-i18n="order.text.body">Tap Add next to anything on the menu, then send it as a text. We'll text back to confirm and tell you when it's ready.</p>
+            <a class="btn btn--ghost" href="#textOrder" data-text-start><span data-i18n="order.text.cta">Start a text order</span></a>
+          </article>
+          <article class="way" data-way="online" hidden>
             <div class="way__icon" aria-hidden="true">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             </div>
-            <h3 class="way__title" data-i18n="order.pickup.title">Order ahead, pick up</h3>
-            <p class="way__body" data-i18n="order.pickup.body">Order straight from us through our own online ordering. Same in-house prices, no third-party markup, ready when you walk in.</p>
-            <a class="btn btn--primary" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="order.pickup.cta">Start an order</span></a>
-            <p class="way__note" data-i18n="order.pickup.note">Commission-free for the cafe, cheaper for you.</p>
+            <h3 class="way__title" data-i18n="order.online.title">Order online</h3>
+            <p class="way__body" data-i18n="order.online.body">Order ahead from our own ordering page. Same in-house prices.</p>
+            <a class="btn btn--ghost" href="#" target="_blank" rel="noopener" data-order-online><span data-i18n="order.online.cta">Order online</span></a>
           </article>
-          <article class="way">
+          <article class="way" data-way="delivery">
             <div class="way__icon" aria-hidden="true">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h-4l-3 7h8l2-4h2"/><path d="M12 17.5H9"/></svg>
             </div>
             <h3 class="way__title" data-i18n="order.delivery.title">Delivery</h3>
-            <p class="way__body" data-i18n="order.delivery.body">Not leaving the house? We're on DoorDash. Prices there include the app's markup, so if you can swing by, order direct.</p>
-            <a class="btn btn--ghost" href="https://www.doordash.com/store/buenos-dias-cafecito-san-benito-st-hollister-35978755/" target="_blank" rel="noopener" data-link="doordash"><span data-i18n="order.delivery.cta">Open DoorDash</span></a>
+            <p class="way__body" data-i18n="order.delivery.body">Not leaving the house? We're on DoorDash. Prices there include the app's fees, so if you can swing by, call ahead instead.</p>
+            <a class="btn btn--ghost" href="#" target="_blank" rel="noopener" data-delivery><span data-i18n="order.delivery.cta">Open DoorDash</span></a>
           </article>
-          <article class="way">
+          <article class="way" data-way="dinein">
             <div class="way__icon" aria-hidden="true">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18"/><path d="M5 11l1 9h12l1-9"/><path d="M12 3v8"/><path d="M8 3h8"/></svg>
             </div>
@@ -330,6 +288,26 @@
             <p class="way__body" data-i18n="order.dinein.body">Patio seating on San Benito Street, dogs welcome outside, wheelchair accessible, and we take Apple Pay. Bringing a big group? Call ahead and we'll set you up.</p>
             <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&destination=512+San+Benito+St%2C+Hollister%2C+CA+95023" target="_blank" rel="noopener" data-link="googleDirections"><span data-i18n="order.dinein.cta">Get directions</span></a>
           </article>
+        </div>
+
+        <!-- Text-your-order builder. Fills from the Add buttons on the menu. -->
+        <div class="text-order" id="textOrder" hidden>
+          <p class="kicker" data-i18n="text.kicker">Text your order</p>
+          <h3 class="text-order__title" data-i18n="text.title">Your text order</h3>
+          <div class="text-order__lines" id="orderLines"></div>
+          <div class="form__row">
+            <label class="field"><span data-i18n="text.name">Your name</span><input type="text" id="orderName" autocomplete="name" /></label>
+            <label class="field"><span data-i18n="text.time">Pickup time</span><input type="text" id="orderTime" data-i18n-placeholder="text.timeHint" placeholder="e.g. 7:45" /></label>
+          </div>
+          <label class="field"><span data-i18n="text.notes">Anything else? Eggs over easy, no onions, extra salsa…</span><textarea id="orderNotes" rows="3"></textarea></label>
+          <div class="text-order__total"><span data-i18n="text.total">Estimated total before tax</span><strong id="orderTotal">$0.00</strong></div>
+          <div class="text-order__actions">
+            <a class="btn btn--primary" id="orderSend" href="#">Text it</a>
+            <a class="btn btn--ghost" href="tel:+18313130810"><span data-i18n="text.call">Call instead</span></a>
+            <button class="btn btn--ghost" type="button" id="orderCopy"><span data-i18n="text.copy">Copy order</span></button>
+            <button class="link-btn" type="button" id="orderClear" data-i18n="text.clear">Clear</button>
+          </div>
+          <p class="text-order__how"><strong data-i18n="text.howTitle">How it works</strong> <span data-i18n="text.how">Your phone opens a text with the order already written. Send it, we text back to confirm, you pay when you pick up.</span></p>
         </div>
       </div>
     </section>
@@ -364,7 +342,7 @@
           <label class="field"><span data-i18n="form.notes">What are you thinking? Dishes, pickup or delivery, what time.</span><textarea name="notes" rows="4"></textarea></label>
           <div class="form__actions">
             <button class="btn btn--primary" type="submit"><span data-i18n="form.submit">Send request</span></button>
-            <span class="form__or"><span data-i18n="form.orCall">or call</span> <a href="tel:+18313130810">(831) 313-0810</a></span>
+            <span class="form__or"><span data-i18n="form.orCall">or call</span> <a href="tel:+18313130810" data-phone>(831) 313-0810</a></span>
           </div>
           <div class="form__result" id="formResult" hidden></div>
         </form>
@@ -388,13 +366,13 @@
               <h3 class="visit__label" data-i18n="visit.address">Address</h3>
               <address class="visit__addr">
                 <a href="https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023" target="_blank" rel="noopener" data-link="googleMaps">512 San Benito St<br />Hollister, CA 95023</a><br />
-                <a href="tel:+18313130810">(831) 313-0810</a>
+                <a href="tel:+18313130810" data-phone>(831) 313-0810</a>
               </address>
               <p class="visit__parking" data-i18n="visit.parking">Street parking on San Benito Street and the side streets. In the heart of downtown, a few doors from the Wednesday farmers' market.</p>
               <div class="visit__btns">
                 <a class="btn btn--ghost btn--sm" href="https://www.google.com/maps/dir/?api=1&destination=512+San+Benito+St%2C+Hollister%2C+CA+95023" target="_blank" rel="noopener" data-link="googleDirections"><span data-i18n="visit.google">Google Maps</span></a>
                 <a class="btn btn--ghost btn--sm" href="https://maps.apple.com/place?place-id=IF4263FA52F06225F" target="_blank" rel="noopener" data-link="appleMaps"><span data-i18n="visit.apple">Apple Maps</span></a>
-                <a class="btn btn--ghost btn--sm" href="buenos-dias-cafecito.vcf" download><span data-i18n="visit.save">Save our number</span></a>
+                <a class="btn btn--ghost btn--sm" id="vcardLink" href="#" download="buenos-dias-cafecito.vcf"><span data-i18n="visit.save">Save our number</span></a>
               </div>
             </div>
             <div class="visit__block visit__pinnacles">
@@ -473,7 +451,7 @@
       <div class="footer__col">
         <h3 data-i18n="footer.find">Find us</h3>
         <p><a href="https://www.google.com/maps/search/?api=1&query=Buenos+Dias+Cafecito+512+San+Benito+St+Hollister+CA+95023" target="_blank" rel="noopener" data-link="googleMaps">512 San Benito St<br />Hollister, CA 95023</a></p>
-        <p><a href="tel:+18313130810">(831) 313-0810</a></p>
+        <p><a href="tel:+18313130810" data-phone>(831) 313-0810</a></p>
       </div>
       <div class="footer__col">
         <h3 data-i18n="footer.follow">Follow along</h3>
@@ -493,9 +471,11 @@
 
   <!-- Always-visible order bar on phones. This is where the money is. -->
   <div class="mobile-cta no-print" aria-label="Quick actions">
-    <a class="btn btn--primary" href="https://direct.chownow.com/order/38288/locations/58321" target="_blank" rel="noopener" data-link="order"><span data-i18n="mobile.order">Order online</span></a>
-    <a class="btn btn--ghost" href="tel:+18313130810"><span data-i18n="mobile.call">Call</span></a>
+    <a class="btn btn--primary" href="tel:+18313130810"><span data-i18n="mobile.call">Call to order</span></a>
+    <a class="btn btn--ghost" href="#textOrder" id="mobileSecondary" data-text-start><span data-i18n="mobile.text">Text order</span></a>
   </div>
+  <!-- Floating "review your text order" pill; shows once something is added. -->
+  <a class="order-pill no-print" id="orderPill" href="#textOrder" data-text-start hidden><span class="order-pill__count" id="orderPillCount">0</span><span id="orderPillLabel">Review text order</span></a>
 
   <script src="data.js"></script>
   <script src="script.js"></script>
