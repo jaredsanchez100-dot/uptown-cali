@@ -695,3 +695,17 @@ h1, h2, h3 {
 /* The nested subcategory row sits visually inside its department. */
 .filters__row--sub { border-top: 1px solid var(--line); padding-top: 12px; }
 .filters__row--sub .filter { font-size: 13px; padding: 7px 16px; }
+
+/* ============================================================
+   PRODUCT VIDEO
+   An optional clip under the gallery, sized to the media column.
+   ============================================================ */
+.pdp__video { margin-top: 4px; }
+.pdp__video video {
+  width: 100%; display: block; border-radius: var(--radius);
+  border: 1px solid var(--line); background: #000;
+}
+.pdp__video figcaption {
+  color: var(--muted); font-size: 13px; margin-top: 8px;
+  letter-spacing: .02em;
+}

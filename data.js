@@ -119,6 +119,15 @@ const PRODUCTS = [
       "Relaxed fit — size down for a regular fit",
     ],
     badge: "Flagship",
+    // Short print-detail clip shown under the gallery. To add one to another
+    // product, drop the file in video/ and copy this block.
+    video: {
+      src: "video/heritage-script-print-detail.mp4",
+      webm: "video/heritage-script-print-detail.webm",
+      poster: "images/heritage-script-print-detail-poster.jpg",
+      alt: "Close-up video of the red and cream Uptown Cali script print on the black Heritage Script Tee, lit by red storefront neon",
+      caption: "Print detail — shot under the lights on Uptown.",
+    },
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {}, // shopify mode, e.g. { "M / Black": "4321567890" }
   },

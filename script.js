@@ -389,6 +389,11 @@
   var sel = { size: null, color: null, shot: 0 };
 
   function renderProduct(p) {
+    /* Picking a size re-renders this whole panel, which would otherwise
+       throw away a clip the visitor is part-way through. Remember where
+       they were and put them back. */
+    var prior = $(".pdp__video video");
+    var resumeAt = prior && !prior.paused ? prior.currentTime : null;
     /* A gallery entry is either a plain path or { image, alt } — the object
        form lets a specific shot carry its own description (e.g. "back view")
        instead of inheriting the product name. */
@@ -434,6 +439,26 @@
         '" aria-label="View image ' + (i + 1) + '">' + media(s, p.name) + "</button>";
     }).join("") + "</div>" : "";
 
+    /* An optional short clip under the gallery — the closest thing to
+       handling the fabric. Muted and inline so phones play it without
+       hijacking the screen. preload="metadata" fetches only the header,
+       not the whole file; playback starts when it scrolls into view (see
+       watchVideo) so an unseen clip never costs bandwidth or battery.
+       Controls stay on, so reduced-motion users can play it themselves. */
+    var videoBlock = p.video ? '' +
+      '<figure class="pdp__video">' +
+        '<video' +
+          (p.video.poster ? ' poster="' + esc(p.video.poster) + '"' : "") +
+          ' muted playsinline loop preload="metadata" controls' +
+          ' aria-label="' + esc(p.video.alt || (p.name + " print detail")) + '">' +
+          // WebM first because it's smaller where it's supported; the MP4
+          // is the universal fallback (Safari, older browsers).
+          (p.video.webm ? '<source src="' + esc(p.video.webm) + '" type="video/webm">' : "") +
+          '<source src="' + esc(p.video.src) + '" type="video/mp4">' +
+        "</video>" +
+        (p.video.caption ? '<figcaption>' + esc(p.video.caption) + "</figcaption>" : "") +
+      "</figure>" : "";
+
     var buyControl = p.comingSoon
       ? '<button class="btn btn--primary btn--block" disabled aria-disabled="true">Coming Soon</button>' +
         '<p class="hint">Concept piece — not yet in production. Join the list below the shop for first access.</p>'
@@ -452,6 +477,7 @@
           '<div class="pdp__media">' +
             '<div class="pdp__main">' + media(shots[sel.shot] || p, p.name) + "</div>" +
             thumbs +
+            videoBlock +
           "</div>" +
           "<div>" +
             (p.category ? '<div class="pdp__cat">' + esc(p.category) +
@@ -466,6 +492,45 @@
           "</div>" +
         "</div>" +
       "</div>";
+
+    watchVideo(resumeAt);
+  }
+
+  /* Play a product clip only while it's actually on screen, and never for
+     someone who asked for reduced motion — they get the poster and the
+     controls. Autoplay is deliberately not an attribute: starting playback
+     here is what lets preload stay at "metadata".
+
+     `resumeAt` carries the position across a re-render (picking a size
+     rebuilds this panel). Seeking has to wait for metadata, and so does
+     play() — calling it first makes the seek cancel playback. */
+  function watchVideo(resumeAt) {
+    var v = document.querySelector(".pdp__video video");
+    if (!v) return;
+    var reduced = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var seeked = false;
+
+    function startPlaying() {
+      if (reduced) return;
+      if (!seeked && resumeAt) {
+        seeked = true;
+        try { v.currentTime = resumeAt; } catch (e) {}
+      }
+      v.play().catch(function () {});
+    }
+    function start() {
+      if (v.readyState >= 1) startPlaying();
+      else v.addEventListener("loadedmetadata", startPlaying, { once: true });
+    }
+
+    if (!("IntersectionObserver" in window)) { start(); return; }
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) start();
+        else v.pause();
+      });
+    }, { threshold: 0.25 }).observe(v);
   }
 
   function openProduct(id) {
