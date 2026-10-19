@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- SEO: this is what shows up in Google and in link previews. -->
   <title>Uptown Cali — Official Store</title>
-  <meta name="description" content="Uptown Cali — Northern California streetwear. Heavyweight tees, fleece, headwear and accessories. Bay Area born, Uptown raised. Built Different." />
+  <meta name="description" content="Uptown Cali — Northern California streetwear. Tees, fleece, headwear and accessories. Northern Cali Style. Built Different." />
   <meta name="theme-color" content="#0b0b0b" />
   <meta property="og:title" content="Uptown Cali — Official Store" />
-  <meta property="og:description" content="Northern California streetwear. Heavyweight tees, fleece and headwear. Built Different." />
+  <meta property="og:description" content="Northern California streetwear. Tees, fleece and headwear. Built Different." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.uptowncali.com/" />
   <link rel="canonical" href="https://www.uptowncali.com/" />
@@ -19,7 +19,7 @@
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Uptown Cali — Official Store" />
-  <meta name="twitter:description" content="Northern California streetwear. Heavyweight tees, fleece and headwear. Built Different." />
+  <meta name="twitter:description" content="Northern California streetwear. Tees, fleece and headwear. Built Different." />
   <meta name="twitter:image" content="https://www.uptowncali.com/images/og-image.jpg" />
   <!-- Browser tab icon, and the icon iOS uses when the site is saved to a
        home screen. The 32px one is a tighter crop — the full crest's outer
@@ -36,19 +36,20 @@
 <body>
   <a href="#main" class="skip-link">Skip to content</a>
 
+  <div class="announcement" id="launchNotice"></div>
+
   <!-- ============ NAV ============ -->
   <header class="nav">
     <div class="nav__inner">
       <a href="#/" class="brand" data-brand-name>BRAND</a>
       <nav class="nav__links" aria-label="Main">
-        <a href="#shop">Shop</a>
+        <a href="#shop">Collection</a>
         <a href="#/shop/men">Men</a>
         <a href="#/shop/women">Women</a>
         <a href="#/shop/accessories">Accessories</a>
-        <a href="#/collections/norcal-lights">NorCal&nbsp;Lights</a>
         <a href="#lookbook" data-lookbook-link>Lookbook</a>
         <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="#contact">Updates</a>
       </nav>
       <button class="cart-btn" id="cartBtn" aria-label="Open cart">
         <span aria-hidden="true">Cart</span>
@@ -60,10 +61,7 @@
   <main id="main">
     <!-- ============ STOREFRONT (hidden when viewing a product) ============ -->
     <div id="storeView">
-      <!-- Hero. The background stays the men's neon shot; the card on the
-           right brings the women's capsule above the fold without touching
-           the BUILT DIFFERENT identity. -->
-      <section class="hero">
+      <section class="hero hero--store">
         <div class="hero__bg" aria-hidden="true"></div>
         <div class="hero__inner">
           <div class="hero__content">
@@ -72,34 +70,57 @@
             <p class="hero__sub" data-hero-sub></p>
             <div class="hero__ctas">
               <a href="#shop" class="btn btn--primary" data-hero-cta></a>
-              <a href="#/collections/norcal-lights" class="btn btn--ghost">Shop Women</a>
+              <a href="#/collections/norcal-lights" class="btn btn--ghost">Preview Women's</a>
             </div>
+            <p class="hero__footnote">Uptown Cali / Built Different. Repped Forever.</p>
           </div>
-          <a class="hero__women" href="#/collections/norcal-lights">
-            <img src="images/norcal-lights/01-norcal-lights-womens-baby-tee.jpg"
-                 alt="Adult woman wearing a fitted black Uptown Cali baby tee beside front and back product views." />
-            <span class="hero__women-cap">
-              <span class="hero__women-tag">New — Uptown Cali Women</span>
-              <span class="hero__women-name">NorCal Lights</span>
-            </span>
-          </a>
+          <div class="hero__picks" id="heroPicks" aria-label="Signature pieces"></div>
         </div>
       </section>
+
+      <div class="collection-strip" aria-label="Collection shortcuts">
+        <a href="#/shop/men">01 / Men's collection <span class="link-arrow" aria-hidden="true"></span></a>
+        <a href="#/collections/norcal-lights">02 / NorCal Lights women <span class="link-arrow" aria-hidden="true"></span></a>
+        <a href="#/shop/accessories">03 / Accessories <span class="link-arrow" aria-hidden="true"></span></a>
+      </div>
 
       <!-- Shop -->
       <section class="section" id="shop">
         <div class="section__head">
-          <h2 class="section__title">Shop</h2>
+          <p class="section__eyebrow">Explore Uptown Cali</p>
+          <h2 class="section__title">The Collection</h2>
           <p class="section__lead" data-shipping-note></p>
         </div>
         <div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
+        <div class="shop-tools">
+          <div class="shop-search"><label class="sr-only" for="productSearch">Search the collection</label>
+            <input type="search" id="productSearch" placeholder="Search tees, hoodies, designs…" autocomplete="off" />
+          </div>
+          <div class="shop-sort"><label for="productSort">Sort</label>
+            <select id="productSort"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name: A–Z</option></select>
+          </div>
+          <button class="saved-filter" id="savedFilter" aria-pressed="false">Saved <span id="savedCount">0</span></button>
+        </div>
+        <div class="shop-meta"><p id="resultCount" role="status" aria-live="polite"></p><button class="text-btn" id="resetFilters">Reset filters</button></div>
         <div class="grid" id="productGrid"></div>
+        <p class="catalog-note" id="catalogNote"></p>
+      </section>
+
+      <section class="capsule-band">
+        <a href="#/collections/norcal-lights" class="capsule-band__image">
+          <img src="images/norcal-lights/01-norcal-lights-womens-baby-tee.jpg" alt="NorCal Lights baby tee concept board" loading="lazy" />
+        </a>
+        <div class="capsule-band__copy"><p class="section__eyebrow">Uptown Cali Women / Concept preview</p>
+          <h2>NorCal Lights.</h2><p>Built Different. Cut for Her. Explore the women's apparel and swim concepts.</p>
+          <a href="#/collections/norcal-lights" class="btn btn--ghost">Explore the Capsule <span class="link-arrow" aria-hidden="true"></span></a>
+        </div>
       </section>
 
       <!-- Lookbook -->
       <section class="section section--alt" id="lookbook">
         <div class="section__head">
-          <h2 class="section__title">Lookbook</h2>
+          <h2 class="section__title">The Lookbook</h2>
+          <p class="section__lead">Explore the design direction. Visual previews, not customer photographs.</p>
         </div>
         <div class="lookbook" id="lookbookGrid"></div>
       </section>
@@ -119,14 +140,19 @@
       <!-- Contact / newsletter -->
       <section class="section section--alt" id="contact">
         <div class="contact">
-          <h2 class="section__title">Stay Posted</h2>
-          <p class="section__lead">Drop your email for first look at new releases.</p>
-          <form class="newsletter" id="newsletterForm">
+          <p class="section__eyebrow">The next chapter</p>
+          <h2 class="section__title">Stay in the Loop.</h2>
+          <p class="section__lead" id="signupLead">Release updates are coming. Save your favorite designs while you explore.</p>
+          <form class="newsletter" id="newsletterForm" data-interest="general" hidden>
             <label class="sr-only" for="email">Email address</label>
-            <input type="email" id="email" placeholder="you@email.com" required />
-            <button type="submit" class="btn btn--primary">Sign Up</button>
+            <input type="email" name="email" id="email" placeholder="you@email.com" autocomplete="email" required maxlength="254" />
+            <button type="submit" class="btn btn--primary">Get Updates</button>
           </form>
           <p class="form-msg" id="formMsg" role="status"></p>
+          <p class="signup-note" id="signupUnavailable">Email signup opens soon. Your saved pieces stay in this browser; saving does not subscribe you.</p>
+          <p class="signup-note" id="signupConsent" hidden>By signing up, you agree to receive Uptown Cali release emails. You can unsubscribe at any time.</p>
+          <a href="#/saved" class="btn btn--ghost" id="viewSaved">View Saved Pieces</a>
+          <a class="contact-email" id="contactEmail" hidden></a>
           <div class="socials" id="socials"></div>
           <p class="contact__script">We don't follow trends,<br /><span>we set them.</span></p>
         </div>
@@ -148,7 +174,7 @@
     <div class="drawer__scrim" id="cartScrim"></div>
     <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Shopping cart">
       <div class="drawer__head">
-        <h2>Your Cart</h2>
+        <h2 id="cartTitle">Your Cart</h2>
         <button class="icon-btn" id="cartClose" aria-label="Close cart">&#10005;</button>
       </div>
       <div class="drawer__body" id="cartItems"></div>
@@ -161,13 +187,14 @@
   </div>
 
   <!-- ============ LIGHTBOX ============ -->
-  <div class="lightbox" id="lightbox" hidden>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview" hidden>
     <button class="icon-btn lightbox__close" id="lightboxClose" aria-label="Close">&#10005;</button>
     <div class="lightbox__inner" id="lightboxInner"></div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <noscript><p class="noscript">Turn on JavaScript to explore the collection. Ordering is not open yet.</p></noscript>
   <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
