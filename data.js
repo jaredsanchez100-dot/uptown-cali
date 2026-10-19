@@ -8,73 +8,52 @@
 /* ---------- 1. YOUR BRAND ---------- */
 const BRAND = {
   name: "Uptown Cali",
-  // Shown above the hero headline. Keep it under ~10 words.
-  tagline: "Northern Cali Style ★ Est. MMXIV",
-  // The big hero headline. Short and loud reads best.
-  // The \n forces a line break.
+  tagline: "Northern California / Hollister, CA",
   heroHeadline: "BUILT\nDIFFERENT",
-  heroSub:
-    "Heavyweight tees out of Northern California. Bay Area born, Uptown raised. Discipline. Pressure. Results.",
-  heroCta: "Shop the Drop",
-
-  // About section
-  storyHeading: "The Uptown Mentality",
+  heroSub: "Signature script. Everyday black. Northern California streetwear with a point of view.",
+  heroCta: "Explore the Collection",
+  storyHeading: "Northern Cali Style.",
   story: [
-    "Uptown Cali represents the grind, the culture, and the legacy of Northern California — rooted in the streets and built different.",
-    "Discipline. Pressure. Results. We don't follow trends, we set them. Every piece is cut heavy, printed clean, and made to outlive the season it dropped in.",
-    // TODO — replace this with your real origin story: where it started,
-    // who started it, why. Customers read this part.
-    "Tell your story here — where the brand started, and what it means to rep your city.",
+    "Uptown Cali brings Northern California identity into graphic tees, fleece and headwear. Black, deep red and cream. Signature script and the UTC crest.",
+    "Represented in Hollister. Built Different. Repped Forever.",
   ],
-  // Optional little stat row under the story. Delete the array to hide it.
-  stats: [
-    { num: "MMXIV", label: "Established" },
-    { num: "280", label: "GSM Heavyweight" },
-    { num: "NOR CAL", label: "Designed in" },
-  ],
-
-  // TODO — swap in your real email and social links.
-  email: "hello@uptowncali.com",
-  socials: [
-    { label: "Instagram", url: "#" },
-    { label: "TikTok", url: "#" },
-  ],
-
-  // Shown in the footer. Free shipping threshold, returns, etc.
-  shippingNote: "Free shipping on orders over $100. Rep your city.",
+  stats: [],
+  // Add only a verified, monitored public inbox and real social profiles.
+  email: "",
+  socials: [],
+  shippingNote: "",
 };
 
+/* Store presentation. The original catalog and prices are retained.
+   No inventory, textile specifications or measurements are assumed. */
+const STOREFRONT = {
+  featured: ["tee-heritage-script", "hoodie-utc-heavyweight", "cap-utc-crest"],
+  previewNotice: "Collection preview · Ordering opens soon",
+  imageNotice: "Design preview. Final fit, materials and finish will be confirmed before release.",
+  shipping: "Shipping options and delivery estimates will be confirmed before ordering opens.",
+  returns: "Return and exchange details will be available before ordering opens.",
+};
+
+/* Optional email integration. Leave blank until an owned endpoint is ready.
+   POST JSON: {email, interest, consent:true}. Only {subscribed:true} after a
+   successful save is treated as success. No visitor email is stored locally. */
+const NEWSLETTER = { endpoint: "" };
+
 /* ---------- 2. CHECKOUT ----------
+   Keep demo mode until products, fulfillment and a payment provider are ready.
+   Existing adapters are retained but have not been verified against live
+   provider accounts. Read README-DEVELOPER.md before configuring them.
 
-   >>> GOING LIVE WITH STRIPE — READ THIS <<<
+   mode: "demo"    — preview cart only; no payment or reservation.
+   mode: "stripe"  — one Payment Link per product, quantity one per payment;
+                     multiple lines require separate payments. The variant is
+                     passed as client_reference_id, not enforced as inventory.
+   mode: "shopify" — whole-cart handoff using mapped Shopify variant IDs.
 
-   Everything is wired for Stripe already. The ONE thing missing is your
-   Payment Links, which only you can create because they live in your Stripe
-   account. Here's the whole job:
-
-     1. Stripe Dashboard -> Product catalogue -> + Add product
-     2. Name it and set the price (match the prices below).
-     3. On the product, click "Create payment link".
-     4. Copy the link — it looks like https://buy.stripe.com/aEU00i2Ck9Xy4qkcMM
-     5. Paste it into that product's `buyUrl` field further down this file.
-     6. Come back up here and change mode from "demo" to "stripe".
-
-   That last step is deliberately last. Until the links exist, "stripe" mode
-   gives shoppers a checkout that can't complete, which is worse than an honest
-   demo banner. Flip it once the buyUrl fields are filled in.
-
-   ONE LINK PER PRODUCT, NOT PER SIZE. A Payment Link can't tell which size was
-   picked, so when the shopper hits Pay the site appends their size and colour
-   to the URL as Stripe's `client_reference_id` — it shows up on the payment in
-   your dashboard, so you know what to ship. Belt and braces: in the Payment
-   Link settings also switch on a required custom field called "Size". Then the
-   buyer states it too, and the two should agree.
-
-   mode: "demo"    — cart works, checkout says no payment is taken.
-   mode: "stripe"  — each product pays through its own Payment Link (`buyUrl`).
-   mode: "shopify" — cart hands off to a Shopify cart permalink. See README. */
+   Provider prices, quantities and variants must be tested independently.
+   Changing mode alone does not make this store ready to accept orders. */
 const CHECKOUT = {
-  mode: "demo", // <-- change to "stripe" once the buyUrl fields below are filled
+  mode: "demo", // Keep until the release checks in README-DEVELOPER.md are complete.
   shopifyDomain: "", // e.g. "uptown-cali.myshopify.com" — only for shopify mode
   currency: "$",
 };
@@ -82,15 +61,14 @@ const CHECKOUT = {
 /* ---------- 3. PRODUCTS ----------
    Each product needs: id, name, price, and at least one size.
 
-   The six tees below are the concepts from your lookbook, with the real
-   photos wired in. `image` is what shows on the card; `gallery` adds the
+   The six tees below use artwork and visualizations from the lookbook. `image` is what shows on the card; `gallery` adds the
    extra angles as thumbnails on the product page.
 
    SIZES — for one-size items (hats, stickers, patches) use: sizes: ["One Size"]
    and the size picker hides itself automatically.
 
-   PRICES — the tees follow the $45–48 band we agreed. Check them against what
-   you're actually charging before you go live. */
+   PRICES — retained from the supplied export, not newly approved retail prices.
+   Confirm all prices and product specifications before taking orders. */
 const PRODUCTS = [
   {
     id: "tee-heritage-script",
@@ -113,10 +91,6 @@ const PRODUCTS = [
     description:
       "The signature red Uptown Cali script across the chest, with Northern Cali Style and the Est. MMXIV mark underneath. Clean script hit on the back over Discipline. Pressure. Results.",
     details: [
-      "280 GSM premium heavyweight cotton",
-      "Ribbed collar, twin needle stitching",
-      "Screen printed front and back",
-      "Relaxed fit — size down for a regular fit",
     ],
     badge: "Flagship",
     // Short print-detail clip shown under the gallery. To add one to another
@@ -126,7 +100,7 @@ const PRODUCTS = [
       webm: "video/heritage-script-print-detail.webm",
       poster: "images/heritage-script-print-detail-poster.jpg",
       alt: "Close-up video of the red and cream Uptown Cali script print on the black Heritage Script Tee, lit by red storefront neon",
-      caption: "Print detail — shot under the lights on Uptown.",
+      caption: "Design detail preview — Heritage Script.",
     },
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {}, // shopify mode, e.g. { "M / Black": "4321567890" }
@@ -150,10 +124,6 @@ const PRODUCTS = [
     description:
       "The UTC block mark front and centre, split by the red bars, over Uptown Cali and Northern Cali Brand. The core piece — the one that says it without saying much.",
     details: [
-      "280 GSM premium heavyweight cotton",
-      "Ribbed collar, twin needle stitching",
-      "Screen printed front and back",
-      "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -178,10 +148,7 @@ const PRODUCTS = [
     description:
       "Small Nor Cal chest hit up front, full Nor Cal Standard block across the back with the red rule and Discipline. Pressure. Results. Quiet from the front, loud from behind.",
     details: [
-      "280 GSM premium heavyweight cotton",
-      "Ribbed collar, twin needle stitching",
       "Small chest hit, large back print",
-      "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -204,10 +171,7 @@ const PRODUCTS = [
     description:
       "Collegiate Nor Cal Standard arch front and back, finished with Northern California and the Bay Area Luxury bar. The heaviest graphic in the drop.",
     details: [
-      "280 GSM premium heavyweight cotton",
-      "Ribbed collar, twin needle stitching",
       "Full-width collegiate back print",
-      "Relaxed fit — size down for a regular fit",
     ],
     badge: "New",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -230,10 +194,7 @@ const PRODUCTS = [
     description:
       "The Uptown script with the red underline sweep, Northern Cali Style beneath. Back carries the full Northern Cali / Uptown Cali Style lockup over Nor Cal Brand.",
     details: [
-      "280 GSM premium heavyweight cotton",
-      "Ribbed collar, twin needle stitching",
       "Two-colour script print, front and back",
-      "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -256,10 +217,7 @@ const PRODUCTS = [
     description:
       "UPTOWN over the UTC monogram over CALI, stacked collegiate. The back runs Nor Cal Brand with the Bay Area Born & Raised bar and the crest underneath.",
     details: [
-      "280 GSM premium heavyweight cotton",
-      "Ribbed collar, twin needle stitching",
       "Stacked collegiate front, full back print",
-      "Relaxed fit — size down for a regular fit",
     ],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -269,7 +227,7 @@ const PRODUCTS = [
   {
     id: "hoodie-utc-heavyweight",
     department: "Men",
-    name: "UTC Heavyweight Hoodie",
+    name: "UTC Crest Hoodie",
     category: "Fleece",
     price: 85,
     image: "images/utc-heavyweight-hoodie.webp",
@@ -278,12 +236,8 @@ const PRODUCTS = [
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black", "Forest"],
     description:
-      "Brushed heavyweight fleece with a double-lined hood, embroidered UTC crest on the chest and the arched Uptown Cali back hit. Cut roomy on purpose.",
+      "The UTC crest at the chest and an Uptown Cali back graphic. A black pullover hoodie design in the signature palette.",
     details: [
-      "400 GSM brushed cotton fleece",
-      "Double-lined hood, ribbed cuffs and hem",
-      "Embroidered chest crest",
-      "Unisex, relaxed fit",
     ],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -301,12 +255,10 @@ const PRODUCTS = [
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["Black", "Heather Grey"],
     description:
-      "Classic fleece crewneck with the tonal UTC monogram print and heritage flag stripes on the sleeve. The one you reach for when it drops below sixty.",
+      "A crewneck design with tonal UTC monogram artwork and heritage flag stripes on the sleeve.",
     details: [
-      "380 GSM cotton blend fleece",
       "Tonal monogram print",
       "Flag stripe sleeve detail",
-      "Ribbed collar, cuffs and hem",
     ],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -324,11 +276,8 @@ const PRODUCTS = [
     sizes: ["One Size"],
     colors: ["Black", "Black / Red"],
     description:
-      "Structured 6-panel snapback with the embroidered UTC crest on the front and a heritage star on the side. Flat brim, adjustable snap back.",
+      "A flat-brim snapback design with the UTC crest at the front and a heritage star at the side.",
     details: [
-      "Structured cotton twill, flat brim",
-      "3D embroidered UTC crest",
-      "Adjustable snapback closure",
     ],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
@@ -346,8 +295,8 @@ const PRODUCTS = [
     sizes: ["One Size"],
     colors: ["Pack of 5"],
     description:
-      "Five weatherproof die-cut stickers — UTC crest, Cali bear, heritage star, flag stripes and the Built Different script. For the laptop, the whip, the toolbox.",
-    details: ["5 die-cut vinyl stickers", "Weatherproof, UV resistant", "2–4 in across"],
+      "A five-design sticker concept featuring the UTC crest, Cali bear, heritage star, flag stripes and Built Different script.",
+    details: ["Five graphic designs", "Material and dimensions to be confirmed"],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},
@@ -364,8 +313,8 @@ const PRODUCTS = [
     sizes: ["One Size"],
     colors: ["Red / Black"],
     description:
-      "Woven Cali bear patch with a merrowed border and iron-on backing. Put it on the denim jacket, the tote, the hat — wherever it needs to go.",
-    details: ["Woven patch, merrowed border", "Iron-on backing", "3 in wide"],
+      "A Cali bear patch design in red and black. Final dimensions and attachment method will be confirmed before release.",
+    details: ["Cali bear artwork", "Red and black color direction"],
     badge: "",
     buyUrl: "", // <-- paste this product's Stripe Payment Link here
     variantIds: {},

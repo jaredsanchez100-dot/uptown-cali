@@ -1,0 +1,12 @@
+{
+  "name": "uptown-cali",
+  "private": true,
+  "description": "Static storefront; dependencies are for browser tests only.",
+  "scripts": {
+    "test": "playwright test",
+    "test:syntax": "node --check data.js && node --check script.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.57.0"
+  }
+}

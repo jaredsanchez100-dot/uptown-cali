@@ -9,7 +9,7 @@
   var money = function (n) { return CHECKOUT.currency + n.toFixed(2).replace(/\.00$/, ""); };
   /* Sets and swim capsules price as "From $X" — the number is the entry
      price, not the only price. Display-only; the cart still uses p.price. */
-  var priceLabel = function (p) { return (p.priceFrom ? "From " : "") + money(p.price); };
+  var priceLabel = function (p) { return p.comingSoon ? "Price at launch" : (p.priceFrom ? "From " : "") + money(p.price); };
 
   /* Data from data.js is author-controlled, but escaping keeps a stray
      apostrophe or "&" in a product name from breaking the markup. */
@@ -67,10 +67,11 @@
       cart = raw ? JSON.parse(raw) : [];
       // Drop lines whose product no longer exists in data.js — and any
       // concept piece that isn't purchasable, however it got in here.
-      cart = cart.filter(function (l) {
+      cart = Array.isArray(cart) ? cart.filter(function (l) {
+        if (!l || typeof l !== "object") return false;
         var p = byId(l.id);
-        return p && !p.comingSoon;
-      });
+        return p && !p.comingSoon && p.sizes.includes(l.size) && p.colors.includes(l.color) && Number.isInteger(l.qty) && l.qty > 0 && l.qty <= 20;
+      }).map(function (l) { return {id:l.id, size:l.size, color:l.color, qty:l.qty, key:lineKey(l.id,l.size,l.color)}; }) : [];
     } catch (e) { cart = []; }
   }
   function saveCart() {
@@ -96,14 +97,15 @@
     // Concept pieces can't be bought. The button is disabled too — this is
     // the backstop in case any path reaches here anyway.
     var product = byId(id);
-    if (product && product.comingSoon) {
+    if (!product || product.comingSoon) {
       toast("This piece is a concept — coming soon.");
       return;
     }
+    if (!product.sizes.includes(size) || !product.colors.includes(color)) { toast("Choose a size and color first."); return; }
     var key = lineKey(id, size, color);
     var found = null;
     for (var i = 0; i < cart.length; i++) if (cart[i].key === key) found = cart[i];
-    if (found) found.qty += 1;
+    if (found) found.qty = Math.min(20, found.qty + 1);
     else cart.push({ key: key, id: id, size: size, color: color, qty: 1 });
     saveCart();
     renderCart();
@@ -112,7 +114,7 @@
   function setQty(key, delta) {
     for (var i = 0; i < cart.length; i++) {
       if (cart[i].key === key) {
-        cart[i].qty += delta;
+        cart[i].qty = Math.min(20, cart[i].qty + delta);
         if (cart[i].qty < 1) cart.splice(i, 1);
         break;
       }
@@ -144,6 +146,11 @@
     $("#cartTotal").textContent = money(cartTotal());
 
     var body = $("#cartItems");
+    var focused = document.activeElement;
+    var focusAction = body.contains(focused) && ["inc", "dec", "rm"].find(function (action) {
+      return focused.dataset[action];
+    });
+    var focusKey = focusAction && focused.dataset[focusAction];
     if (!cart.length) {
       body.innerHTML = '<p class="cart-empty">Your cart is empty.</p>';
     } else {
@@ -152,7 +159,7 @@
         var variant = variantLabel(l);
         // In Stripe mode each line pays through its own Payment Link,
         // so the line carries its own pay button.
-        var pay = CHECKOUT.mode === "stripe" && p.buyUrl
+        var pay = CHECKOUT.mode === "stripe" && p.buyUrl && l.qty === 1
           ? '<a class="line__pay btn--ghost btn" href="' + esc(stripeUrl(p, l)) + '" target="_blank" rel="noopener" style="padding:5px 12px;font-size:12px">Pay</a>'
           : "";
         return '' +
@@ -178,11 +185,21 @@
 
     var note = $("#cartNote");
     var btn = $("#checkoutBtn");
-    btn.disabled = !cart.length;
-    if (CHECKOUT.mode === "demo") note.textContent = "Demo store — no payment is taken.";
+    btn.disabled = !cart.length || CHECKOUT.mode === "demo";
+    btn.textContent = CHECKOUT.mode === "demo" ? "Ordering Opens Soon" : "Checkout";
+    $("#cartTitle").textContent = CHECKOUT.mode === "demo" ? "Preview Cart" : "Your Cart";
+    if (CHECKOUT.mode === "demo") note.textContent = "A preview of your selections. Nothing is reserved and no payment is taken. Prices may change before release.";
     else if (CHECKOUT.mode === "stripe") note.textContent = "Secure checkout by Stripe.";
     else if (CHECKOUT.mode === "shopify") note.textContent = "Secure checkout by Shopify.";
     else note.textContent = "";
+
+    // Quantity changes rebuild the cart. Keep the keyboard on the same
+    // control, or move to another line / Close when its line was removed.
+    if (focusAction) {
+      var controls = Array.from(body.querySelectorAll('[data-' + focusAction + ']'));
+      var replacement = controls.find(function (control) { return control.dataset[focusAction] === focusKey; });
+      (replacement || controls[0] || $("#cartClose")).focus({ preventScroll: true });
+    }
   }
 
   /* ---------- Checkout ---------- */
@@ -202,8 +219,8 @@
         if (vid) parts.push(vid + ":" + l.qty);
         else missing = true;
       });
+      if (missing) { toast("Some selections aren't ready for checkout. No items were sent."); return; }
       if (parts.length) {
-        if (missing) toast("Some items aren't linked yet — checking out the rest.");
         window.location.href = "https://" + CHECKOUT.shopifyDomain + "/cart/" + parts.join(",");
         return;
       }
@@ -212,6 +229,7 @@
     }
 
     if (CHECKOUT.mode === "stripe") {
+      if (cart.some(function (l) { return l.qty !== 1; })) { toast("This checkout supports one of each item. Adjust quantities before paying."); return; }
       var withLinks = cart.filter(function (l) { var p = byId(l.id); return p && p.buyUrl; });
       if (withLinks.length === 1 && cart.length === 1) {
         window.open(stripeUrl(byId(cart[0].id), cart[0]), "_blank", "noopener");
@@ -254,16 +272,21 @@
 
     var socials = $("#socials");
     if (socials) {
-      socials.innerHTML = (BRAND.socials || []).map(function (s) {
+      socials.innerHTML = (BRAND.socials || []).filter(function (s) { return /^https:\/\//.test(s.url); }).map(function (s) {
         return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + "</a>";
       }).join("");
     }
 
     $("#year").textContent = new Date().getFullYear();
     $("#footerNote").textContent = CHECKOUT.mode === "demo"
-      ? "Demo store — orders are not processed."
+      ? "Collection preview. Ordering opens soon."
       : (BRAND.email || "");
 
+    var launch = $("#launchNotice");
+    launch.textContent = CHECKOUT.mode === "demo" ? STOREFRONT.previewNotice : "Northern California / Uptown Cali";
+    $("#catalogNote").textContent = CHECKOUT.mode === "demo" ? "Design previews. Prices shown are previews and may change before release. NorCal Lights pricing will be confirmed at launch." : "";
+    var contact = $("#contactEmail");
+    if (BRAND.email && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(BRAND.email)) { contact.hidden=false; contact.href="mailto:"+BRAND.email; contact.textContent=BRAND.email; }
     document.title = BRAND.name + " — Official Store";
   }
 
@@ -277,7 +300,25 @@
     { key: "Accessories", label: "Accessories" },
   ];
   var activeDept = "All";
-  var activeType = "All"; // subcategory within the active department
+  var activeType = "All";
+  var query = "";
+  var sortBy = "featured";
+  var savedOnly = false;
+  var SAVED_KEY = "saved:uptown-cali";
+  var saved = [];
+  try { var stored=JSON.parse(localStorage.getItem(SAVED_KEY)||"[]"); saved=Array.isArray(stored) ? stored.filter(function(id,i,a){return typeof id === "string" && byId(id) && a.indexOf(id)===i;}) : []; } catch(e) {}
+  function saveButton(p, cls) { return '<button class="save-piece '+(cls||'')+'" data-save="'+esc(p.id)+'" aria-pressed="'+saved.includes(p.id)+'" aria-label="'+(saved.includes(p.id)?'Unsave ':'Save ')+esc(p.name)+'">'+(saved.includes(p.id)?'Saved':'Save')+'</button>'; }
+  function toggleSaved(id) {
+    if (!byId(id)) return;
+    var next=saved.includes(id)?saved.filter(function(x){return x!==id;}):saved.concat(id);
+    try { localStorage.setItem(SAVED_KEY,JSON.stringify(next)); } catch(e) { toast("Your browser couldn't save this piece. Try allowing local storage."); return; }
+    saved=next; renderGrid();
+    document.querySelectorAll('[data-save="'+id+'"]').forEach(function(b){b.setAttribute('aria-pressed',saved.includes(id));b.setAttribute('aria-label',(saved.includes(id)?'Unsave ':'Save ')+byId(id).name);b.textContent=saved.includes(id)?'Saved':'Save';});
+    toast(saved.includes(id)?"Saved on this device":"Removed from saved pieces");
+  }
+  function renderHero() {
+    $("#heroPicks").innerHTML = STOREFRONT.featured.slice(0,2).map(function(id,i){var p=byId(id);return '<a class="hero-pick" href="#/product/'+esc(p.id)+'"><img src="'+esc(p.image)+'" alt="'+esc(p.alt||p.name)+'" fetchpriority="'+(i===0?'high':'auto')+'"><span class="hero-pick__caption"><span class="hero-pick__label">'+(i===0?'Signature script':'The UTC crest')+'</span><strong>'+esc(p.name)+'</strong><span>'+priceLabel(p)+' <span class="link-arrow" aria-hidden="true"></span></span></span></a>';}).join('');
+  }
 
   function deptMatch(p, dept) {
     return dept === "All" || p.department === dept;
@@ -289,6 +330,7 @@
 
   function renderFilters() {
     var box = $("#filters");
+    var focused=document.activeElement;var focusedDept=focused&&focused.dataset.dept;var focusedCat=focused&&focused.dataset.cat;
     var have = {};
     PRODUCTS.forEach(function (p) { if (p.department) have[p.department] = true; });
     var mains = DEPTS.filter(function (d) { return d.key === "All" || have[d.key]; });
@@ -305,10 +347,10 @@
     }
 
     // Subcategories nest inside the chosen department.
-    if (activeDept !== "All") {
+    {
       var subs = ["All"];
       PRODUCTS.forEach(function (p) {
-        if (p.department !== activeDept) return;
+        if (activeDept !== "All" && p.department !== activeDept) return;
         if (p.category && subs.indexOf(p.category) === -1) subs.push(p.category);
         (p.tags || []).forEach(function (t) { if (subs.indexOf(t) === -1) subs.push(t); });
       });
@@ -322,34 +364,36 @@
     if (!rows) { box.hidden = true; return; }
     box.hidden = false;
     box.innerHTML = rows;
+    if(focusedDept||focusedCat) { var replacement=Array.from(box.querySelectorAll("button")).find(function(b){return focusedDept?b.dataset.dept===focusedDept:b.dataset.cat===focusedCat;});if(replacement)replacement.focus({preventScroll:true}); }
   }
 
   function cardHTML(p) {
-    return '' +
-      '<article class="card">' +
-        '<a class="card__media" href="#/product/' + esc(p.id) + '">' +
-          media(p, p.name) +
-          (p.badge ? '<span class="card__badge">' + esc(p.badge) + "</span>" : "") +
-        "</a>" +
-        '<div class="card__body">' +
-          (p.category ? '<span class="card__cat">' + esc(p.category) + "</span>" : "") +
-          '<span class="card__name">' + esc(p.name) + "</span>" +
-          '<div class="card__row">' +
-            '<span class="card__price">' + priceLabel(p) + "</span>" +
-            '<a class="card__link" href="#/product/' + esc(p.id) + '">View</a>' +
-          "</div>" +
-        "</div>" +
-      "</article>";
+    return '<article class="card">' +
+      '<div class="card__visual"><a class="card__media" href="#/product/'+esc(p.id)+'">'+media(p,p.name)+
+      '<span class="card__badge">'+(p.comingSoon?'Concept / Coming Soon':(CHECKOUT.mode==='demo'?'Collection Preview':esc(p.badge||'')))+'</span></a>'+saveButton(p)+'</div>'+
+      '<div class="card__body"><span class="card__cat">'+esc(p.category)+'</span><a class="card__name" href="#/product/'+esc(p.id)+'">'+esc(p.name)+'</a>'+
+      '<div class="card__row"><span class="card__price">'+priceLabel(p)+'</span><a class="card__link" href="#/product/'+esc(p.id)+'" aria-label="View '+esc(p.name)+'">View <span class="link-arrow" aria-hidden="true"></span></a></div></div></article>';
   }
 
   function renderGrid() {
-    var list = PRODUCTS.filter(function (p) {
-      return deptMatch(p, activeDept) && typeMatch(p, activeType);
+    var needle=query.toLowerCase().trim();
+    var list=PRODUCTS.filter(function(p){return deptMatch(p,activeDept)&&typeMatch(p,activeType)&&(!savedOnly||saved.includes(p.id))&&(!needle||[p.name,p.category,p.collection,(p.tags||[]).join(' ')].join(' ').toLowerCase().includes(needle));});
+    list.sort(function(a,b){
+      if(sortBy==='price-low'||sortBy==='price-high') {
+        if(!!a.comingSoon!==!!b.comingSoon) return a.comingSoon?1:-1;
+        if(a.comingSoon && b.comingSoon) return a.name.localeCompare(b.name);
+        return sortBy==='price-low'?a.price-b.price:b.price-a.price;
+      }
+      if(sortBy==='name') return a.name.localeCompare(b.name);
+      var score=function(p){var i=STOREFRONT.featured.indexOf(p.id);return i===-1?(p.comingSoon?200:100)+PRODUCTS.indexOf(p):i;};
+      return score(a)-score(b);
     });
-    $("#productGrid").innerHTML = list.length
-      ? list.map(cardHTML).join("")
-      : '<p class="grid-empty">Nothing matches that combination — try clearing one of the filters.</p>';
+    $("#productGrid").innerHTML=list.length?list.map(cardHTML).join(''):'<div class="grid-empty"><h3>'+ (savedOnly?'No saved pieces here yet.':'No pieces found.')+'</h3><p>'+(savedOnly?'Tap Save on a design to keep it on this device.':'Try another search or clear your filters.')+'</p><button class="btn btn--ghost" data-reset>Explore All Pieces</button></div>';
+    $("#resultCount").textContent=list.length+' '+(list.length===1?'piece':'pieces')+(savedOnly?' in your saved selection':' to explore');
+    $("#savedCount").textContent=saved.length;
+    $("#savedFilter").setAttribute('aria-pressed',savedOnly);
   }
+  function resetShop() { activeDept='All';activeType='All';query='';sortBy='featured';savedOnly=false;$("#productSearch").value='';$("#productSort").value='featured';renderFilters();renderGrid(); }
 
   function renderLookbook() {
     var grid = $("#lookbookGrid");
@@ -461,8 +505,8 @@
 
     var buyControl = p.comingSoon
       ? '<button class="btn btn--primary btn--block" disabled aria-disabled="true">Coming Soon</button>' +
-        '<p class="hint">Concept piece — not yet in production. Join the list below the shop for first access.</p>'
-      : '<button class="btn btn--primary btn--block" id="addBtn">Add to Cart</button>' +
+        '<p class="hint">Concept piece. Production, sizing and pricing are not final. Save this design to revisit it on this device.</p>'
+      : '<button class="btn btn--primary btn--block" id="addBtn">' + (CHECKOUT.mode === "demo" ? "Add to Preview Cart" : "Add to Cart") + '</button>' +
         '<p class="hint" id="pdpHint"></p>';
 
     var backLink = p.collection === "NorCal Lights"
@@ -476,21 +520,23 @@
         '<div class="pdp__grid">' +
           '<div class="pdp__media">' +
             '<div class="pdp__main">' + media(shots[sel.shot] || p, p.name) + "</div>" +
-            thumbs +
+            thumbs + '<p class="image-note">'+esc(STOREFRONT.imageNotice)+'</p>' +
             videoBlock +
           "</div>" +
           "<div>" +
             (p.category ? '<div class="pdp__cat">' + esc(p.category) +
               (p.collection ? " · " + esc(p.collection) : "") + "</div>" : "") +
             '<h1 class="pdp__title">' + esc(p.name) + "</h1>" +
-            '<div class="pdp__price">' + priceLabel(p) + "</div>" +
+            '<div class="pdp__price">' + priceLabel(p) + "</div>" + (CHECKOUT.mode === "demo" && !p.comingSoon ? '<p class="preview-price">Preview price · Ordering opens soon</p>' : "") +
             (p.description ? '<p class="pdp__desc">' + esc(p.description) + "</p>" : "") +
             sizeBlock + colorBlock +
-            buyControl +
-            ((p.details && p.details.length) ? '<div class="pdp__details"><h3>Details</h3><ul>' +
+            buyControl + saveButton(p,"save-piece--pdp") +
+            ((p.details && p.details.length) ? '<div class="pdp__details"><h3>Design details</h3><ul>' +
               p.details.map(function (d) { return "<li>" + esc(d) + "</li>"; }).join("") + "</ul></div>" : "") +
+            '<div class="product-faq"><details><summary>Fit &amp; sizing</summary><p>'+esc(p.sizeGuide || 'Garment measurements and final fit are being confirmed. The visuals show design direction; use the final size guide when ordering opens.')+'</p></details><details><summary>Shipping &amp; delivery</summary><p>'+esc(STOREFRONT.shipping)+'</p></details><details><summary>Returns &amp; exchanges</summary><p>'+esc(STOREFRONT.returns)+'</p></details></div>' +
           "</div>" +
         "</div>" +
+        '<section class="related"><p class="section__eyebrow">Keep exploring</p><h2>In the same rotation.</h2><div class="grid">'+PRODUCTS.filter(function(x){return x.id!==p.id && x.department===p.department;}).slice(0,3).map(cardHTML).join('')+'</div></section>' +
       "</div>";
 
     watchVideo(resumeAt);
@@ -579,7 +625,7 @@
             '<p class="coll__sub">Northern California heritage, recut for her. Women’s streetwear and swim built for the coast, the city and everything after dark.</p>' +
             '<div class="coll__ctas">' +
               '<a class="btn btn--primary" href="#nl-apparel">Explore the Collection</a>' +
-              '<a class="btn btn--ghost" href="#/shop/swim">Shop Swim</a>' +
+              '<a class="btn btn--ghost" href="#/shop/swim">Explore Swim</a>' +
             "</div>" +
           "</div>" +
           '<div class="coll__hero-media" aria-hidden="false">' +
@@ -591,7 +637,7 @@
         // Collection statement.
         '<section class="coll__statement">' +
           '<h2>Built Different. Cut for Her.</h2>' +
-          '<p>Women-specific fits, heavyweight construction and the same Northern California identity that defines Uptown Cali.</p>' +
+          '<p>A women’s apparel and swim concept collection in Uptown Cali’s signature black, red and cream.</p>' +
         "</section>" +
 
         // Apparel grid (concepts 1-6).
@@ -620,12 +666,12 @@
 
         // Early access — same signup logic as the storefront form.
         '<section class="coll__signup">' +
-          '<h2>Be First When the Lights Come On.</h2>' +
-          '<p>Drop your email for first access when the women’s capsule releases.</p>' +
-          '<form class="newsletter" id="collSignupForm">' +
+          '<h2>The Next Chapter.</h2>' +
+          '<p>Keep an eye on NorCal Lights. Save the concepts you want to see next.</p>' +
+          '<form class="newsletter" id="collSignupForm" data-interest="norcal-lights" hidden>' +
             '<label class="sr-only" for="collEmail">Email address</label>' +
-            '<input type="email" id="collEmail" placeholder="you@email.com" required />' +
-            '<button type="submit" class="btn btn--primary">Sign Up</button>' +
+            '<input type="email" id="collEmail" name="email" placeholder="you@email.com" autocomplete="email" maxlength="254" required />' +
+            '<button type="submit" class="btn btn--primary">Get Updates</button>' +
           "</form>" +
           '<p class="form-msg" id="collFormMsg" role="status"></p>' +
         "</section>" +
@@ -633,6 +679,7 @@
       "</div>";
 
     bindSignup("#collSignupForm", "#collFormMsg");
+    if(signupReady()) $("#collSignupForm").insertAdjacentHTML('afterend','<p class="signup-note">By signing up, you agree to receive Uptown Cali release emails. You can unsubscribe at any time.</p>');
   }
 
   function openCollection() {
@@ -657,6 +704,7 @@
   function openShopFiltered(dept, sub) {
     activeDept = dept;
     activeType = sub || "All";
+    query="";savedOnly=false;$("#productSearch").value="";
     closeProduct();
     renderFilters();
     renderGrid();
@@ -665,8 +713,19 @@
   }
 
   function route() {
+    closeDrawer(); closeLightbox();
+    if (window.location.hash === "#nl-apparel" || window.location.hash === "#nl-swim") {
+      // The collection markup may still exist inside a hidden product view
+      // after visiting Home. Back/forward navigation must reveal it again.
+      if ($("#productView").hidden || !document.getElementById("nl-apparel")) openCollection();
+      document.getElementById(window.location.hash.slice(1)).scrollIntoView({ behavior: "auto" });
+      return;
+    }
+    setMetaDescription(null);
+    if(window.location.hash === '#/saved') { resetShop(); savedOnly=true; closeProduct(); renderGrid(); $("#shop").scrollIntoView({behavior:'auto'}); return; }
+    if(window.location.hash === '#shop' || window.location.hash === '#/' || !window.location.hash) resetShop();
     var m = window.location.hash.match(/^#\/product\/(.+)$/);
-    if (m) { setMetaDescription(null); openProduct(decodeURIComponent(m[1])); return; }
+    if (m) { setMetaDescription(null); try { openProduct(decodeURIComponent(m[1])); } catch(e) { window.location.hash="#/"; } return; }
     if (/^#\/collections\/norcal-lights\/?$/.test(window.location.hash)) { openCollection(); return; }
     setMetaDescription(null);
     if (/^#\/shop\/women\/?$/.test(window.location.hash)) { openShopFiltered("Women"); return; }
@@ -688,8 +747,26 @@
      EVENTS — delegated, so re-rendered markup keeps working.
      ============================================================ */
   document.addEventListener("click", function (e) {
+    if(e.target.id === 'cartScrim') { closeDrawer(); return; }
+    if(e.target.id === 'lightbox') { closeLightbox(); return; }
     var t = e.target.closest("button, a");
     if (!t) return;
+
+    if (t.dataset.save) {
+      toggleSaved(t.dataset.save);
+      var replacement = t.isConnected ? t : $("#productGrid").querySelector('[data-save="' + t.dataset.save + '"]');
+      // Un-saving a filtered card removes its button. Focus the next usable
+      // action instead of a copy of the button in a hidden product page.
+      replacement = replacement || $("#productGrid [data-save]") || $("#productGrid [data-reset]");
+      if (replacement) replacement.focus({ preventScroll: true });
+      return;
+    }
+    if (t.id === 'resetFilters' || t.hasAttribute('data-reset')) {
+      resetShop();
+      if (!t.isConnected) $("#productSearch").focus({ preventScroll: true });
+      return;
+    }
+    if (t.id === 'savedFilter') { savedOnly=!savedOnly;renderGrid();return; }
 
     // Filters: picking a department resets its nested subcategory.
     if (t.dataset.dept) {
@@ -708,9 +785,14 @@
 
     // Product options
     var p = byId((window.location.hash.match(/^#\/product\/(.+)$/) || [])[1] || "");
-    if (t.dataset.size && p) { sel.size = t.dataset.size; renderProduct(p); return; }
-    if (t.dataset.color && p) { sel.color = t.dataset.color; renderProduct(p); return; }
-    if (t.dataset.shot && p) { sel.shot = Number(t.dataset.shot); renderProduct(p); return; }
+    if (t.dataset.size && p) { sel.size = t.dataset.size; renderProduct(p); document.querySelector('[data-size="'+sel.size+'"]').focus({preventScroll:true}); return; }
+    if (t.dataset.color && p) { sel.color = t.dataset.color; renderProduct(p); document.querySelector('[data-color="'+sel.color+'"]').focus({preventScroll:true}); return; }
+    if (t.dataset.shot && p) {
+      sel.shot = Number(t.dataset.shot);
+      renderProduct(p);
+      document.querySelector('[data-shot="' + sel.shot + '"]').focus({ preventScroll: true });
+      return;
+    }
 
     if (t.id === "addBtn" && p) {
       var needsSize = p.sizes && p.sizes.length && !(p.sizes.length === 1 && p.sizes[0] === "One Size");
@@ -727,7 +809,7 @@
         return;
       }
       addToCart(p.id, sel.size, sel.color);
-      toast("Added to cart");
+      toast(CHECKOUT.mode === "demo" ? "Added to preview cart" : "Added to cart");
       openDrawer();
       return;
     }
@@ -746,36 +828,44 @@
     if (t.id === "lightboxClose") { closeLightbox(); return; }
   });
 
-  function openDrawer() { $("#cartDrawer").hidden = false; document.body.style.overflow = "hidden"; }
-  function closeDrawer() { $("#cartDrawer").hidden = true; document.body.style.overflow = ""; }
-
-  function openLightbox(item) {
-    $("#lightboxInner").innerHTML = media(item, item.caption);
-    $("#lightbox").hidden = false;
-  }
-  function closeLightbox() { $("#lightbox").hidden = true; }
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key !== "Escape") return;
-    if (!$("#lightbox").hidden) closeLightbox();
-    else if (!$("#cartDrawer").hidden) closeDrawer();
+  var lastFocus=null;
+  function lockBackground(locked) { ['.skip-link','.nav','#main','.footer'].forEach(function(sel){var el=$(sel);if(el)el.inert=locked;});document.body.style.overflow=locked?'hidden':''; }
+  function openDrawer() { lastFocus=document.activeElement;$("#cartDrawer").hidden=false;lockBackground(true);$("#cartClose").focus(); }
+  function closeDrawer() { if($("#cartDrawer").hidden)return;$("#cartDrawer").hidden=true;lockBackground(false);if(lastFocus&&lastFocus.isConnected)lastFocus.focus({preventScroll:true}); }
+  function openLightbox(item) { lastFocus=document.activeElement;$("#lightboxInner").innerHTML=media(item,item.caption);$("#lightbox").hidden=false;lockBackground(true);$("#lightboxClose").focus(); }
+  function closeLightbox() { if($("#lightbox").hidden)return;$("#lightbox").hidden=true;lockBackground(false);if(lastFocus&&lastFocus.isConnected)lastFocus.focus({preventScroll:true}); }
+  document.addEventListener('keydown',function(e){
+    var modal=!$("#lightbox").hidden?$("#lightbox"):!$("#cartDrawer").hidden?$("#cartDrawer"):null;
+    if(!modal)return;
+    if(e.key==='Escape'){closeLightbox();closeDrawer();return;}
+    if(e.key==='Tab') {var focusables=Array.from(modal.querySelectorAll('button:not([disabled]),a[href],input:not([disabled])'));var first=focusables[0],last=focusables[focusables.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
   });
 
-  /* One signup behavior, bound wherever a signup form renders (the
-     storefront section and the NorCal Lights early-access section).
-     No backend here — this just confirms to the visitor. To actually
-     collect addresses, point the form at Mailchimp/Formspree/Buttondown
-     (see references/deploy.md in the skill). */
-  function bindSignup(formSel, msgSel) {
-    var form = $(formSel);
-    if (!form) return;
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      $(msgSel).textContent = "Thanks — you're on the list.";
-      e.target.reset();
+  function signupReady() { try {return new URL(NEWSLETTER.endpoint).protocol==='https:';}catch(e){return false;} }
+  function bindSignup(formSel,msgSel) {
+    var form=$(formSel);if(!form)return;
+    var ready=signupReady();form.hidden=!ready;
+    if(form.id==='newsletterForm') {
+      $("#signupUnavailable").hidden=ready;$("#signupConsent").hidden=!ready;
+      $("#signupLead").textContent=ready?'Get the first look at new releases.':'Release updates are coming. Save your favorite designs while you explore.';
+    }
+    if(!ready) {if(form.id==='collSignupForm')$(msgSel).textContent='Email signup opens soon. Save your favorite concepts on this device for now.';return;}
+    form.addEventListener('submit',async function(e){
+      e.preventDefault();if(!form.reportValidity())return;
+      var button=form.querySelector('button');if(button.disabled)return;
+      button.disabled=true;$(msgSel).textContent='Signing you up…';
+      var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},12000);
+      try {
+        var res=await fetch(NEWSLETTER.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:form.querySelector('input[type="email"]').value.trim(),interest:form.dataset.interest||'general',consent:true}),signal:controller.signal});
+        var result=await res.json();if(!res.ok||result.subscribed!==true)throw new Error('not-subscribed');
+        $(msgSel).textContent="You're on the list. Watch your inbox for Uptown Cali updates.";form.reset();
+      }catch(e){$(msgSel).textContent="We couldn't complete your signup. Your email has not been confirmed. Please try again.";}
+      finally{clearTimeout(timeout);button.disabled=false;}
     });
   }
-  bindSignup("#newsletterForm", "#formMsg");
+  bindSignup('#newsletterForm','#formMsg');
+  $("#productSearch").addEventListener('input',function(e){query=e.target.value;renderGrid();});
+  $("#productSort").addEventListener('change',function(e){sortBy=e.target.value;renderGrid();});
 
   /* The product-page magnifier zooms toward the cursor: the point under
      the pointer stays under the pointer, so hovering the chest print
@@ -796,6 +886,7 @@
   /* ---------- Boot ---------- */
   loadCart();
   renderBrand();
+  renderHero();
   renderFilters();
   renderGrid();
   renderLookbook();
