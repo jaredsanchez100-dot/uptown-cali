@@ -323,8 +323,8 @@ const PRODUCTS = [
   /* ============================================================
      UPTOWN CALI WOMEN — NORCAL LIGHTS (concept capsule)
 
-     These ten pieces are the women's collection, presented from the
-     approved concept boards. They are NOT purchasable yet:
+     These nine pieces are the women's collection, presented from the
+     approved concept previews. They are NOT purchasable yet:
      `comingSoon: true` disables Add to Cart and labels the card, and
      the engine refuses to cart them even if something slips through.
      When manufacturing and checkout are confirmed, flip comingSoon to
@@ -512,8 +512,8 @@ const PRODUCTS = [
     fit: "contain",
     price: 42,
     priceFrom: true,
-    image: "images/norcal-lights/07-golden-hour-triangle-swim-set.jpg",
-    alt: "Product board showing front and back views of a black Uptown Cali triangle swim top and two coordinating bottom styles.",
+    image: "images/norcal-lights/07-golden-hour-triangle-swim-set.webp",
+    alt: "Concept preview of a black Uptown Cali triangle swim set on gray stone, with red-and-cream piping, two bottom styles and close-up details.",
     gallery: [],
     sizes: ["XS", "S", "M", "L", "XL", "2XL"],
     colors: ["Black"],
@@ -541,8 +541,8 @@ const PRODUCTS = [
     fit: "contain",
     price: 46,
     priceFrom: true,
-    image: "images/norcal-lights/08-midnight-chrome-bandeau-swim-set.jpg",
-    alt: "Product board showing front and back views of a red-and-black Uptown Cali bandeau swim set and hardware details.",
+    image: "images/norcal-lights/08-midnight-chrome-bandeau-swim-set.webp",
+    alt: "Concept preview of a red-and-black Uptown Cali bandeau swim set on gray stone, with front and back views and gunmetal hardware details.",
     gallery: [],
     sizes: ["XS", "S", "M", "L", "XL", "2XL"],
     colors: ["Deep Red / Black"],
@@ -570,8 +570,8 @@ const PRODUCTS = [
     fit: "contain",
     price: 48,
     priceFrom: true,
-    image: "images/norcal-lights/09-cali-sport-scoop-swim-set.jpg",
-    alt: "Product board showing front, side and back views of an athletic black Uptown Cali scoop swim set.",
+    image: "images/norcal-lights/09-cali-sport-scoop-swim-set.webp",
+    alt: "Concept preview of a black Uptown Cali scoop swim set on gray stone, with a racerback top, two bottom styles and crest and piping details.",
     gallery: [],
     sizes: ["XS", "S", "M", "L", "XL", "2XL"],
     colors: ["Black"],
@@ -584,36 +584,6 @@ const PRODUCTS = [
       "Racer-inspired back",
       "Branded underband",
       "High-rise and mid-rise bottom concepts",
-    ],
-    badge: "Concept — Coming Soon",
-    buyUrl: "",
-    variantIds: {},
-  },
-  {
-    id: "women-coast-after-dark-one-piece-cover-up-set",
-    name: "Coast After Dark One-Piece & Cover-Up Set",
-    category: "Swim",
-    tags: ["Cover-Ups"],
-    department: "Women",
-    collection: "NorCal Lights",
-    comingSoon: true,
-    fit: "contain",
-    price: 42,
-    priceFrom: true,
-    image: "images/norcal-lights/10-coast-after-dark-one-piece-cover-up-set.jpg",
-    alt: "Product board showing an Uptown Cali black one-piece swim design, mesh cover-up and matching sarong.",
-    gallery: [],
-    sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-    colors: ["Black / Red"],
-    sizeNote:
-      "Swim tops and bottoms are planned to be sized separately, so you can mix sizes for the right fit.",
-    description:
-      "Black square-neck one-piece with red contour panels and a UTC chest crest, paired with a fine black mesh long-sleeve cover-up and an optional matching sarong.",
-    details: [
-      "Square-neck one-piece direction",
-      "UTC chest crest",
-      "Fine mesh cover-up with upper-back graphic",
-      "Optional mesh sarong",
     ],
     badge: "Concept — Coming Soon",
     buyUrl: "",
@@ -648,13 +618,11 @@ const LOOKBOOK = [
   { group: "NorCal Lights — Women", image: "images/norcal-lights/06-norcal-lights-washed-black-denim-set.jpg", caption: "Washed-Black Denim Set", fit: "contain",
     alt: "Adult woman wearing an Uptown Cali washed-black denim jacket and wide-leg jeans beside product views and details." },
 
-  /* Swim — product-only boards. */
-  { group: "NorCal Lights — Swim", image: "images/norcal-lights/07-golden-hour-triangle-swim-set.jpg", caption: "Golden Hour Triangle Set", fit: "contain",
-    alt: "Product board showing front and back views of a black Uptown Cali triangle swim top and two coordinating bottom styles." },
-  { group: "NorCal Lights — Swim", image: "images/norcal-lights/08-midnight-chrome-bandeau-swim-set.jpg", caption: "Midnight Chrome Bandeau Set", fit: "contain",
-    alt: "Product board showing front and back views of a red-and-black Uptown Cali bandeau swim set and hardware details." },
-  { group: "NorCal Lights — Swim", image: "images/norcal-lights/09-cali-sport-scoop-swim-set.jpg", caption: "Cali Sport Scoop Set", fit: "contain",
-    alt: "Product board showing front, side and back views of an athletic black Uptown Cali scoop swim set." },
-  { group: "NorCal Lights — Swim", image: "images/norcal-lights/10-coast-after-dark-one-piece-cover-up-set.jpg", caption: "Coast After Dark One-Piece & Cover-Up", fit: "contain",
-    alt: "Product board showing an Uptown Cali black one-piece swim design, mesh cover-up and matching sarong." },
+  /* Swim — product-only concept previews. */
+  { group: "NorCal Lights — Swim", image: "images/norcal-lights/07-golden-hour-triangle-swim-set.webp", caption: "Golden Hour Triangle Set", fit: "contain",
+    alt: "Concept preview of a black Uptown Cali triangle swim set on gray stone, with red-and-cream piping, two bottom styles and close-up details." },
+  { group: "NorCal Lights — Swim", image: "images/norcal-lights/08-midnight-chrome-bandeau-swim-set.webp", caption: "Midnight Chrome Bandeau Set", fit: "contain",
+    alt: "Concept preview of a red-and-black Uptown Cali bandeau swim set on gray stone, with front and back views and gunmetal hardware details." },
+  { group: "NorCal Lights — Swim", image: "images/norcal-lights/09-cali-sport-scoop-swim-set.webp", caption: "Cali Sport Scoop Set", fit: "contain",
+    alt: "Concept preview of a black Uptown Cali scoop swim set on gray stone, with a racerback top, two bottom styles and crest and piping details." },
 ];

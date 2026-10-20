@@ -1,6 +1,6 @@
 # Uptown Cali — Developer Handoff
 
-Updated 2026-10-19. Integrates `Uptown-Cali-Website(2).zip` with repository base `9e6bee2`. Checkout and email signup remain disabled. This branch is for pull-request review; production has not been published or verified as part of this work.
+Updated 2026-10-20. The original storefront integration was merged in PR #3. This update replaces the three remaining swim images with the approved realistic concept previews and removes Coast After Dark, based on `main` at `5403091`. Checkout and email signup remain disabled.
 
 ## Runtime and hosting
 
@@ -25,10 +25,12 @@ The hosting details above come from the supplied handoff. This integration fetch
 | `STOREFRONT` | Featured IDs and design-preview/fulfillment notices |
 | `NEWSLETTER` | Optional owned signup endpoint; blank by default |
 | `CHECKOUT` | Demo mode and optional provider configuration |
-| `PRODUCTS` | 21 products; original IDs and prices preserved |
-| `LOOKBOOK` | 16 existing tiles |
+| `PRODUCTS` | 20 products; retained products keep their IDs and prices |
+| `LOOKBOOK` | 15 tiles, including three updated swim previews |
 
-Public social links are rendered only for HTTPS URLs. No Instagram handle or contact address is invented. The apparent fabric weights, construction specifications and sizing recommendations removed in this revision were unverified. All source assets are preserved and publicly described as design previews.
+Public social links are rendered only for HTTPS URLs. No Instagram handle or contact address is invented. The apparent fabric weights, construction specifications and sizing recommendations removed in the original storefront integration were unverified. Imagery remains publicly described as design previews.
+
+The approved swim images are full-frame 1024 × 1536 WebP assets. Fresh `.webp` paths replace the old `.jpg` paths in products, the lookbook and the collection hero. The three old swim boards and the retired Coast After Dark image were removed; Git history retains them. The retired product and lookbook entry are absent, and existing unknown-product and storage guards handle old links, saved IDs and cart entries.
 
 ## Routes and state
 
@@ -43,7 +45,7 @@ Saved IDs use localStorage key `saved:uptown-cali`; cart lines use `cart:uptown-
 
 ## Preserve the concept guards
 
-All ten NorCal Lights products remain `comingSoon: true`. They show “Price at launch,” have no Add to Cart control, and are rejected both by `addToCart()` and `loadCart()`. Do not remove these guards casually.
+All nine NorCal Lights products remain `comingSoon: true`. They show “Price at launch,” have no Add to Cart control, and are rejected both by `addToCart()` and `loadCart()`. Do not remove these guards casually.
 
 Concept copy and source prices came from an earlier supplied specification, according to the original handoff. They are not owner-approved production specifications. Men/accessory prices also remain provisional until the owner confirms them.
 
@@ -77,6 +79,6 @@ See [QA notes](docs/qa/README.md) for browser coverage, screenshots and remainin
 
 Integration QA corrected focus loss when saved cards, gallery thumbnails and cart controls are rebuilt, and restored hidden collection sections when returning through browser history. Decorative arrows use CSS so missing system glyphs cannot render empty boxes.
 
-All 21 product IDs and numeric prices, all ten concept flags, product options and image/gallery paths, all 16 lookbook entries, and the existing images, videos, `/dj-jas/` and hosting workflow were checked against `origin/main`. No runtime dependency was added.
+The October 19 integration preserved the original 21 products and 16 lookbook entries. The October 20 update deliberately removes one product and one lookbook entry and replaces three swim images; retained product IDs, prices, options and concept guards remain unchanged. Existing apparel and men's imagery, videos, `/dj-jas/` and the hosting workflow remain unchanged. No runtime dependency was added.
 
-Production deployment, real device/Safari testing, screen-reader testing and live provider transactions are outside the completed local Chromium checks. Review the pull request through the existing deployment process. Keep checkout and newsletter disabled; neither integration is connected by this change.
+Real device/Safari testing, screen-reader testing and live provider transactions are outside the local Chromium checks. The existing GitHub-to-Vercel deployment process publishes `main`. Keep checkout and newsletter disabled; neither integration is connected by this change.
