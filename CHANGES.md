@@ -1,3 +1,12 @@
+# Swim preview update — 2026-10-20
+
+- Replaced Golden Hour, Midnight Chrome and Cali Sport swim boards with the three owner-approved realistic concept previews, optimized as full-frame WebP images.
+- Updated every product, lookbook and collection-hero reference and its descriptive alt text. Concept/Coming Soon labels remain.
+- Removed Coast After Dark from the catalog and lookbook, including its unused image. Existing route and storage handling exclude retired links and saved/cart entries.
+- The catalog now contains 20 designs, including nine NorCal Lights concepts and three swim sets; the lookbook contains 15 entries.
+- Preserved all retained product IDs, prices and options, along with the existing apparel/men's imagery, video and hosting setup. Checkout and email signup remain disabled.
+- Passed 24 local Chromium tests across desktop and emulated mobile, JavaScript syntax checks, and catalog/asset checks. Added updated desktop/mobile screenshots in [QA notes](docs/qa/README.md).
+
 # Storefront update — integrated 2026-10-19
 
 ## Purpose

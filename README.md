@@ -29,11 +29,11 @@ The suite covers desktop and mobile browsing, saved designs, preview carts, conc
 
 ## What visitors can do
 
-- Browse all 21 designs, search, filter by department and garment type, and sort.
+- Browse all 20 designs, search, filter by department and garment type, and sort.
 - Save favorites on their current browser/device; no account is created.
 - Inspect galleries, design details, related pieces and the existing video.
 - Build a preview cart for non-concept pieces. Ordering is disabled.
-- Explore all ten NorCal Lights concepts. These cannot enter the cart.
+- Explore all nine NorCal Lights concepts, including three updated swim previews. These cannot enter the cart.
 
 Saved favorites and cart selections use browser storage. They do not reserve inventory or create orders, and may be cleared with browser data.
 
@@ -43,7 +43,7 @@ Saved favorites and cart selections use browser storage. They do not reserve inv
 
 To change a product, edit its existing object. Preserve `id` when renaming a design so saved links still work. Each product needs a unique ID, department, name, category, numeric price, image, sizes and colors. Copy an existing product as a template. `gallery` accepts image paths or objects with `image` and `alt` fields.
 
-All original prices are retained as preview prices, not approved launch prices. The ten concepts show “Price at launch”; their source prices remain in the data for the owner to review. Confirm names, prices, available options, materials and measurements before enabling orders.
+All remaining products retain their original preview prices, not approved launch prices. The nine concepts show “Price at launch”; their source prices remain in the data for the owner to review. Confirm names, prices, available options, materials and measurements before enabling orders.
 
 Do not remove `comingSoon: true` from a concept until it is an actual release with confirmed details and fulfillment.
 

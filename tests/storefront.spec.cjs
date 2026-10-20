@@ -27,21 +27,21 @@ async function addTee(page) {
 test('search, nested filters, sorting and reset', async ({ page }) => {
   await page.goto('/');
   const cards = page.locator('#productGrid .card');
-  await expect(cards).toHaveCount(21);
+  await expect(cards).toHaveCount(20);
   await page.locator('[data-dept="Women"]').click();
-  await expect(cards).toHaveCount(10);
+  await expect(cards).toHaveCount(9);
   await expect(page.locator('[data-dept="Women"]')).toBeFocused();
   await page.locator('[data-cat="Swim"]').click();
-  await expect(cards).toHaveCount(4);
-  await page.locator('[data-cat="Cover-Ups"]').click();
-  await expect(cards).toHaveCount(1);
+  await expect(cards).toHaveCount(3);
+  await page.locator('[data-cat="Sets"]').click();
+  await expect(cards).toHaveCount(2);
   await page.getByRole('button', { name: 'Reset filters' }).click();
   await page.getByRole('searchbox').fill('heritage');
   await expect(cards).toHaveCount(3);
   await page.getByRole('searchbox').fill('no-such-design');
   await expect(page.getByRole('heading', { name: 'No pieces found.' })).toBeVisible();
   await page.getByRole('button', { name: 'Explore All Pieces' }).click();
-  await expect(cards).toHaveCount(21);
+  await expect(cards).toHaveCount(20);
   await page.getByLabel('Sort', { exact: true }).selectOption('price-low');
   await expect(cards.first()).toContainText('Heritage Sticker Pack');
   await page.getByLabel('Sort', { exact: true }).selectOption('price-high');
@@ -50,7 +50,7 @@ test('search, nested filters, sorting and reset', async ({ page }) => {
   await page.getByLabel('Sort', { exact: true }).selectOption('name');
   const names = await cards.locator('.card__name').allTextContents();
   expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
-  for (const [department, count] of [['men', 9], ['women', 10], ['accessories', 2], ['swim', 4]]) {
+  for (const [department, count] of [['men', 9], ['women', 9], ['accessories', 2], ['swim', 3]]) {
     await navigate(page, '#/shop/' + department);
     await expect(cards).toHaveCount(count);
   }
@@ -70,7 +70,7 @@ test('saved designs persist and keep keyboard focus when removed', async ({ page
   await expect(page.getByRole('heading', { name: 'No saved pieces here yet.' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Explore All Pieces' })).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(page.locator('#productGrid .card')).toHaveCount(21);
+  await expect(page.locator('#productGrid .card')).toHaveCount(20);
   await expect(page.getByRole('searchbox')).toBeFocused();
 });
 
@@ -145,10 +145,10 @@ test('gallery keyboard controls and video work with reduced motion', async ({ pa
   await expect(page.locator('.related .card')).toHaveCount(3);
 });
 
-test('all ten concepts reject purchasing and restored cart entries', async ({ page }) => {
+test('all nine concepts reject purchasing and restored cart entries', async ({ page }) => {
   await page.goto('/');
   const ids = await page.evaluate(() => PRODUCTS.filter(p => p.comingSoon).map(p => p.id));
-  expect(ids).toHaveLength(10);
+  expect(ids).toHaveLength(9);
   await page.evaluate(() => localStorage.setItem('cart:uptown-cali', JSON.stringify(
     PRODUCTS.filter(p => p.comingSoon).map(p => ({ id: p.id, size: p.sizes[0], color: p.colors[0], qty: 1 }))
   )));
@@ -160,6 +160,65 @@ test('all ten concepts reject purchasing and restored cart entries', async ({ pa
     await expect(page.getByRole('button', { name: 'Coming Soon', exact: true })).toBeDisabled();
     await expect(page.locator('#addBtn')).toHaveCount(0);
   }
+  await expect(page.locator('#checkoutBtn')).toBeDisabled();
+});
+
+test('approved swim previews load throughout the storefront', async ({ page }) => {
+  const previews = [
+    ['women-golden-hour-triangle-swim-set', '07-golden-hour-triangle-swim-set.webp'],
+    ['women-midnight-chrome-bandeau-swim-set', '08-midnight-chrome-bandeau-swim-set.webp'],
+    ['women-cali-sport-scoop-swim-set', '09-cali-sport-scoop-swim-set.webp']
+  ];
+  await page.goto('/#/shop/swim');
+  await expect(page.locator('#productGrid .card')).toHaveCount(3);
+  for (const [id, filename] of previews) {
+    const src = 'images/norcal-lights/' + filename;
+    const cardImage = page.locator('#productGrid img[src="' + src + '"]');
+    await cardImage.scrollIntoViewIfNeeded();
+    await expect.poll(() => cardImage.evaluate(img => img.complete && img.naturalWidth === 1024)).toBe(true);
+    await expect(cardImage).toHaveCSS('object-fit', 'contain');
+    await navigate(page, '#/product/' + id);
+    await expect(page.locator('.pdp__main img')).toHaveAttribute('src', src);
+    await expect(page.locator('.pdp__main img')).toHaveCSS('object-fit', 'contain');
+    await navigate(page, '#lookbook');
+    await page.locator('.look').filter({ has: page.locator('img[src="' + src + '"]') }).click();
+    await expect(page.locator('#lightbox img')).toHaveAttribute('src', src);
+    await page.keyboard.press('Escape');
+    await navigate(page, '#/shop/swim');
+  }
+  await navigate(page, '#/collections/norcal-lights');
+  await expect(page.locator('#nl-swim .card')).toHaveCount(3);
+  await expect(page.locator('.coll__hero-media img').last()).toHaveAttribute('src', 'images/norcal-lights/' + previews[1][1]);
+  for (const [, filename] of previews) {
+    const image = page.locator('#nl-swim img[src="images/norcal-lights/' + filename + '"]');
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(() => image.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+  }
+});
+
+test('retired Coast After Dark concept disappears from browsing and restored state', async ({ page }) => {
+  const retired = 'women-coast-after-dark-one-piece-cover-up-set';
+  await page.goto('/');
+  await page.evaluate(id => {
+    localStorage.setItem('saved:uptown-cali', JSON.stringify([id, 'tee-heritage-script']));
+    localStorage.setItem('cart:uptown-cali', JSON.stringify([
+      { id, size: 'M', color: 'Black / Red', qty: 1 }
+    ]));
+  }, retired);
+  await page.reload();
+  await expect(page.locator('#savedCount')).toHaveText('1');
+  await expect(page.locator('#cartCount')).toHaveText('0');
+  await expect(page.locator('a[href="#/product/' + retired + '"]')).toHaveCount(0);
+  await expect(page.locator('img[src*="coast-after-dark"]')).toHaveCount(0);
+  await expect(page.locator('.look')).toHaveCount(15);
+  await page.locator('[data-dept="Women"]').click();
+  await expect(page.locator('[data-cat="Cover-Ups"]')).toHaveCount(0);
+  await navigate(page, '#/saved');
+  await expect(page.locator('#productGrid .card')).toHaveCount(1);
+  await expect(page.locator('#productGrid .card')).toContainText('Heritage Script Tee');
+  await page.goto('/#/product/' + retired);
+  await expect.poll(() => page.evaluate(() => location.hash)).toBe('#/');
+  await expect(page.locator('#storeView')).toBeVisible();
   await expect(page.locator('#checkoutBtn')).toBeDisabled();
 });
 
@@ -218,7 +277,7 @@ test('newsletter stays off and catalog assets and legacy site load', async ({ pa
   await navigate(page, '#/collections/norcal-lights');
   await expect(page.locator('#collSignupForm')).toBeHidden();
   await expect(page.locator('#collFormMsg')).toContainText('Email signup opens soon');
-  await expect(page.locator('#productView .card')).toHaveCount(10);
+  await expect(page.locator('#productView .card')).toHaveCount(9);
   await page.goto('/dj-jas/');
   await expect(page).toHaveTitle(/DJ Jas/i);
 });
@@ -227,7 +286,7 @@ test('layouts fit phone, tablet and desktop widths', async ({ page }) => {
   const widths = test.info().project.name === 'desktop' ? [768, 1024, 1440] : [320, 390];
   for (const width of widths) {
     await page.setViewportSize({ width, height: 1000 });
-    for (const hash of ['#/', '#/product/tee-heritage-script', '#/product/women-coast-after-dark-one-piece-cover-up-set', '#/collections/norcal-lights']) {
+    for (const hash of ['#/', '#/product/tee-heritage-script', '#/product/women-midnight-chrome-bandeau-swim-set', '#/collections/norcal-lights']) {
       await page.goto('/' + hash);
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       const clipped = await page.locator('.hero__title:visible, .pdp__title:visible, .coll__title:visible').evaluateAll(elements =>

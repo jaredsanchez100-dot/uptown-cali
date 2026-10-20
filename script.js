@@ -630,7 +630,7 @@
           "</div>" +
           '<div class="coll__hero-media" aria-hidden="false">' +
             '<img src="images/norcal-lights/01-norcal-lights-womens-baby-tee.jpg" alt="Adult woman wearing a fitted black Uptown Cali baby tee beside front and back product views." loading="eager">' +
-            '<img src="images/norcal-lights/08-midnight-chrome-bandeau-swim-set.jpg" alt="Product board showing front and back views of a red-and-black Uptown Cali bandeau swim set and hardware details." loading="lazy">' +
+            '<img src="images/norcal-lights/08-midnight-chrome-bandeau-swim-set.webp" alt="Concept preview of a red-and-black Uptown Cali bandeau swim set on gray stone, with front and back views and gunmetal hardware details." loading="lazy">' +
           "</div>" +
         "</section>" +
 
@@ -647,7 +647,7 @@
           '<div class="grid">' + apparel.map(cardHTML).join("") + "</div>" +
         "</section>" +
 
-        // Swim feature (concepts 7-10).
+        // Swim feature (concepts 7-9).
         '<section class="coll__section coll__section--alt" id="nl-swim">' +
           '<h2 class="section__title">Coast to After Dark</h2>' +
           '<p class="coll__note">Swim tops and bottoms are planned to be sized separately, so mixing sizes for the right fit is the intent — final options are confirmed at launch.</p>' +
