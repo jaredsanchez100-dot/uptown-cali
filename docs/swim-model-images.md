@@ -1,3 +1,23 @@
+# Current nighttime swim imagery — October 21, 2026
+
+The owner requested the newly supplied nighttime images to match the dark storefront theme. Two attachments show Cali Sport Scoop; neither is Golden Hour Triangle.
+
+| Source | Use |
+|---|---|
+| IMG_1359.jpeg | Alternate exposure of Cali Sport Scoop; not used |
+| IMG_1360.jpeg | Cali Sport Scoop front and seated poses; selected for clearer garment visibility |
+| IMG_1361.jpeg | Midnight Chrome Bandeau front, seated and side poses |
+
+Crops: front `586x1008+0+0`, seated `586x1008+604+0`, bandeau side `585x1008+1207+0`. Exported as WebP at quality 86 with metadata stripped, no resizing or generation. New paths contain `-night-model-` to avoid stale cached daytime photos.
+
+Only these nighttime photos are referenced for Midnight Chrome and Cali Sport: cards, product main images, alternate galleries, lookbook, and Midnight Chrome collection hero. Their previous daytime images and product boards are no longer shown. Original files are retained for rollback. Golden Hour Triangle is unchanged pending its matching nighttime source; no other garment image is substituted for it.
+
+All concepts remain Coming Soon and checkout remains in demo mode. All 24 desktop/mobile Playwright cases and syntax checks passed. Payment configuration and non-image product fields match the base commit.
+
+---
+
+## Previous daytime release (superseded for Midnight Chrome and Cali Sport)
+
 # Swim model imagery — 2026-10-22
 
 Owner supplied three AI-generated triptychs and authorized selecting, cropping and publishing their model previews. No new image generation or garment alteration was performed.

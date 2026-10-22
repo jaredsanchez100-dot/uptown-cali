@@ -630,7 +630,7 @@
           "</div>" +
           '<div class="coll__hero-media" aria-hidden="false">' +
             '<img src="images/norcal-lights/01-norcal-lights-womens-baby-tee.jpg" alt="Adult woman wearing a fitted black Uptown Cali baby tee beside front and back product views." loading="eager">' +
-            '<img src="images/norcal-lights/08-midnight-chrome-bandeau-model-front.webp" alt="AI-generated concept model standing poolside in a red-and-black Uptown Cali bandeau swim set with a metal center clasp and branded underband." loading="lazy">' +
+            '<img src="images/norcal-lights/08-midnight-chrome-bandeau-night-model-front.webp" alt="AI-generated concept model standing poolside at night in a red-and-black Uptown Cali bandeau swim set with a metal center clasp and branded underband." loading="lazy">' +
           "</div>" +
         "</section>" +
 
