@@ -512,9 +512,13 @@ const PRODUCTS = [
     fit: "contain",
     price: 42,
     priceFrom: true,
-    image: "images/norcal-lights/07-golden-hour-triangle-swim-set.webp",
-    alt: "Concept preview of a black Uptown Cali triangle swim set on gray stone, with red-and-cream piping, two bottom styles and close-up details.",
-    gallery: [],
+    image: "images/norcal-lights/07-golden-hour-triangle-model-front.webp",
+    alt: "AI-generated concept model standing poolside in a black Uptown Cali triangle swim set with red-and-cream piping and UTC crests.",
+    gallery: [
+      { image: "images/norcal-lights/07-golden-hour-triangle-model-seated.webp", alt: "AI-generated concept model seated poolside in a black Uptown Cali triangle swim set with red-and-cream piping and UTC crests." },
+      { image: "images/norcal-lights/07-golden-hour-triangle-model-side.webp", alt: "Side view of an AI-generated concept model wearing a black Uptown Cali triangle swim set with red-and-cream piping and UTC crests beside a pool." },
+      { image: "images/norcal-lights/07-golden-hour-triangle-swim-set.webp", alt: "Concept preview of a black Uptown Cali triangle swim set on gray stone, with red-and-cream piping, two bottom styles and close-up details." },
+    ],
     sizes: ["XS", "S", "M", "L", "XL", "2XL"],
     colors: ["Black"],
     sizeNote:
@@ -541,9 +545,13 @@ const PRODUCTS = [
     fit: "contain",
     price: 46,
     priceFrom: true,
-    image: "images/norcal-lights/08-midnight-chrome-bandeau-swim-set.webp",
-    alt: "Concept preview of a red-and-black Uptown Cali bandeau swim set on gray stone, with front and back views and gunmetal hardware details.",
-    gallery: [],
+    image: "images/norcal-lights/08-midnight-chrome-bandeau-model-front.webp",
+    alt: "AI-generated concept model standing poolside in a red-and-black Uptown Cali bandeau swim set with a metal center clasp and branded underband.",
+    gallery: [
+      { image: "images/norcal-lights/08-midnight-chrome-bandeau-model-seated.webp", alt: "AI-generated concept model seated poolside in a red-and-black Uptown Cali bandeau swim set with a metal center clasp and branded underband." },
+      { image: "images/norcal-lights/08-midnight-chrome-bandeau-model-side.webp", alt: "Side view of an AI-generated concept model wearing a red-and-black Uptown Cali bandeau swim set with a metal center clasp and branded underband beside a pool." },
+      { image: "images/norcal-lights/08-midnight-chrome-bandeau-swim-set.webp", alt: "Concept preview of a red-and-black Uptown Cali bandeau swim set on gray stone, with front and back views and gunmetal hardware details." },
+    ],
     sizes: ["XS", "S", "M", "L", "XL", "2XL"],
     colors: ["Deep Red / Black"],
     sizeNote:
@@ -570,9 +578,13 @@ const PRODUCTS = [
     fit: "contain",
     price: 48,
     priceFrom: true,
-    image: "images/norcal-lights/09-cali-sport-scoop-swim-set.webp",
-    alt: "Concept preview of a black Uptown Cali scoop swim set on gray stone, with a racerback top, two bottom styles and crest and piping details.",
-    gallery: [],
+    image: "images/norcal-lights/09-cali-sport-scoop-model-front.webp",
+    alt: "AI-generated concept model standing poolside in a black Uptown Cali scoop swim set with red-and-cream trim and a branded underband.",
+    gallery: [
+      { image: "images/norcal-lights/09-cali-sport-scoop-model-seated.webp", alt: "AI-generated concept model seated poolside in a black Uptown Cali scoop swim set with red-and-cream trim and a branded underband." },
+      { image: "images/norcal-lights/09-cali-sport-scoop-model-side.webp", alt: "Side view of an AI-generated concept model wearing a black Uptown Cali scoop swim set with red-and-cream trim and a branded underband beside a pool." },
+      { image: "images/norcal-lights/09-cali-sport-scoop-swim-set.webp", alt: "Concept preview of a black Uptown Cali scoop swim set on gray stone, with a racerback top, two bottom styles and crest and piping details." },
+    ],
     sizes: ["XS", "S", "M", "L", "XL", "2XL"],
     colors: ["Black"],
     sizeNote:
@@ -618,11 +630,11 @@ const LOOKBOOK = [
   { group: "NorCal Lights — Women", image: "images/norcal-lights/06-norcal-lights-washed-black-denim-set.jpg", caption: "Washed-Black Denim Set", fit: "contain",
     alt: "Adult woman wearing an Uptown Cali washed-black denim jacket and wide-leg jeans beside product views and details." },
 
-  /* Swim — product-only concept previews. */
-  { group: "NorCal Lights — Swim", image: "images/norcal-lights/07-golden-hour-triangle-swim-set.webp", caption: "Golden Hour Triangle Set", fit: "contain",
-    alt: "Concept preview of a black Uptown Cali triangle swim set on gray stone, with red-and-cream piping, two bottom styles and close-up details." },
-  { group: "NorCal Lights — Swim", image: "images/norcal-lights/08-midnight-chrome-bandeau-swim-set.webp", caption: "Midnight Chrome Bandeau Set", fit: "contain",
-    alt: "Concept preview of a red-and-black Uptown Cali bandeau swim set on gray stone, with front and back views and gunmetal hardware details." },
-  { group: "NorCal Lights — Swim", image: "images/norcal-lights/09-cali-sport-scoop-swim-set.webp", caption: "Cali Sport Scoop Set", fit: "contain",
-    alt: "Concept preview of a black Uptown Cali scoop swim set on gray stone, with a racerback top, two bottom styles and crest and piping details." },
+  /* Swim — owner-supplied AI model concept previews. */
+  { group: "NorCal Lights — Swim", image: "images/norcal-lights/07-golden-hour-triangle-model-front.webp", caption: "Golden Hour Triangle Set", fit: "contain",
+    alt: "AI-generated concept model standing poolside in a black Uptown Cali triangle swim set with red-and-cream piping and UTC crests." },
+  { group: "NorCal Lights — Swim", image: "images/norcal-lights/08-midnight-chrome-bandeau-model-front.webp", caption: "Midnight Chrome Bandeau Set", fit: "contain",
+    alt: "AI-generated concept model standing poolside in a red-and-black Uptown Cali bandeau swim set with a metal center clasp and branded underband." },
+  { group: "NorCal Lights — Swim", image: "images/norcal-lights/09-cali-sport-scoop-model-front.webp", caption: "Cali Sport Scoop Set", fit: "contain",
+    alt: "AI-generated concept model standing poolside in a black Uptown Cali scoop swim set with red-and-cream trim and a branded underband." },
 ];
