@@ -1,3 +1,17 @@
+# Complete nighttime swim galleries — October 21, 2026
+
+The owner supplied `IMG_1356.jpeg` for Golden Hour Triangle and explicitly requested that standalone clothing imagery remain displayed, with a screenshot identifying the original design boards.
+
+Golden Hour uses two native-resolution crops from the 1199 × 1008 source: front `586x1008+0+0`, seated `586x1008+604+0`. New `07-golden-hour-triangle-night-model-*.webp` files use quality 86 with metadata stripped. No regeneration or garment changes were performed.
+
+All three swim products now use nighttime model photos for cards and the lookbook. Their galleries show the main model pose, the matching standalone clothing board, then alternate nighttime poses. The original full-resolution board assets were reused, rather than cropped out of the supplied screenshot. No daytime model photos remain referenced in swim galleries.
+
+All non-image product fields and payment configuration are unchanged. Concepts remain Coming Soon and checkout remains in demo mode. All 24 desktop/mobile Playwright cases passed, including every standalone board and nighttime pose. Syntax and whitespace checks passed; desktop and mobile previews were visually reviewed.
+
+---
+
+## Previous nighttime update (gallery rules superseded above)
+
 # Current nighttime swim imagery — October 21, 2026
 
 The owner requested the newly supplied nighttime images to match the dark storefront theme. Two attachments show Cali Sport Scoop; neither is Golden Hour Triangle.

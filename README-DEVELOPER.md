@@ -1,6 +1,6 @@
 # Uptown Cali — Developer Handoff
 
-Updated October 21, 2026 (Pacific). This image-only update replaces the Midnight Chrome Bandeau and Cali Sport Scoop previews with owner-supplied nighttime photos, based on `main` at `bbc0167`. Golden Hour Triangle awaits a matching nighttime source. Checkout and email signup remain disabled.
+Updated October 21, 2026 (Pacific). This image-only update completes the nighttime swim previews with Golden Hour Triangle and restores the standalone clothing boards in all three swim galleries, based on `main` at `a127818`. Checkout and email signup remain disabled.
 
 ## Runtime and hosting
 
@@ -30,7 +30,7 @@ The hosting details above come from the supplied handoff. This integration fetch
 
 Public social links are rendered only for HTTPS URLs. No Instagram handle or contact address is invented. The apparent fabric weights, construction specifications and sizing recommendations removed in the original storefront integration were unverified. Imagery remains publicly described as design previews.
 
-Midnight Chrome Bandeau and Cali Sport Scoop now use only the owner-supplied nighttime model photos in cards, galleries and the lookbook; the collection hero also uses the Midnight Chrome night photo. Golden Hour Triangle retains its previous images because no matching nighttime image was supplied. Native-resolution WebP crops remove white panel dividers and retain full-frame `contain` rendering. Previous files remain in the repository for rollback but are no longer referenced by the two updated designs. See `docs/swim-model-images.md` for source mapping and crop bounds.
+All three swim sets use owner-supplied nighttime model photos in cards and the lookbook. Each product gallery presents the nighttime front pose, the original standalone clothing board, then alternate nighttime poses. The collection hero uses Midnight Chrome at night. Native-resolution WebP crops remove white panel dividers and retain full-frame `contain` rendering. No daytime model photos remain referenced by swim products or the lookbook. See `docs/swim-model-images.md` for source mapping and crop bounds.
 
 ## Routes and state
 

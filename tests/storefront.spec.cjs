@@ -165,9 +165,9 @@ test('all nine concepts reject purchasing and restored cart entries', async ({ p
 
 test('approved swim previews load throughout the storefront', async ({ page }) => {
   const previews = [
-    ['women-golden-hour-triangle-swim-set', '07-golden-hour-triangle-model-front.webp', ['model-seated.webp', 'model-side.webp', 'swim-set.webp']],
-    ['women-midnight-chrome-bandeau-swim-set', '08-midnight-chrome-bandeau-night-model-front.webp', ['model-seated.webp', 'model-side.webp']],
-    ['women-cali-sport-scoop-swim-set', '09-cali-sport-scoop-night-model-front.webp', ['model-seated.webp']]
+    ['women-golden-hour-triangle-swim-set', '07-golden-hour-triangle-night-model-front.webp', ['swim-set.webp', 'night-model-seated.webp']],
+    ['women-midnight-chrome-bandeau-swim-set', '08-midnight-chrome-bandeau-night-model-front.webp', ['swim-set.webp', 'night-model-seated.webp', 'night-model-side.webp']],
+    ['women-cali-sport-scoop-swim-set', '09-cali-sport-scoop-night-model-front.webp', ['swim-set.webp', 'night-model-seated.webp']]
   ];
   await page.goto('/#/shop/swim');
   await expect(page.locator('#productGrid .card')).toHaveCount(3);
@@ -182,7 +182,7 @@ test('approved swim previews load throughout the storefront', async ({ page }) =
     await expect(page.locator('.pdp__main img')).toHaveCSS('object-fit', 'contain');
     await expect(page.locator('.pdp__thumb')).toHaveCount(gallery.length + 1);
     for (const [index, suffix] of gallery.entries()) {
-      const gallerySrc = src.replace('model-front.webp', suffix);
+      const gallerySrc = src.replace('night-model-front.webp', suffix);
       await page.getByRole('button', { name: 'View image ' + (index + 2), exact: true }).click();
       const galleryImage = page.locator('.pdp__main img');
       await expect(galleryImage).toHaveAttribute('src', gallerySrc);
