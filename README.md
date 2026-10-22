@@ -51,7 +51,7 @@ Do not remove `comingSoon: true` from a concept until it is an actual release wi
 
 The existing logo, product visuals, lookbook, concept boards and video are preserved. The store labels imagery as design previews. The supplied handoff described some images as generated or upscaled; do not present them as evidence of actual fabric, fit, manufacture or customer purchases.
 
-The three swim sets use cropped, owner-supplied AI model previews. Each gallery includes two alternate poses and the original product design board. These remain concepts, not verified product or fit photography.
+The swim sets use cropped, owner-supplied AI model previews. Midnight Chrome Bandeau and Cali Sport Scoop use only the newly supplied nighttime photos across their cards, galleries and lookbook entries. Golden Hour Triangle retains its previously approved images pending a matching nighttime upload. These remain concepts, not verified product or fit photography.
 
 Replace image files using the same names to retain their links, or update paths in `data.js`. Use actual product photos and verified measurements as they become available.
 

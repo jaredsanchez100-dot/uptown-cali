@@ -1,6 +1,6 @@
 # Uptown Cali — Developer Handoff
 
-Updated 2026-10-22. The original storefront integration was merged in PR #3, followed by the product-only swim previews and Coast After Dark removal in PR #4. This image-only update adds the owner-supplied swim model photos, based on `main` at `9f29865`. Checkout and email signup remain disabled.
+Updated October 21, 2026 (Pacific). This image-only update replaces the Midnight Chrome Bandeau and Cali Sport Scoop previews with owner-supplied nighttime photos, based on `main` at `bbc0167`. Golden Hour Triangle awaits a matching nighttime source. Checkout and email signup remain disabled.
 
 ## Runtime and hosting
 
@@ -30,7 +30,7 @@ The hosting details above come from the supplied handoff. This integration fetch
 
 Public social links are rendered only for HTTPS URLs. No Instagram handle or contact address is invented. The apparent fabric weights, construction specifications and sizing recommendations removed in the original storefront integration were unverified. Imagery remains publicly described as design previews.
 
-Each swim set now uses the front pose cropped from its owner-supplied AI triptych in product cards, product details and the lookbook. The Midnight Chrome model also appears in the collection hero. Galleries retain the seated pose, side pose and PR #4 product-only design board. The model assets are native-resolution WebP crops (586 × 1008 front/seated, 585 × 1008 side), with white dividers removed and metadata stripped. The original 1024 × 1536 design boards remain unchanged. See `docs/swim-model-images.md` for source mapping and crop bounds. The retired Coast After Dark product and lookbook entry remain absent.
+Midnight Chrome Bandeau and Cali Sport Scoop now use only the owner-supplied nighttime model photos in cards, galleries and the lookbook; the collection hero also uses the Midnight Chrome night photo. Golden Hour Triangle retains its previous images because no matching nighttime image was supplied. Native-resolution WebP crops remove white panel dividers and retain full-frame `contain` rendering. Previous files remain in the repository for rollback but are no longer referenced by the two updated designs. See `docs/swim-model-images.md` for source mapping and crop bounds.
 
 ## Routes and state
 
