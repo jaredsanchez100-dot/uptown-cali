@@ -76,7 +76,10 @@ test('saved designs persist and keep keyboard focus when removed', async ({ page
 
 test('preview cart validates options, persists quantities and disables payment', async ({ page, context }) => {
   const payments = [];
-  page.on('request', request => { if (/stripe|myshopify|\/checkout/.test(request.url())) payments.push(request.url()); });
+  page.on('request', request => {
+    const url = new URL(request.url());
+    if (/(^|\.)(stripe\.com|myshopify\.com)$/.test(url.hostname) || /^\/checkout(?:\/|$)/.test(url.pathname)) payments.push(request.url());
+  });
   await page.goto('/#/product/tee-heritage-script');
   await page.locator('#addBtn').click();
   await expect(page.locator('#pdpHint')).toHaveText('Pick a size first.');

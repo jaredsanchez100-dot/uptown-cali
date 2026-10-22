@@ -70,7 +70,7 @@
       cart = Array.isArray(cart) ? cart.filter(function (l) {
         if (!l || typeof l !== "object") return false;
         var p = byId(l.id);
-        return p && !p.comingSoon && p.sizes.includes(l.size) && p.colors.includes(l.color) && Number.isInteger(l.qty) && l.qty > 0 && l.qty <= 20;
+        return CheckoutGuard.validLine(l, p);
       }).map(function (l) { return {id:l.id, size:l.size, color:l.color, qty:l.qty, key:lineKey(l.id,l.size,l.color)}; }) : [];
     } catch (e) { cart = []; }
   }
@@ -80,18 +80,8 @@
 
   function lineKey(id, size, color) { return id + "|" + (size || "") + "|" + (color || ""); }
 
-  /* A Stripe Payment Link doesn't know which size the shopper picked on the
-     site, which is how you end up shipping the wrong thing. Stripe accepts a
-     `client_reference_id` on the URL and shows it on the payment, so the
-     variant travels with the order. Stripe restricts that value to letters,
-     numbers, dashes and underscores, hence the scrub. */
-  function stripeUrl(product, line) {
-    if (!product || !product.buyUrl) return "";
-    var ref = [product.id, line && line.size, line && line.color]
-      .filter(Boolean).join("-").replace(/[^A-Za-z0-9_-]+/g, "-").slice(0, 190);
-    return product.buyUrl + (product.buyUrl.indexOf("?") === -1 ? "?" : "&") +
-      "client_reference_id=" + encodeURIComponent(ref);
-  }
+  function orderingReady() { return CheckoutGuard.storeReady(CHECKOUT, BRAND, location.hostname).ok; }
+  function checkoutPlan() { return CheckoutGuard.plan(CHECKOUT, BRAND, PRODUCTS, cart, location.hostname); }
 
   function addToCart(id, size, color) {
     // Concept pieces can't be bought. The button is disabled too — this is
@@ -99,9 +89,10 @@
     var product = byId(id);
     if (!product || product.comingSoon) {
       toast("This piece is a concept — coming soon.");
-      return;
+      return false;
     }
-    if (!product.sizes.includes(size) || !product.colors.includes(color)) { toast("Choose a size and color first."); return; }
+    if (CHECKOUT.mode !== "demo" && (!orderingReady() || !CheckoutGuard.productReady(product))) { toast("This piece is not available for ordering yet."); return false; }
+    if (!product.sizes.includes(size) || !product.colors.includes(color)) { toast("Choose a size and color first."); return false; }
     var key = lineKey(id, size, color);
     var found = null;
     for (var i = 0; i < cart.length; i++) if (cart[i].key === key) found = cart[i];
@@ -109,6 +100,7 @@
     else cart.push({ key: key, id: id, size: size, color: color, qty: 1 });
     saveCart();
     renderCart();
+    return true;
   }
 
   function setQty(key, delta) {
@@ -157,11 +149,6 @@
       body.innerHTML = cart.map(function (l) {
         var p = byId(l.id);
         var variant = variantLabel(l);
-        // In Stripe mode each line pays through its own Payment Link,
-        // so the line carries its own pay button.
-        var pay = CHECKOUT.mode === "stripe" && p.buyUrl && l.qty === 1
-          ? '<a class="line__pay btn--ghost btn" href="' + esc(stripeUrl(p, l)) + '" target="_blank" rel="noopener" style="padding:5px 12px;font-size:12px">Pay</a>'
-          : "";
         return '' +
           '<div class="line">' +
             '<div class="line__media">' + media(p, p.name) + "</div>" +
@@ -175,7 +162,6 @@
                   '<button data-inc="' + esc(l.key) + '" aria-label="Increase quantity">+</button>' +
                 "</span>" +
                 '<button class="line__rm" data-rm="' + esc(l.key) + '">Remove</button>' +
-                pay +
               "</div>" +
             "</div>" +
             '<div class="line__price">' + money(p.price * l.qty) + "</div>" +
@@ -185,13 +171,15 @@
 
     var note = $("#cartNote");
     var btn = $("#checkoutBtn");
-    btn.disabled = !cart.length || CHECKOUT.mode === "demo";
-    btn.textContent = CHECKOUT.mode === "demo" ? "Ordering Opens Soon" : "Checkout";
-    $("#cartTitle").textContent = CHECKOUT.mode === "demo" ? "Preview Cart" : "Your Cart";
-    if (CHECKOUT.mode === "demo") note.textContent = "A preview of your selections. Nothing is reserved and no payment is taken. Prices may change before release.";
-    else if (CHECKOUT.mode === "stripe") note.textContent = "Secure checkout by Stripe.";
-    else if (CHECKOUT.mode === "shopify") note.textContent = "Secure checkout by Shopify.";
-    else note.textContent = "";
+    var plan = checkoutPlan();
+    var ready = orderingReady();
+    btn.disabled = !plan.ok;
+    btn.textContent = ready ? "Checkout" : "Ordering Opens Soon";
+    $("#cartTitle").textContent = ready ? "Your Cart" : "Preview Cart";
+    note.textContent = !ready
+      ? "A preview of your selections. Nothing is reserved and no payment is taken. Prices may change before release."
+      : !plan.ok && cart.length ? plan.message
+      : "Final availability, shipping and tax are confirmed at secure checkout.";
 
     // Quantity changes rebuild the cart. Keep the keyboard on the same
     // control, or move to another line / Close when its line was removed.
@@ -204,46 +192,10 @@
 
   /* ---------- Checkout ---------- */
   function checkout() {
-    if (!cart.length) return;
-
-    if (CHECKOUT.mode === "shopify" && CHECKOUT.shopifyDomain) {
-      /* Shopify cart permalinks let a plain static site hand off a whole
-         multi-item cart without any SDK or backend:
-         https://shop.myshopify.com/cart/VARIANT:QTY,VARIANT:QTY */
-      var parts = [];
-      var missing = false;
-      cart.forEach(function (l) {
-        var p = byId(l.id);
-        var key = [l.size, l.color].filter(Boolean).join(" / ");
-        var vid = p.variantIds && (p.variantIds[key] || p.variantIds[l.size] || p.variantIds["default"]);
-        if (vid) parts.push(vid + ":" + l.qty);
-        else missing = true;
-      });
-      if (missing) { toast("Some selections aren't ready for checkout. No items were sent."); return; }
-      if (parts.length) {
-        window.location.href = "https://" + CHECKOUT.shopifyDomain + "/cart/" + parts.join(",");
-        return;
-      }
-      toast("Checkout isn't connected yet.");
-      return;
-    }
-
-    if (CHECKOUT.mode === "stripe") {
-      if (cart.some(function (l) { return l.qty !== 1; })) { toast("This checkout supports one of each item. Adjust quantities before paying."); return; }
-      var withLinks = cart.filter(function (l) { var p = byId(l.id); return p && p.buyUrl; });
-      if (withLinks.length === 1 && cart.length === 1) {
-        window.open(stripeUrl(byId(cart[0].id), cart[0]), "_blank", "noopener");
-        return;
-      }
-      if (withLinks.length) {
-        toast("Use the Pay button on each item to check out.");
-        return;
-      }
-      toast("Checkout isn't connected yet.");
-      return;
-    }
-
-    toast("This is a demo store — no payment is processed.");
+    // Revalidate immediately before navigation, including stale saved carts.
+    var plan = checkoutPlan();
+    if (!plan.ok) { toast(plan.message); return; }
+    window.location.assign(plan.url);
   }
 
   /* ============================================================
@@ -278,13 +230,21 @@
     }
 
     $("#year").textContent = new Date().getFullYear();
-    $("#footerNote").textContent = CHECKOUT.mode === "demo"
+    $("#footerNote").textContent = !orderingReady()
       ? "Collection preview. Ordering opens soon."
       : (BRAND.email || "");
 
+    var policyLinks = $("#policyLinks");
+    if (policyLinks) {
+      policyLinks.hidden = !orderingReady();
+      policyLinks.innerHTML = orderingReady() ? Object.entries({shipping:"Shipping",returns:"Returns & exchanges",privacy:"Privacy",terms:"Terms"}).map(function (entry) {
+        return '<a href="'+esc(CHECKOUT.policies[entry[0]])+'">'+esc(entry[1])+'</a>';
+      }).join(' · ') : '';
+    }
+
     var launch = $("#launchNotice");
-    launch.textContent = CHECKOUT.mode === "demo" ? STOREFRONT.previewNotice : "Northern California / Uptown Cali";
-    $("#catalogNote").textContent = CHECKOUT.mode === "demo" ? "Design previews. Prices shown are previews and may change before release. NorCal Lights pricing will be confirmed at launch." : "";
+    launch.textContent = !orderingReady() ? STOREFRONT.previewNotice : "Northern California / Uptown Cali";
+    $("#catalogNote").textContent = !orderingReady() ? "Design previews. Prices shown are previews and may change before release. NorCal Lights pricing will be confirmed at launch." : "";
     var contact = $("#contactEmail");
     if (BRAND.email && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(BRAND.email)) { contact.hidden=false; contact.href="mailto:"+BRAND.email; contact.textContent=BRAND.email; }
     document.title = BRAND.name + " — Official Store";
@@ -370,7 +330,7 @@
   function cardHTML(p) {
     return '<article class="card">' +
       '<div class="card__visual"><a class="card__media" href="#/product/'+esc(p.id)+'">'+media(p,p.name)+
-      '<span class="card__badge">'+(p.comingSoon?'Concept / Coming Soon':(CHECKOUT.mode==='demo'?'Collection Preview':esc(p.badge||'')))+'</span></a>'+saveButton(p)+'</div>'+
+      '<span class="card__badge">'+(p.comingSoon?'Concept / Coming Soon':(!CheckoutGuard.productReady(p)?'Collection Preview':esc(p.badge||'')))+'</span></a>'+saveButton(p)+'</div>'+
       '<div class="card__body"><span class="card__cat">'+esc(p.category)+'</span><a class="card__name" href="#/product/'+esc(p.id)+'">'+esc(p.name)+'</a>'+
       '<div class="card__row"><span class="card__price">'+priceLabel(p)+'</span><a class="card__link" href="#/product/'+esc(p.id)+'" aria-label="View '+esc(p.name)+'">View <span class="link-arrow" aria-hidden="true"></span></a></div></div></article>';
   }
@@ -506,6 +466,8 @@
     var buyControl = p.comingSoon
       ? '<button class="btn btn--primary btn--block" disabled aria-disabled="true">Coming Soon</button>' +
         '<p class="hint">Concept piece. Production, sizing and pricing are not final. Save this design to revisit it on this device.</p>'
+      : CHECKOUT.mode !== "demo" && (!orderingReady() || !CheckoutGuard.productReady(p))
+        ? '<button class="btn btn--primary btn--block" disabled>Ordering Opens Soon</button>'
       : '<button class="btn btn--primary btn--block" id="addBtn">' + (CHECKOUT.mode === "demo" ? "Add to Preview Cart" : "Add to Cart") + '</button>' +
         '<p class="hint" id="pdpHint"></p>';
 
@@ -527,7 +489,7 @@
             (p.category ? '<div class="pdp__cat">' + esc(p.category) +
               (p.collection ? " · " + esc(p.collection) : "") + "</div>" : "") +
             '<h1 class="pdp__title">' + esc(p.name) + "</h1>" +
-            '<div class="pdp__price">' + priceLabel(p) + "</div>" + (CHECKOUT.mode === "demo" && !p.comingSoon ? '<p class="preview-price">Preview price · Ordering opens soon</p>' : "") +
+            '<div class="pdp__price">' + priceLabel(p) + "</div>" + ((!orderingReady() || !CheckoutGuard.productReady(p)) && !p.comingSoon ? '<p class="preview-price">Preview price · Ordering opens soon</p>' : "") +
             (p.description ? '<p class="pdp__desc">' + esc(p.description) + "</p>" : "") +
             sizeBlock + colorBlock +
             buyControl + saveButton(p,"save-piece--pdp") +
@@ -808,7 +770,7 @@
         h2.className = "hint hint--warn";
         return;
       }
-      addToCart(p.id, sel.size, sel.color);
+      if (!addToCart(p.id, sel.size, sel.color)) return;
       toast(CHECKOUT.mode === "demo" ? "Added to preview cart" : "Added to cart");
       openDrawer();
       return;

@@ -40,22 +40,24 @@ const STOREFRONT = {
 const NEWSLETTER = { endpoint: "" };
 
 /* ---------- 2. CHECKOUT ----------
-   Keep demo mode until products, fulfillment and a payment provider are ready.
-   Existing adapters are retained but have not been verified against live
-   provider accounts. Read README-DEVELOPER.md before configuring them.
-
-   mode: "demo"    — preview cart only; no payment or reservation.
-   mode: "stripe"  — one Payment Link per product, quantity one per payment;
-                     multiple lines require separate payments. The variant is
-                     passed as client_reference_id, not enforced as inventory.
-   mode: "shopify" — whole-cart handoff using mapped Shopify variant IDs.
-
-   Provider prices, quantities and variants must be tested independently.
-   Changing mode alone does not make this store ready to accept orders. */
+   Public release controls, not secrets or server-side authorization.
+   Keep demo mode until the owner approves launch and every provider-side
+   check in docs/checkout-launch.md is complete. */
 const CHECKOUT = {
-  mode: "demo", // Keep until the release checks in README-DEVELOPER.md are complete.
-  shopifyDomain: "", // e.g. "uptown-cali.myshopify.com" — only for shopify mode
+  mode: "demo",
+  liveApproved: false,
+  liveHosts: [], // Approved production hostnames only; no preview deployments.
+  shopifyDomain: "", // Bare NAME.myshopify.com, never a URL or custom domain.
   currency: "$",
+  readiness: {
+    merchant: false,
+    shipping: false,
+    taxes: false,
+    policies: false,
+    fulfillment: false,
+    testOrder: false,
+  },
+  policies: { shipping: "", returns: "", privacy: "", terms: "" },
 };
 
 /* ---------- 3. PRODUCTS ----------
@@ -102,7 +104,9 @@ const PRODUCTS = [
       alt: "Close-up video of the red and cream Uptown Cali script print on the black Heritage Script Tee, lit by red storefront neon",
       caption: "Design detail preview — Heritage Script.",
     },
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {}, // shopify mode, e.g. { "M / Black": "4321567890" }
   },
   {
@@ -126,7 +130,9 @@ const PRODUCTS = [
     details: [
     ],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -151,7 +157,9 @@ const PRODUCTS = [
       "Small chest hit, large back print",
     ],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -174,7 +182,9 @@ const PRODUCTS = [
       "Full-width collegiate back print",
     ],
     badge: "New",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -197,7 +207,9 @@ const PRODUCTS = [
       "Two-colour script print, front and back",
     ],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -220,7 +232,9 @@ const PRODUCTS = [
       "Stacked collegiate front, full back print",
     ],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
 
@@ -240,7 +254,9 @@ const PRODUCTS = [
     details: [
     ],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -261,7 +277,9 @@ const PRODUCTS = [
       "Flag stripe sleeve detail",
     ],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -280,7 +298,9 @@ const PRODUCTS = [
     details: [
     ],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -298,7 +318,9 @@ const PRODUCTS = [
       "A five-design sticker concept featuring the UTC crest, Cali bear, heritage star, flag stripes and Built Different script.",
     details: ["Five graphic designs", "Material and dimensions to be confirmed"],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
   {
@@ -316,7 +338,9 @@ const PRODUCTS = [
       "A Cali bear patch design in red and black. Final dimensions and attachment method will be confirmed before release.",
     details: ["Cali bear artwork", "Red and black color direction"],
     badge: "",
-    buyUrl: "", // <-- paste this product's Stripe Payment Link here
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
+    buyUrl: "", // Legacy field; not used for checkout.
     variantIds: {},
   },
 
@@ -327,8 +351,8 @@ const PRODUCTS = [
      approved concept previews. They are NOT purchasable yet:
      `comingSoon: true` disables Add to Cart and labels the card, and
      the engine refuses to cart them even if something slips through.
-     When manufacturing and checkout are confirmed, flip comingSoon to
-     false, add real product photos, and fill in buyUrl like the rest.
+     After manufacturing and checkout are verified, follow docs/checkout-launch.md.
+     Never remove comingSoon merely because model imagery has been added.
 
      Extra fields this capsule introduces (all optional elsewhere):
        department  — "Women"; powers the Women filter and nav link
@@ -364,6 +388,8 @@ const PRODUCTS = [
       "Premium-weight fabric planned",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -390,6 +416,8 @@ const PRODUCTS = [
       "Embroidered UTC chest crest",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -416,6 +444,8 @@ const PRODUCTS = [
       "Collegiate back graphic",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -444,6 +474,8 @@ const PRODUCTS = [
       "Uptown Cali back embroidery",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -470,6 +502,8 @@ const PRODUCTS = [
       "Varsity appliqué direction",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -499,6 +533,8 @@ const PRODUCTS = [
       "Pieces may be sold separately",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -528,6 +564,8 @@ const PRODUCTS = [
       "UTC silicone crest",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -557,6 +595,8 @@ const PRODUCTS = [
       "UTC hip crest",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },
@@ -586,6 +626,8 @@ const PRODUCTS = [
       "High-rise and mid-rise bottom concepts",
     ],
     badge: "Concept — Coming Soon",
+    release: { approved: false, fulfillmentVerified: false, priceVerified: false },
+    stripeLinks: {}, // Exact "SIZE / COLOR": verified one-unit Payment Link.
     buyUrl: "",
     variantIds: {},
   },

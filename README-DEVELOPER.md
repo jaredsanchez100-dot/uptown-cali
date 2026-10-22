@@ -1,3 +1,5 @@
+> Checkout preparation updated October 21, 2026. No production deployment or live payment activation. Swim model imagery remains outstanding after image-service rejection.
+
 # Uptown Cali — Developer Handoff
 
 Updated 2026-10-20. The original storefront integration was merged in PR #3. This update replaces the three remaining swim images with the approved realistic concept previews and removes Coast After Dark, based on `main` at `5403091`. Checkout and email signup remain disabled.
@@ -51,13 +53,13 @@ Concept copy and source prices came from an earlier supplied specification, acco
 
 ## Payments remain off
 
-`CHECKOUT.mode === "demo"` disables checkout and labels the cart as a preview. No provider configuration or secret was added.
+See [checkout launch plan](docs/checkout-launch.md) for current adapter behavior, merchant setup, fulfillment and release acceptance requirements.
 
-The inherited adapters are retained, with two protections added: Shopify refuses to send a cart if any line lacks a variant mapping; Stripe's current link flow refuses quantities other than one because its URL does not transmit quantity.
+`CHECKOUT.mode` remains `demo`; `liveApproved` and all product release flags are false. `checkout.js` validates the provider, approved hostnames, operational checks, policy/contact configuration, every cart item and every exact variant mapping before producing a checkout URL. `script.js` uses the same validation for the button and immediately before navigating. Policy links appear once release checks pass.
 
-Stripe remains a separate-payment-per-line flow, not a unified cart. A reference string is appended to identify the selected options; this is not server-side price, inventory or variant validation. Provider-specific configuration, prices, quantity behavior and fulfillment must be verified before use. Do not assume changing the mode or adding links completes launch.
+Shopify supports a complete multi-item cart; size-only/default fallback is no longer accepted. Stripe now requires dedicated per-variant links (`stripeLinks`) and only one total unit; the old `buyUrl` is unused, and separate per-line Pay links were removed. A URL reference string cannot prove inventory or payment. Provider-side product publication and fulfillment checks are still required. Public JavaScript release flags are not security controls.
 
-For Shopify, variant keys follow `"M / Black"`; all offered combinations need valid provider mappings. Validate the entire order, including quantity, price, size/color, shipping and tax, through the chosen provider. No real provider transaction was tested here.
+Run `npm run audit:checkout` for a local, read-only configuration inventory and `npm run test:checkout` for pure checkout guard tests. Playwright specs use intercepted, mocked provider destinations and never place a paid order.
 
 ## Newsletter integration contract
 
