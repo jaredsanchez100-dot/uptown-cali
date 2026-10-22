@@ -165,9 +165,9 @@ test('all nine concepts reject purchasing and restored cart entries', async ({ p
 
 test('approved swim previews load throughout the storefront', async ({ page }) => {
   const previews = [
-    ['women-golden-hour-triangle-swim-set', '07-golden-hour-triangle-swim-set.webp'],
-    ['women-midnight-chrome-bandeau-swim-set', '08-midnight-chrome-bandeau-swim-set.webp'],
-    ['women-cali-sport-scoop-swim-set', '09-cali-sport-scoop-swim-set.webp']
+    ['women-golden-hour-triangle-swim-set', '07-golden-hour-triangle-model-front.webp'],
+    ['women-midnight-chrome-bandeau-swim-set', '08-midnight-chrome-bandeau-model-front.webp'],
+    ['women-cali-sport-scoop-swim-set', '09-cali-sport-scoop-model-front.webp']
   ];
   await page.goto('/#/shop/swim');
   await expect(page.locator('#productGrid .card')).toHaveCount(3);
@@ -175,11 +175,20 @@ test('approved swim previews load throughout the storefront', async ({ page }) =
     const src = 'images/norcal-lights/' + filename;
     const cardImage = page.locator('#productGrid img[src="' + src + '"]');
     await cardImage.scrollIntoViewIfNeeded();
-    await expect.poll(() => cardImage.evaluate(img => img.complete && img.naturalWidth === 1024)).toBe(true);
+    await expect.poll(() => cardImage.evaluate(img => img.complete && img.naturalWidth === 586)).toBe(true);
     await expect(cardImage).toHaveCSS('object-fit', 'contain');
     await navigate(page, '#/product/' + id);
     await expect(page.locator('.pdp__main img')).toHaveAttribute('src', src);
     await expect(page.locator('.pdp__main img')).toHaveCSS('object-fit', 'contain');
+    await expect(page.locator('.pdp__thumb')).toHaveCount(4);
+    for (const [index, suffix] of ['model-seated.webp', 'model-side.webp', 'swim-set.webp'].entries()) {
+      const gallerySrc = src.replace('model-front.webp', suffix);
+      await page.getByRole('button', { name: 'View image ' + (index + 2), exact: true }).click();
+      const galleryImage = page.locator('.pdp__main img');
+      await expect(galleryImage).toHaveAttribute('src', gallerySrc);
+      await expect.poll(() => galleryImage.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+      await expect(galleryImage).toHaveCSS('object-fit', 'contain');
+    }
     await navigate(page, '#lookbook');
     await page.locator('.look').filter({ has: page.locator('img[src="' + src + '"]') }).click();
     await expect(page.locator('#lightbox img')).toHaveAttribute('src', src);

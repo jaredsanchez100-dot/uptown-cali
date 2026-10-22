@@ -33,7 +33,7 @@ The suite covers desktop and mobile browsing, saved designs, preview carts, conc
 - Save favorites on their current browser/device; no account is created.
 - Inspect galleries, design details, related pieces and the existing video.
 - Build a preview cart for non-concept pieces. Ordering is disabled.
-- Explore all nine NorCal Lights concepts, including three updated swim previews. These cannot enter the cart.
+- Explore all nine NorCal Lights concepts, including three swim sets with owner-supplied model previews and galleries. These cannot enter the cart.
 
 Saved favorites and cart selections use browser storage. They do not reserve inventory or create orders, and may be cleared with browser data.
 
@@ -50,6 +50,8 @@ Do not remove `comingSoon: true` from a concept until it is an actual release wi
 ## Images and brand copy
 
 The existing logo, product visuals, lookbook, concept boards and video are preserved. The store labels imagery as design previews. The supplied handoff described some images as generated or upscaled; do not present them as evidence of actual fabric, fit, manufacture or customer purchases.
+
+The three swim sets use cropped, owner-supplied AI model previews. Each gallery includes two alternate poses and the original product design board. These remain concepts, not verified product or fit photography.
 
 Replace image files using the same names to retain their links, or update paths in `data.js`. Use actual product photos and verified measurements as they become available.
 
