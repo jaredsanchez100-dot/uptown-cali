@@ -20,7 +20,9 @@ Tests use Node.js 18+ and Python 3. These development dependencies are optional;
 npm ci
 npx playwright install chromium
 npm run test:syntax
+npm run test:checkout
 npm test
+npm run audit:checkout
 ```
 
 The test runner starts the local static server. To use an installed Chromium instead of downloading one, run `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm test`.
@@ -67,7 +69,7 @@ A developer can connect an owned HTTPS endpoint through `NEWSLETTER.endpoint`. I
 
 ## Orders and launch
 
-`CHECKOUT.mode` remains `"demo"`. No money is collected. Existing Stripe and Shopify adapters are retained for future work, but neither is configured or verified end to end.
+`CHECKOUT.mode` remains `"demo"`. No money is collected. Stripe and Shopify handoffs now share fail-closed release checks, but neither provider is configured or verified end to end. Every product also defaults to unapproved. See [checkout launch plan](docs/checkout-launch.md) for the recommended Shopify + Printful path and exact configuration requirements.
 
 Before launch, confirm products and prices, provide shipping/return policies and a real contact address, connect the chosen provider, and test payment and fulfillment. Keep all three concept-product guards intact.
 
@@ -84,6 +86,7 @@ A developer should compare these files with the latest repository, review the ch
 | `index.html` | Page structure, metadata and font references |
 | `data.js` | Catalog, brand copy and integration configuration |
 | `script.js` | Routing, filtering, saved designs, cart and forms |
+| `checkout.js` | Provider URL validation, exact variant mapping and release gates |
 | `styles.css` | Theme and responsive layouts |
 | `images/`, `video/` | Existing visual assets |
 | `README-DEVELOPER.md` | Technical handoff and release checks |

@@ -4,7 +4,9 @@
   "description": "Static storefront; dependencies are for browser tests only.",
   "scripts": {
     "test": "playwright test",
-    "test:syntax": "node --check data.js && node --check script.js"
+    "test:syntax": "node --check data.js && node --check checkout.js && node --check script.js",
+    "test:checkout": "node --test tests/checkout.test.cjs",
+    "audit:checkout": "node scripts/audit-checkout.cjs"
   },
   "devDependencies": {
     "@playwright/test": "1.57.0"
